@@ -1,0 +1,137 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2011-2012
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
+package zest3d.controllers 
+{
+	import io.plugin.core.interfaces.IDisposable;
+	import io.plugin.math.algebra.APoint;
+	import io.plugin.math.algebra.HMatrix;
+	import io.plugin.math.algebra.HQuaternion;
+	import zest3d.datatypes.Transform;
+	
+	/**
+	 * ...
+	 * @author Gary Paluk
+	 */
+	public class BlendTransformController extends TransformController implements IDisposable 
+	{
+		
+		protected var _controller0: TransformController;
+		protected var _controller1: TransformController;
+		protected var _weight: Number;
+		
+		protected var _rsMatrices: Boolean;
+		protected var _geometricRotation: Boolean;
+		protected var _geometricScale: Boolean;
+		
+		public function BlendTransformController( controller0: TransformController, controller1: TransformController, rsMatrices: Boolean, geometricRotation: Boolean = false, geometricScale: Boolean = false ) 
+		{
+			super( Transform.IDENTITY );
+			
+			_controller0 = controller0;
+			_controller1 = controller1;
+			
+			_weight = 0;
+			_rsMatrices = rsMatrices;
+			_geometricRotation = geometricRotation;
+			_geometricScale = geometricScale;
+		}
+		
+		override public function dispose():void 
+		{
+			_controller0.dispose();
+			_controller1.dispose();
+			
+			_controller0 = null;
+			_controller1 = null;
+			
+			super.dispose();
+		}
+		
+		[Inline]
+		public final function get controller0(): TransformController
+		{
+			return _controller0;
+		}
+		
+		[Inline]
+		public final function get controller1(): TransformController
+		{
+			return _controller1;
+		}
+		
+		[Inline]
+		public final function get rsMatrices(): Boolean
+		{
+			return _rsMatrices;
+		}
+		
+		[Inline]
+		public final function set weight( weight: Number ): void
+		{
+			_weight = weight;
+		}
+		
+		[Inline]
+		public final function get weight(): Number
+		{
+			return _weight;
+		}
+		
+		override public function update(applicationTime:Number):Boolean 
+		{
+			if ( !super.update( applicationTime ) )
+			{
+				return false;
+			}
+			trace( "warning: BlendTransformController::update() is not yet implemented and therefore not performed" );
+			
+			//TODO add HQuartenion::fromMatrix method to consolidate
+			// the two classes and perform the method within here.
+			
+			/*
+			_controller0.update( applicationTime );
+			_controller1.update( applicationTime );
+			
+			var xfrm0: Transform = _controller0.transform;
+			var xfrm1: Transform = _controller1.transform;
+			var oneMinusWeight: Number = 1 - _weight;
+			
+			var trn0: APoint = xfrm0.translate;
+			var trn1: APoint = xfrm1.translate;
+			var blendTrn: APoint = trn0.scale( oneMinusWeight ).add( trn1.scale( _weight ) );
+			
+			_localTransform.translate = blendTrn;
+			
+			if ( _rsMatrices )
+			{
+				var rot0: HMatrix = xfrm0.rotate;
+				var rot1: HMatrix - xfrm1.rotate;
+				
+				
+				//here we need HQuaternion::fromMatrix()
+				var quat0: HQuaternion = new HQuaternion()
+			}
+			*/
+			return false;
+		}
+		
+		// internal use only
+		override public function set object(value:ControlledObject):void 
+		{
+			super.object = value;
+			_controller0.object = object;
+			_controller1.object = object;
+		}
+		
+		
+	}
+
+}
