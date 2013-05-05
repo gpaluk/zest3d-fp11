@@ -22,7 +22,6 @@ package zest3d.renderers.agal
 	import zest3d.renderers.agal.pdr.AGALIndexBuffer;
 	import zest3d.renderers.agal.pdr.AGALPixelShader;
 	import zest3d.renderers.agal.pdr.AGALRenderTarget;
-	import zest3d.renderers.agal.pdr.AGALTexture1D;
 	import zest3d.renderers.agal.pdr.AGALTexture2D;
 	import zest3d.renderers.agal.pdr.AGALTexture3D;
 	import zest3d.renderers.agal.pdr.AGALTextureCube;
@@ -56,7 +55,7 @@ package zest3d.renderers.agal
 		{
 			
 			super( GlobalEffect, AGALIndexBuffer, AGALPixelShader, AGALRenderTarget,
-				AGALTexture1D, AGALTexture2D, AGALTexture3D, AGALTextureCube,
+				/*AGALTexture1D,*/ AGALTexture2D, AGALTexture3D, AGALTextureCube,
 				AGALVertexBuffer, AGALVertexFormat, AGALVertexShader );
 			
 			_initialize( width, height, colorFormat, depthStencilFormat, numMultiSamples );

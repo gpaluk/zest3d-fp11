@@ -47,7 +47,7 @@ package zest3d.resources
 				throw new Error( "Invalid number of levels." );
 			}
 			
-			//computeNumLevelBytes();
+			computeNumLevelBytes();
 			_data = new ByteArray();
 			_data.endian = Endian.LITTLE_ENDIAN;
 			_data.length = _numTotalBytes;
@@ -79,20 +79,86 @@ package zest3d.resources
 		
 		public function get hasMipmaps(): Boolean
 		{
-			return false; //TODO implement mipmap checks
+			var logDim0: uint = BitHacks.logOfPowerTwoUint( _dimension[0][0] );
+			var logDim1: uint = BitHacks.logOfPowerTwoUint( _dimension[1][0] );
+
+			var maxLevels: int = ( logDim0 >= logDim1 ? logDim0 + 1 : logDim1 + 1 );
+
+			return _numLevels == maxLevels;
 		}
 		/*
 		public function getDataAt( level: int ): ByteArray
 		{
 			
 		}
-		
+		*/
 		protected function computeNumLevelBytes(): void
 		{
-			trace( "computeNumLevelBytes not yet implemented!" );
+			var dim0: int = _dimension[0][0];
+			var dim1: int = _dimension[1][0];
+			var level: int;
+			_numTotalBytes = 0;
+			
+			if ( _format == TextureFormat.DXT1 )
+			{
+				for ( level = 0; level < _numLevels; ++level )
+				{
+					var max0: int = dim0 / 4;
+					if ( max0 < 1 )
+					{
+						max0 = 1;
+					}
+					var max1: int = dim1 / 4;
+					if ( max1 < 1 )
+					{
+						max1 = 1;
+					}
+					
+					_numLevelBytes[ level ] = 8 * max0 * max1;
+					_numTotalBytes += _numLevelBytes[ level ];
+					_dimension[ 0 ][ level ] = dim0;
+					_dimension[ 1 ][ level ] = dim1;
+					_dimension[ 2 ][ level ] = 1;
+					
+					if ( dim0 > 1 )
+					{
+						dim0 >>= 1;
+					}
+					if ( dim1 > 1 )
+					{
+						dim1 >>= 1;
+					}
+				}
+			}
+			else if ( _format == TextureFormat.DXT5 )
+			{
+				for ( level = 0; level < _numLevels; ++level )
+				{
+					_numLevelBytes[ level ] = msPixelSize[ _format.index ] * dim0 * dim1;
+					_numTotalBytes += _numLevelBytes[ level ];
+					_dimension[0][level] = dim0;
+					_dimension[1][level] = dim1;
+					_dimension[2][level] = 1;
+
+					if ( dim0 > 1 )
+					{
+						dim0 >>= 1;
+					}
+					if ( dim1 > 1 )
+					{
+						dim1 >>= 1;
+					}
+				}
+				
+				_levelOffsets[ 0 ] = 0;
+				for ( level = 0; level < _numLevels - 1; ++level )
+				{
+					_levelOffsets[level+1] = _levelOffsets[level] + _numLevelBytes[level];
+				}
+			}
 		}
 		
-		
+		/*
 		override protected function onTextureLoadComplete(e:BulkProgressEvent):void 
 		{
 			super.onTextureLoadComplete(e);

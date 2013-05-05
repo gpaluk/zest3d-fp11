@@ -1,7 +1,6 @@
 package zest3d.effects.local 
 {
 	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture2D;
 	import zest3d.resources.TextureCube;
 	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
@@ -108,7 +107,7 @@ package zest3d.effects.local
 			var pShader: PixelShader = new PixelShader( "Zest3D.Reflection", 1, 1, 0, 1, false );
 			pShader.setInput( 0, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.CUBE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -130,7 +129,7 @@ package zest3d.effects.local
 			insertTechnique( technique );
 		}
 		
-		public function createInstance( texture: Texture2D ): VisualEffectInstance
+		public function createInstance( texture: TextureCube ): VisualEffectInstance
 		{
 			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
 			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
@@ -150,7 +149,7 @@ package zest3d.effects.local
 			return instance;
 		}
 		
-		public static function createUniqueInstance( texture: Texture2D, filter:SamplerFilterType,
+		public static function createUniqueInstance( texture: TextureCube, filter:SamplerFilterType,
 													 coord0: SamplerCoordinateType, coord1: SamplerCoordinateType ): VisualEffectInstance
 		{
 			var effect: ReflectionEffect = new ReflectionEffect();
@@ -160,7 +159,6 @@ package zest3d.effects.local
 			pShader.setCoordinate( 0, 1, coord1 );
 			
 			return effect.createInstance( texture );
-			
 		}
 		
 	}

@@ -231,10 +231,7 @@ package zest3d.resources
 		public final function get isCompressed(): Boolean
 		{
 			return ( _format == TextureFormat.DXT1 ||
-					 _format == TextureFormat.DXT3 ||
-					 _format == TextureFormat.DXT5 ||
-					 _format == TextureFormat.COMPRESSED ||
-					 _format == TextureFormat.COMPRESSED_ALPHA );
+					 _format == TextureFormat.DXT5 );
 		}
 		
 		[Inline]

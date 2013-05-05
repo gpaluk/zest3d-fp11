@@ -205,12 +205,11 @@ package zest3d.renderers.agal
 			null,
 			null,
 			null,
-			null,
-			null,
+			Context3DTextureFormat.COMPRESSED,
+			Context3DTextureFormat.COMPRESSED_ALPHA,
 			null,
 			Context3DTextureFormat.BGRA,
-			Context3DTextureFormat.COMPRESSED,
-			Context3DTextureFormat.COMPRESSED_ALPHA
+			Context3DTextureFormat.BGRA
 		];
 		
 		public static const textureTarget: Array =

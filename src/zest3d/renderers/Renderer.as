@@ -11,7 +11,7 @@ package zest3d.renderers
 	import zest3d.renderers.interfaces.IIndexBuffer;
 	import zest3d.renderers.interfaces.IPixelShader;
 	import zest3d.renderers.interfaces.IRenderTarget;
-	import zest3d.renderers.interfaces.ITexture1D;
+	//import zest3d.renderers.interfaces.ITexture1D;
 	import zest3d.renderers.interfaces.ITexture2D;
 	import zest3d.renderers.interfaces.ITexture3D;
 	import zest3d.renderers.interfaces.ITextureCube;
@@ -22,7 +22,7 @@ package zest3d.renderers
 	import zest3d.resources.enum.TextureFormat;
 	import zest3d.resources.IndexBuffer;
 	import zest3d.resources.RenderTarget;
-	import zest3d.resources.Texture1D;
+	//import zest3d.resources.Texture1D;
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
 	import zest3d.resources.TextureCube;
@@ -119,7 +119,7 @@ package zest3d.renderers
 		private var _vertexFormats: Dictionary;
 		private var _vertexBuffers: Dictionary;
 		private var _indexBuffers: Dictionary;
-		private var _texture1Ds: Dictionary;
+		//private var _texture1Ds: Dictionary;
 		private var _texture2Ds: Dictionary;
 		private var _texture3Ds: Dictionary;
 		private var _textureCubes: Dictionary;
@@ -128,7 +128,7 @@ package zest3d.renderers
 		private var _pixelShaders: Dictionary;
 		
 		public function Renderer( CGlobalEffect: Class, CPdrIndexBuffer:Class, CPdrPixelShader: Class,
-				CPdrRenderTarget: Class, CPdrTexture1D: Class, CPdrTexture2D: Class, CPdrTexture3D: Class,
+				CPdrRenderTarget: Class, /*CPdrTexture1D: Class,*/ CPdrTexture2D: Class, CPdrTexture3D: Class,
 				CPdrTextureCube: Class, CPdrVertexBuffer: Class, CPdrVertexFormat: Class, CPdrVertexShader: Class ) 
 		{
 			//this.CRendererInput = CRendererInput;
@@ -176,7 +176,7 @@ package zest3d.renderers
 			_vertexFormats = new Dictionary();
 			_vertexBuffers = new Dictionary();
 			_indexBuffers = new Dictionary();
-			_texture1Ds = new Dictionary();
+			//_texture1Ds = new Dictionary();
 			_texture2Ds = new Dictionary();
 			_texture3Ds = new Dictionary();
 			_textureCubes = new Dictionary();
@@ -233,7 +233,7 @@ package zest3d.renderers
 			destroyAllVertexFormats();
 			destroyAllVertexBuffers();
 			destroyAllIndexBuffers();
-			destroyAllTexture1Ds();
+			//destroyAllTexture1Ds();
 			destroyAllTexture2Ds();
 			destroyAllTexture3Ds();
 			destroyAllTextureCubes();
@@ -482,6 +482,7 @@ package zest3d.renderers
 		//}
 		
 		//{region texture 1d (not yet implemented)
+		/*
 		public function bindTexture1D( texture: Texture1D ): void
 		{
 			
@@ -531,9 +532,10 @@ package zest3d.renderers
 		{
 			
 		}
+		*/
 		//}
 		
-		//{region texture 2d (not yet implemented)
+		//{
 		public function bindTexture2D( texture: Texture2D ): void
 		{
 			if ( !_texture2Ds[ texture ] )
@@ -656,32 +658,48 @@ package zest3d.renderers
 		//{region texture cube (not yet implemented)
 		public function bindTextureCube( texture: TextureCube ): void
 		{
-			
+			if ( !_textureCubes[ texture ] )
+			{
+				_textureCubes[ texture ] = new CPdrTextureCube( this, texture );
+			}
 		}
 		
 		public static function bindAllTextureCube( texture: TextureCube ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.bindTextureCube( texture );
+			}
 		}
 		
 		public function unbindTextureCube( texture: TextureCube ): void
 		{
-			
+			_textureCubes[ texture ] = null;
 		}
 		
 		public static function unbindAllTextureCube( texture: TextureCube ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.unbindTextureCube( texture );
+			}
 		}
 		
 		public function enableTextureCube( texture: TextureCube, textureUnit: int ): void
 		{
-			
+			if ( !_textureCubes[ texture ] )
+			{
+				_textureCubes[ texture ] = new CPdrTextureCube( this, texture );
+			}
+			_textureCubes[ texture ].enable( this, textureUnit );
 		}
 		
 		public function disableTextureCube( texture: TextureCube, textureUnit: int ): void
 		{
-			
+			if ( _textureCubes[ texture ] )
+			{
+				_textureCubes[ texture ].disable( this, textureUnit );
+			}
 		}
 		
 		public function lockTextureCube( texture: TextureCube, face: int, level: int, mode: BufferLockingType ): void
@@ -1255,7 +1273,7 @@ package zest3d.renderers
 				_indexBuffers[ key ] = null;
 			}
 		}
-		
+		/*
 		private function destroyAllTexture1Ds(): void
 		{
 			for each( var key: Texture1D in _texture1Ds )
@@ -1264,7 +1282,7 @@ package zest3d.renderers
 				_texture1Ds[ key ] = null;
 			}
 		}
-		
+		*/
 		private function destroyAllTexture2Ds(): void
 		{
 			for each( var key: Texture2D in _texture2Ds )
@@ -1444,12 +1462,12 @@ package zest3d.renderers
 		{
 			return _indexBuffers[ iBuffer ];
 		}
-		
+		/*
 		public function getResourceTexture1D( texture: Texture1D ): ITexture1D
 		{
 			return _texture1Ds[ texture ];
 		}
-		
+		*/
 		public function getResourceTexture2D( texture: Texture2D ): ITexture2D
 		{
 			return _texture2Ds[ texture ];

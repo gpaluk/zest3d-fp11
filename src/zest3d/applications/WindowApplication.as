@@ -42,8 +42,9 @@ package zest3d.applications
 			_timer = 30;
 			_maxTimer = 30;
 			
-			_colorFormat = TextureFormat.A8R8G8B8;
-			_depthStencilFormat = TextureFormat.D24S8;
+			// TODO can we specify new texture formats for better precision matching?
+			_colorFormat = TextureFormat.RGBA;
+			_depthStencilFormat = TextureFormat.RGBA;
 			_numMultisamples = 0;
 			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage );

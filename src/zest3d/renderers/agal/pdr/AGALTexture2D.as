@@ -37,7 +37,7 @@ package zest3d.renderers.agal.pdr
 		private var _textureFormat: TextureFormat;
 		private var _context: Context3D;
 		
-		private var _gpuTexture: CubeTexture;
+		private var _gpuTexture: Texture;
 		
 		public function AGALTexture2D( renderer: Renderer, texture: Texture2D ) 
 		{
@@ -49,7 +49,7 @@ package zest3d.renderers.agal.pdr
 			
 			//_gpuTexture = _context.createTexture( _texture.width, _texture.height, Context3DTextureFormat.BGRA, false, 0 );
 			
-			_gpuTexture = _context.createCubeTexture( _texture.width,Context3DTextureFormat.COMPRESSED, false, 0 );
+			_gpuTexture = _context.createTexture( _texture.height, _texture.width, Context3DTextureFormat.COMPRESSED, false, 0 );
 			if ( _texture.isCompressed )
 			{
 				_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
@@ -73,6 +73,7 @@ package zest3d.renderers.agal.pdr
 		
 		public function disable( renderer: Renderer, textureUnit: int ): void
 		{
+			_context.setTextureAt( textureUnit, null );
 		}
 		
 		public function lock( level: int, mode: BufferLockingType ): void

@@ -1,6 +1,10 @@
 package zest3d.resources 
 {
+	import flash.utils.ByteArray;
+	import flash.utils.Endian;
 	import io.plugin.core.interfaces.IDisposable;
+	import io.plugin.core.system.Assert;
+	import io.plugin.math.base.BitHacks;
 	import zest3d.renderers.Renderer;
 	import zest3d.resources.enum.BufferUsageType;
 	import zest3d.resources.enum.TextureFormat;
@@ -17,6 +21,31 @@ package zest3d.resources
 		{
 			usage ||= BufferUsageType.TEXTURE;
 			super( format, TextureType.TEXTURE_CUBE, usage, numLevels );
+
+			Assert.isTrue( dimension > 0, "Dimension must be positive" );
+			_dimension[0][0] = dimension;
+			_dimension[1][0] = dimension;
+
+			var logDim: uint = BitHacks.logOfPowerTwoUint( uint( dimension ) );
+			var maxLevels: int = int( logDim ) + 1;
+
+			if ( numLevels == 0 )
+			{
+				_numLevels = maxLevels;
+			}
+			else if ( numLevels <= maxLevels )
+			{
+				_numLevels = numLevels;
+			}
+			else
+			{
+				Assert.isTrue( false, "Invalid number of levels." );
+			}
+
+			//computeNumLevelBytes();
+			_data = new ByteArray();
+			_data.endian = Endian.LITTLE_ENDIAN;
+			_data.length = _numTotalBytes;
 		}
 		
 		override public function dispose():void 
@@ -25,6 +54,46 @@ package zest3d.resources
 			super.dispose();
 		}
 		
+		[Inline]
+		public final function get width(): int
+		{
+			return getDimension( 0, 0 );
+		}
+
+		[Inline]
+		public final function get height(): int
+		{
+			return getDimension( 1, 0 );
+		}
+
+		public function generateMipmaps(): void
+		{
+			throw new Error( "TextureCube::generateMipmaps() is currently unsupported" );
+		}
+
+		public function get hasMipmaps(): Boolean
+		{
+			/*
+			var logDim: uint = BitHacks.logOfPowerTwoUint( uint( dimension ) );
+			var maxLevels: int = int( logDim ) + 1;
+			
+			return _numLevels == maxLevels;
+			*/
+			return false; //TODO implement mipmap checks
+		}
+
+		//TODO return face and level
+		/*
+		override public function get data( face: int, level: int ): ByteArray
+		{
+			return _data;
+		}
+		*/
+
+		protected function computeNumLevelBytes(): void
+		{
+			throw new Error( "TextureCube::computeNumLevelBytes() is currently unsupported" );
+		}
 	}
 
 }

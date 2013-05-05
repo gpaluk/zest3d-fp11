@@ -61,10 +61,10 @@ package zest3d.renderers.agal.pdr
 				
 				// TODO set up any wrap mode where/if possisble via AGAL and recompile
 				switch( type )
-				{
+				{/*
 					case SamplerType.TYPE_1D:
 							renderer.enableTexture1D( texture as Texture1D, textureUnit );
-						break;
+						break;*/
 					case SamplerType.TYPE_2D:
 							renderer.enableTexture2D( texture as Texture2D, textureUnit );
 						break;
@@ -119,10 +119,10 @@ package zest3d.renderers.agal.pdr
 				var texture: Texture = parameters.getTextureByHandle( i );
 				
 				switch( type )
-				{
+				{/*
 					case SamplerType.TYPE_1D:
 							renderer.disableTexture1D( texture as Texture1D, textureUnit );
-						break;
+						break;*/
 					case SamplerType.TYPE_2D:
 							renderer.disableTexture2D( texture as Texture2D, textureUnit );
 						break;
