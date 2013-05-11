@@ -10,12 +10,15 @@
  */
 package zest3d.renderers.agal.pdr 
 {
+	import flash.display.BitmapData;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.textures.CubeTexture;
 	import flash.display3D.textures.Texture;
 	import flash.display3D.textures.TextureBase;
+	import flash.geom.Rectangle;
 	import io.plugin.core.interfaces.IDisposable;
+	import zest3d.renderers.agal.AGALMapping;
 	import zest3d.renderers.agal.AGALRenderer;
 	import zest3d.renderers.agal.AGALSamplerState;
 	import zest3d.renderers.interfaces.ITexture2D;
@@ -47,16 +50,19 @@ package zest3d.renderers.agal.pdr
 			_texture = texture;
 			_textureFormat = texture.format;
 			
-			//_gpuTexture = _context.createTexture( _texture.width, _texture.height, Context3DTextureFormat.BGRA, false, 0 );
+			var format: String = AGALMapping.textureFormat[ _textureFormat.index ];
+			_gpuTexture = _context.createTexture( _texture.height, _texture.width, format, false, 0 );
 			
-			_gpuTexture = _context.createTexture( _texture.height, _texture.width, Context3DTextureFormat.COMPRESSED, false, 0 );
-			if ( _texture.isCompressed )
+			switch( _textureFormat )
 			{
-				_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
-			}
-			else
-			{
-				//_gpuTexture.uploadFromByteArray( _texture.data, 0, _texture.numLevels );
+				case TextureFormat.DXT1:
+				case TextureFormat.DXT5:
+				case TextureFormat.RGBA:
+						_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
+					break;
+				case TextureFormat.BITMAP:
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, _texture.numLevels );
+					break;
 			}
 		}
 		
@@ -66,8 +72,7 @@ package zest3d.renderers.agal.pdr
 		}
 		
 		public function enable( renderer: Renderer, textureUnit: int ): void
-		{			
-			//TODO relocate this hard-coded texture set
+		{
 			_context.setTextureAt( textureUnit, _gpuTexture );
 		}
 		

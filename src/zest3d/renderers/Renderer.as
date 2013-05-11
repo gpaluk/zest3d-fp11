@@ -723,35 +723,51 @@ package zest3d.renderers
 		}
 		//}
 		
-		//{region render target (not yet implemented)
+		//{region render target
 		public function bindRenderTarget( renderTarget: RenderTarget ): void
 		{
-			
+			if ( !_renderTargets[ renderTarget ] )
+			{
+				_renderTargets[ renderTarget ] = new CPdrRenderTarget( this, renderTarget );
+			}
 		}
 		
 		public static function bindAllRenderTarget( renderTarget: RenderTarget ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.bindRenderTarget( renderTarget );
+			}
 		}
 		
 		public function unbindRenderTarget( renderTarget: RenderTarget ): void
 		{
-			
+			_renderTargets[ renderTarget ] = null;
 		}
 		
 		public static function unbindAllRenderTarget( renderTarget:RenderTarget ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.unbindRenderTarget( renderTarget );
+			}
 		}
 		
 		public function enableRenderTarget( renderTarget: RenderTarget ): void
 		{
-			
+			if ( !_renderTargets[ renderTarget ] )
+			{
+				_renderTargets[ renderTarget ] = new CPdrRenderTarget( this, renderTarget );
+			}
+			_renderTargets[ renderTarget ].enable( this );
 		}
 		
 		public function disableRenderTarget( renderTarget: RenderTarget ): void
 		{
-			
+			if ( _renderTargets[ renderTarget ] )
+			{
+				_renderTargets[ renderTarget ].disable( this );
+			}
 		}
 		
 		public function readColor( i: int, renderTarget: RenderTarget, texture: Texture2D ): void

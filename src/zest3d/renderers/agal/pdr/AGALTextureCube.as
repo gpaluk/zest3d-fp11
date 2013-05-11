@@ -14,6 +14,7 @@ package zest3d.renderers.agal.pdr
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.textures.CubeTexture;
 	import io.plugin.core.interfaces.IDisposable;
+	import zest3d.renderers.agal.AGALMapping;
 	import zest3d.renderers.agal.AGALRenderer;
 	import zest3d.renderers.interfaces.ITextureCube;
 	import zest3d.renderers.Renderer;
@@ -43,14 +44,23 @@ package zest3d.renderers.agal.pdr
 			_texture = texture;
 			_textureFormat = texture.format;
 			
-			_gpuTexture = _context.createCubeTexture( _texture.width, Context3DTextureFormat.COMPRESSED, false, 0 );
-			if ( _texture.isCompressed )
+			var format: String = AGALMapping.textureFormat[ _textureFormat.index ];
+			_gpuTexture = _context.createCubeTexture( _texture.width, format, false, 0 );
+			switch( _textureFormat )
 			{
-				_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
-			}
-			else
-			{
-				//_gpuTexture.uploadFromByteArray( _texture.data, 0, _texture.numLevels );
+				case TextureFormat.RGBA:
+				case TextureFormat.DXT1:
+				case TextureFormat.DXT5:
+						_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
+					break;
+				case TextureFormat.BITMAP:
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 0 );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 1 );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 2 );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 3 );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 4 );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 5 );
+					break;
 			}
 		}
 		

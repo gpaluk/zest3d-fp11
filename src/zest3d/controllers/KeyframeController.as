@@ -1,6 +1,12 @@
 /**
  * Plugin.IO - http://www.plugin.io
  * Copyright (c) 2011-2012
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
  */
 package zest3d.controllers 
 {
@@ -358,6 +364,7 @@ package zest3d.controllers
 		
 		protected function getRotate( normTime: Number, i0: int, i1: int ): HMatrix
 		{
+			// TODO stop creating multiple objects each frame
 			var q: HQuaternion = new HQuaternion().slerp( normTime, _rotations[ i0 ], _rotations[ i1 ] );
 			
 			return q.toRotationMatrix();
