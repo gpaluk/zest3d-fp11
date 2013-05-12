@@ -48,7 +48,7 @@ package zest3d.renderers.agal.pdr
 			_gpuTexture = _context.createCubeTexture( _texture.width, format, false, 0 );
 			switch( _textureFormat )
 			{
-				case TextureFormat.RGBA:
+				case TextureFormat.BGRA:
 				case TextureFormat.DXT1:
 				case TextureFormat.DXT5:
 						_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );

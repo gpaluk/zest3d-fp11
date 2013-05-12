@@ -24,6 +24,8 @@ package zest3d.controllers
 		public var i0: int = 0;
 		public var i1: int = 0;
 		
+		public function KeyInfo() { };
+		
 		public function set( ctrlTime: Number, numTimes: int, times: Array, lastIndex: int, normTime: Number, i0: int, i1: int ): void
 		{
 			this.ctrlTime = ctrlTime;

@@ -14,7 +14,9 @@ package zest3d.controllers
 	import io.plugin.math.algebra.APoint;
 	import io.plugin.math.algebra.HMatrix;
 	import io.plugin.math.algebra.HQuaternion;
+	import io.plugin.math.base.MathHelper;
 	import zest3d.datatypes.Transform;
+	import zest3d.scenegraph.Spatial;
 	
 	/**
 	 * ...
@@ -91,12 +93,7 @@ package zest3d.controllers
 			{
 				return false;
 			}
-			trace( "warning: BlendTransformController::update() is not yet implemented and therefore not performed" );
 			
-			//TODO add HQuartenion::fromMatrix method to consolidate
-			// the two classes and perform the method within here.
-			
-			/*
 			_controller0.update( applicationTime );
 			_controller1.update( applicationTime );
 			
@@ -113,14 +110,76 @@ package zest3d.controllers
 			if ( _rsMatrices )
 			{
 				var rot0: HMatrix = xfrm0.rotate;
-				var rot1: HMatrix - xfrm1.rotate;
+				var rot1: HMatrix = xfrm1.rotate;
 				
 				
 				//here we need HQuaternion::fromMatrix()
-				var quat0: HQuaternion = new HQuaternion()
+				var quat0: HQuaternion = HQuaternion.fromRotationMatrix( rot0 );
+				var quat1: HQuaternion = HQuaternion.fromRotationMatrix( rot1 );
+				if ( quat0.dotProduct( quat1 ) < 0 )
+				{
+					quat1 = quat1.negate();
+				}
+				
+				var sca0: APoint = xfrm0.scale;
+				var sca1: APoint = xfrm1.scale;
+				
+				var blendRot: HMatrix = new HMatrix();
+				var blendQuat: HQuaternion = new HQuaternion();
+				var blendSca: APoint = new APoint();
+				
+				if ( _geometricRotation )
+				{
+					blendQuat.slerp( _weight, quat0, quat1 );
+				}
+				else
+				{
+					blendQuat = quat0.scale( oneMinusWeight ).add( quat1.scale( _weight ) );
+					blendQuat.normalize();
+				}
+				
+				blendRot = blendQuat.toRotationMatrix();
+				_localTransform.rotate = blendRot;
+				
+				if ( _geometricScale )
+				{
+					for ( var i: int = 0; i < 3; ++i )
+					{
+						var s0: Number = sca0[i];
+						var s1: Number = sca1[i];
+						if ( s0 != 0 && s1 != 0 )
+						{
+							var sign0: Number = MathHelper.sign( s0 );
+							var sign1: Number = MathHelper.sign( s1 );
+							s0 = Math.abs( s0 );
+							s1 = Math.abs( s1 );
+							var pow0: Number = Math.pow(s0, oneMinusWeight );
+							var pow1: Number = Math.pow(s1, _weight );
+							blendSca[i] = sign0 * sign1 * pow0 * pow1;
+						}
+						else
+						{
+							blendSca[i] = 0;
+						}
+					}
+				}
+				else
+				{
+					blendSca[i] = oneMinusWeight * sca0 + _weight * sca1;
+				}
+				_localTransform.scale = blendSca;
 			}
-			*/
-			return false;
+			else
+			{
+				var mat0: HMatrix = xfrm0.matrix;
+				var mat1: HMatrix = xfrm1.matrix;
+				var blendMat: HMatrix = mat0.scale( oneMinusWeight ).add( mat1.scale( _weight ) );
+				_localTransform.matrix = blendMat;
+			}
+			
+			var spatial: Spatial = _object as Spatial;
+			spatial.localTransform = _localTransform;
+			return true;
 		}
 		
 		// internal use only
@@ -131,7 +190,7 @@ package zest3d.controllers
 			_controller1.object = object;
 		}
 		
-		
+		//TODO add name support
 	}
 
 }

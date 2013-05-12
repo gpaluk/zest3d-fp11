@@ -79,7 +79,6 @@ package zest3d.resources
 			_numTotalBytes = 0;
 			_data = new ByteArray();
 			_data.endian = Endian.LITTLE_ENDIAN;
-			_data.shareable = true;
 			
 			_dimension = [];
 			_dimension[ 0 ] = [];

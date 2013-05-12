@@ -32,7 +32,7 @@ package zest3d.renderers.agal.pdr
 	 * ...
 	 * @author Gary Paluk
 	 */
-	public class AGALTexture2D implements ITexture2D, IDisposable 
+	public class AGALTexture2D implements ITexture2D, IDisposable
 	{
 		
 		private var _renderer: AGALRenderer;
@@ -42,9 +42,9 @@ package zest3d.renderers.agal.pdr
 		
 		private var _gpuTexture: Texture;
 		
-		public function AGALTexture2D( renderer: Renderer, texture: Texture2D ) 
+		public function AGALTexture2D( renderer: AGALRenderer, texture: Texture2D )
 		{
-			_renderer = renderer as AGALRenderer;
+			_renderer = renderer;
 			_context = _renderer.data.context;
 			
 			_texture = texture;
@@ -57,11 +57,11 @@ package zest3d.renderers.agal.pdr
 			{
 				case TextureFormat.DXT1:
 				case TextureFormat.DXT5:
-				case TextureFormat.RGBA:
+				case TextureFormat.BGRA:
 						_gpuTexture.uploadCompressedTextureFromByteArray( _texture.data, 0 );
 					break;
 				case TextureFormat.BITMAP:
-						_gpuTexture.uploadFromByteArray( _texture.data, 0, _texture.numLevels );
+						_gpuTexture.uploadFromByteArray( _texture.data, 0, 0 );
 					break;
 			}
 		}

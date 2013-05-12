@@ -54,7 +54,7 @@ package zest3d.renderers.agal.pdr
 			for ( var i: int = 0; i < numSamplers; ++i )
 			{
 				var type: SamplerType = shader.getSamplerType( i );
-				var target: String = AGALMapping.textureTarget[ type.index ];
+				var target: String = AGALMapping.textureTarget[ type.index ]; // TODO map targets
 				var textureUnit: int = shader.getTextureUnit( profile, i );
 				var texture: Texture = parameters.getTextureByHandle( i );
 				var current: AGALSamplerState = currentSS[ textureUnit ];
