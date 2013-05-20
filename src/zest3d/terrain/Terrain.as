@@ -17,6 +17,7 @@ package zest3d.terrain
 	import zest3d.resources.VertexFormat;
 	import zest3d.scenegraph.Camera;
 	import zest3d.scenegraph.enum.CullingType;
+	import zest3d.scenegraph.enum.UpdateType;
 	import zest3d.scenegraph.Node;
 	
 	/**
@@ -51,7 +52,7 @@ package zest3d.terrain
 			_spacing = 1;
 			_minElevation = 1;
 			_maxElevation = 0xFFFFFF;
-			_size = 33;
+			_size = 17;
 			
 			// loads header data... TODO investigate the linkage of file from the heightName
 			

@@ -86,7 +86,6 @@ package zest3d.renderers.agal
 		public function initialize( alphaState:AlphaState, cullState: CullState, depthState:DepthState,
 								offsetState: OffsetState, stencilState: StencilState, wireState: WireState ): void
 		{
-			trace( "We are now setting up all the states in the renderstate" );
 			
 			// alpha state
 			_alphaBlendEnabled = alphaState.blendEnabled;
@@ -95,45 +94,23 @@ package zest3d.renderers.agal
 			_alphaCompareEnabled = alphaState.compareEnabled;
 			_compareFunction = AGALMapping.alphaCompare[ alphaState.compare.index ];
 			
-			_alphaReference = alphaState.reference;
-			_blendColor = alphaState.constantColor;
-			
 			if ( _alphaBlendEnabled )
 			{
-				//_context.setBlendFactors( _alphaSrcBlend, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
+				
+				_alphaReference = alphaState.reference;
+				_blendColor = alphaState.constantColor;
 				_context.setBlendFactors( _alphaSrcBlend, _alphaDstBlend );
-				//_context.
 			}
 			else
 			{
 				_context.setBlendFactors( Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO );
-				
 			}
-			
-			_context.setBlendFactors( Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
-			//_context.setDepthTest( false, Context3DCompareMode.LESS );
-			
-			/*
-			_context.setColorMask( 1,
-											   0,
-											   0,
-											   1 );*/
-			/*
-			if ( _alphaCompareEnabled )
-			{
-				// _context.set
-			}
-			*/
-			
-			// TODO investigate alphaCompareFunction
-			//_context.setColorMask( _blendColor[ 0 ], _blendColor[ 1 ], _blendColor[ 2 ], _blendColor[ 3 ] );
 			
 			// cull state
 			_cullEnabled = cullState.enabled;
-			_ccwOrder = cullState.ccwOrder;
-			
 			if ( _cullEnabled )
 			{
+				_ccwOrder = cullState.ccwOrder;
 				if ( _ccwOrder )
 				{
 					_context.setCulling( Context3DTriangleFace.FRONT );
@@ -148,22 +125,19 @@ package zest3d.renderers.agal
 				_context.setCulling( Context3DTriangleFace.NONE );
 			}
 			
-			
+			/*
 			// depth state
 			_depthEnabled = depthState.enabled;
 			_depthWriteEnabled = depthState.writable;
 			_depthCompareFunction = AGALMapping.depthCompare[ depthState.compare.index ];
 			
-			
-			//TODO investigate here depthstates
-			/*
 			if ( _depthEnabled )
 			{
 				_context.setDepthTest( true, AGALMapping.alphaCompare[ alphaState.compare.index ] );
 			}
 			else
 			{
-				_context.setDepthTest( false, Context3DCompareMode.NEVER );
+				_context.setDepthTest( false, Context3DCompareMode.ALWAYS );
 			}
 			*/
 			
@@ -182,7 +156,7 @@ package zest3d.renderers.agal
 			
 			
 			// TODO investigate setStencilActions( triangleFace ...
-			
+			/*
 			if ( _stencilEnabled )
 			{
 				_context.setStencilActions( Context3DTriangleFace.FRONT_AND_BACK,
@@ -197,7 +171,7 @@ package zest3d.renderers.agal
 				_context.setStencilActions();
 				_context.setStencilReferenceValue( _stencilReference );
 			}
-			
+			*/
 			//TODO investigate wireState
 			// i.e. can we use a shader to achieve something similar?
 		}

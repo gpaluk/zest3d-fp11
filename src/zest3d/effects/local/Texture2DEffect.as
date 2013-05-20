@@ -48,56 +48,6 @@ package zest3d.effects.local
 			null,
 			null
 		];
-		/*
-		// TODO move these to a library
-		private static var vShaderStr: String =
-					"alias op, vertexOut;\n" +
-					"alias va0, modelPosition;\n" +
-					"alias va1, modelTCoord;\n" +
-					"alias vc0, PVWMatrix;\n" +
-					"alias v0, tCoordAlpha;\n" +
-					
-					"vertexOut = mul4x4(modelPosition, PVWMatrix);\n" +
-					"tCoordAlpha = modelTCoord;\n";
-		
-		private static var pShaderStr: String = 
-					"alias oc, fragmentOut;" +
-					"alias fs1, baseSampler;" +
-					"alias v0, tCoordAlpha; " +
-					"alias ft1, textureUnit1;" +
-					
-					"tex textureUnit1, tCoordAlpha, baseSampler <2d,clamp,linear,miplinear>;" +
-					"fragmentOut = textureUnit1;";
-		*/
-		
-		/*
-		"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,linear,miplinear> \n" +
-			"mov oc, ft1",
-		
-		
-		
-					"alias v0, tCoordAlpha;" +
-					"alias oc, fragmentOut;\n" +
-					"alias va0, vertexTCoord;\n" +
-					"alias ft0, BaseSampler;\n" +
-					"alias fs1, textureUnit1;\n" +
-					"\n" +
-					"ft0 = tCoordAlpha;\n" +
-					"BaseSampler = tex<2d,repeat,linear,miplinear>( tCoordAlpha, textureUnit1 );\n" +
-					"fragmentOut = ft1;\n";*/
-		/*
-		public static const msVPrograms: Array =
-		[
-			"",
-			// AGAL_1_0
-			vShaderStr,
-			// AGAL_2_0
-			"",
-			"",
-			""
-		];
-		*/
 		
 		public static const msVPrograms: Array =
 		[
@@ -119,27 +69,13 @@ package zest3d.effects.local
 			"",
 			// AGAL_1_0
 			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,wrap,linear,miplinear> \n" +
+			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear> \n" +
 			"mov oc, ft1",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
-		
-		
-		/*
-		public static const msPPrograms: Array =
-		[
-			"",
-			// AGAL_1_0
-			pShaderStr,
-			// AGAL_2_0
-			"",
-			"",
-			""
-		];
-		*/
 		
 		public function Texture2DEffect( filter: SamplerFilterType = null,
 										 coord0: SamplerCoordinateType = null,
@@ -217,7 +153,6 @@ package zest3d.effects.local
 			pShader.setCoordinate( 0, 1, coord1 );
 			
 			return effect.createInstance( texture );
-			
 		}
 		
 	}

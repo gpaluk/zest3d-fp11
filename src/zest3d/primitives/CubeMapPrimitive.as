@@ -67,31 +67,31 @@ package zest3d.primitives
 			
 			vba = new VertexBufferAccessor( vFormat, vBuffer );
 			
-			var face0: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face0: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face0.data = new Face1Texture();
 			var face0TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face0, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			
 			
-			var face1: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face1: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face1.data = new Face0Texture();
 			var face1TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face1, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			
 			
-			var face2: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face2: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face2.data = new Face3Texture();
 			var face2TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face2, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			
 			
-			var face3: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face3: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face3.data = new Face2Texture();
 			var face3TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face3, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			
 			
-			var face4: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face4: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face4.data = new Face4Texture();
 			var face4TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face4, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			
-			var face5: Texture2D = new Texture2D( TextureFormat.COMPRESSED, 512, 512, 10, BufferUsageType.STATIC );
+			var face5: Texture2D = new Texture2D( TextureFormat.BGRA, 512, 512, 10, BufferUsageType.TEXTURE );
 			face5.data = new Face5Texture();
 			var face5TextureEffect: VisualEffectInstance = Texture2DEffect.createUniqueInstance( face5, SamplerFilterType.LINEAR, SamplerCoordinateType.CLAMP, SamplerCoordinateType.CLAMP );
 			

@@ -121,7 +121,6 @@ package zest3d.effects.local
 		
 		override public function dispose():void 
 		{
-			
 			super.dispose();
 		}
 		
