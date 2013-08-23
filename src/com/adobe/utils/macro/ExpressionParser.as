@@ -158,6 +158,7 @@ package com.adobe.utils.macro
 
 class OpInfo
 {
+	public function OpInfo() { };
 	public var precedence:int;
 	public var order:int;		// 1: unary, 2: binary
 }

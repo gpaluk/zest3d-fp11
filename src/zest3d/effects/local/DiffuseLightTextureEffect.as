@@ -2,9 +2,11 @@ package zest3d.effects.local {
 	
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.resources.Texture2D;
+	import zest3d.scenegraph.enum.LightType;
+	import zest3d.scenegraph.Light;
+	import zest3d.shaderfloats.light.*;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
-	import zest3d.shaders.enum.SamplerCoordinateType;
-	import zest3d.shaders.enum.SamplerFilterType;
+	import zest3d.shaderfloats.ShaderFloat;
 	import zest3d.shaders.enum.SamplerType;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
@@ -20,11 +22,6 @@ package zest3d.effects.local {
 	import zest3d.shaders.VisualEffectInstance;
 	import zest3d.shaders.VisualPass;
 	import zest3d.shaders.VisualTechnique;
-	import zest3d.scenegraph.Light;
-	import zest3d.scenegraph.enum.LightType;
-	import zest3d.shaderfloats.ShaderFloat;
-	import zest3d.shaderfloats.light.*;
-	import flash.text.engine.LigatureLevel;
 	
 	/**
 	 * ...

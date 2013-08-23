@@ -10,13 +10,18 @@
  */
 package zest3d.renderers.agal.pdr 
 {
+	import flash.display.Stage;
+	import flash.display3D.Context3D;
+	import flash.display3D.Context3DMipFilter;
+	import flash.display3D.Context3DTextureFilter;
+	import flash.display3D.Context3DWrapMode;
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.renderers.agal.AGALMapping;
+	import zest3d.renderers.agal.AGALRenderer;
 	import zest3d.renderers.agal.AGALSamplerState;
 	import zest3d.renderers.Renderer;
 	import zest3d.resources.enum.TextureType;
-	import zest3d.resources.Texture;
-	import zest3d.resources.Texture1D;
+	import zest3d.resources.TextureBase;
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
 	import zest3d.resources.TextureCube;
@@ -42,9 +47,8 @@ package zest3d.renderers.agal.pdr
 		}
 		
 		protected function setSamplerState( renderer: Renderer, shader: Shader, profile: int,
-										parameters: ShaderParameters, maxSamplers: int, currentSS: Array ): void
+										parameters: ShaderParameters, maxSamplers: int, currentSS: Array, context3D: Context3D ): void
 		{
-			
 			
 			var numSamplers: int = shader.numSamplers;
 			if ( numSamplers > maxSamplers )
@@ -56,15 +60,14 @@ package zest3d.renderers.agal.pdr
 				var type: SamplerType = shader.getSamplerType( i );
 				var target: String = AGALMapping.textureTarget[ type.index ]; // TODO map targets
 				var textureUnit: int = shader.getTextureUnit( profile, i );
-				var texture: Texture = parameters.getTextureByHandle( i );
+				var texture: TextureBase = parameters.getTextureByHandle( i );
 				var current: AGALSamplerState = currentSS[ textureUnit ];
+				
+				//context3D.setSamplerStateAt( textureUnit, Context3DWrapMode.CLAMP, Context3DTextureFilter.LINEAR, Context3DMipFilter.MIPLINEAR );
 				
 				// TODO set up any wrap mode where/if possisble via AGAL and recompile
 				switch( type )
-				{/*
-					case SamplerType.TYPE_1D:
-							renderer.enableTexture1D( texture as Texture1D, textureUnit );
-						break;*/
+				{
 					case SamplerType.TYPE_2D:
 							renderer.enableTexture2D( texture as Texture2D, textureUnit );
 						break;
@@ -98,7 +101,6 @@ package zest3d.renderers.agal.pdr
 				{
 					current.lodBias = lodBias;
 				}
-				
 				//TODO same again maxFilter, can we get this to the shader... flag and recompile?
 			}
 		}
@@ -116,13 +118,10 @@ package zest3d.renderers.agal.pdr
 			{
 				var type: SamplerType = shader.getSamplerType( i );
 				var textureUnit: int = shader.getTextureUnit( profile, i );
-				var texture: Texture = parameters.getTextureByHandle( i );
+				var texture: TextureBase = parameters.getTextureByHandle( i );
 				
 				switch( type )
-				{/*
-					case SamplerType.TYPE_1D:
-							renderer.disableTexture1D( texture as Texture1D, textureUnit );
-						break;*/
+				{
 					case SamplerType.TYPE_2D:
 							renderer.disableTexture2D( texture as Texture2D, textureUnit );
 						break;

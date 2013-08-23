@@ -104,8 +104,6 @@ package zest3d.controllers
 			return true;
 		}
 		
-		
-		
 		protected function reallocate( numPoints: int ): void
 		{
 			_pointLinearSpeed = null;

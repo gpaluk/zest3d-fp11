@@ -96,7 +96,7 @@ package zest3d.renderers.agal.pdr
 				
 			}
 			
-			setSamplerState( renderer, pShader, profile, parameters, _renderer.data.maxPShaderImages, _renderer.data.currentSS );
+			setSamplerState( renderer, pShader, profile, parameters, _renderer.data.maxPShaderImages, _renderer.data.currentSS, _context );
 		}
 		
 		public function disable( renderer: Renderer, pShader: PixelShader, parameters: ShaderParameters ): void

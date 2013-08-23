@@ -190,11 +190,12 @@ package zest3d.resources
 		[Inline]
 		public final function setNormalAt( index: int, data: Array ): void
 		{
+			/*
 			if ( data.length != _normalChannels )
 			{
 				throw new Error( "normal array size does not match normal size." );
 			}
-			
+			*/
 			_data.position = ( _normal + index * _stride );
 			for ( var i: int = 0; i < _normalChannels; i++ )
 			{
@@ -234,12 +235,12 @@ package zest3d.resources
 		/////////////////////////////////////////////////
 		[Inline]
 		public final function setTangentAt( index: int, data: Array ): void
-		{
+		{/*
 			if ( data.length != _tangentChannels )
 			{
 				throw new Error( "tangents array size does not match tangent size." );
 			}
-			
+			*/
 			_data.position = ( _tangent + index * _stride );
 			for ( var i: int = 0; i < _tangentChannels; i++ )
 			{
@@ -283,12 +284,12 @@ package zest3d.resources
 		/////////////////////////////////////////////////
 		[Inline]
 		public final function setBinormalAt( index: int, data: Array ): void
-		{
+		{/*
 			if ( data.length != _binormalChannels )
 			{
 				throw new Error( "binormal array size does not match binormal size." );
 			}
-			
+			*/
 			_data.position = ( _binormal + index * _stride );
 			for ( var i: int = 0; i < _binormalChannels; i++ )
 			{
@@ -382,12 +383,12 @@ package zest3d.resources
 		/////////////////////////////////////////////////
 		[Inline]
 		public final function setColorAt( unit: int, index: int, data: Array ): void
-		{
+		{/*
 			if ( data.length != _colorChannels[ unit ] )
 			{
 				throw new Error( "tangents array size does not match tangent size." );
 			}
-			
+			*/
 			_data.position = ( _color[ unit ] + index * _stride );
 			for ( var i: int = 0; i < _colorChannels[ unit ]; i++ )
 			{

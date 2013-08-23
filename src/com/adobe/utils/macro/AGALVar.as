@@ -9,6 +9,7 @@ package com.adobe.utils.macro
 	 */
 	public class AGALVar
 	{
+		public function AGALVar() { };
 		public var name:String;		// transform
 		public var target:String;	// "vc3", "va2.x"
 		public var x:Number = Number.NaN;

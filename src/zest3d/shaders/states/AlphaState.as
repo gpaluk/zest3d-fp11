@@ -38,7 +38,7 @@ package zest3d.shaders.states
 			compareEnabled = false;
 			compare = CompareMode.ALWAYS;
 			reference = 0;
-			constantColor = [ 0, 0, 0, 0 ]; // TODO check the value of this
+			constantColor = [0, 0, 0, 0];
 		}
 		
 		public function dispose(): void
@@ -50,5 +50,5 @@ package zest3d.shaders.states
 		}
 		
 	}
-
+	
 }

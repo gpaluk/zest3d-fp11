@@ -10,7 +10,7 @@ package zest3d.resources
 	 * ...
 	 * @author Gary Paluk
 	 */
-	public class Texture3D extends Texture implements IDisposable 
+	public class Texture3D extends TextureBase implements IDisposable 
 	{
 		
 		public function Texture3D( format: TextureFormat, dim0: int, dim1: int, dim2: int, numLevels: int, usage: BufferUsageType = null ) 

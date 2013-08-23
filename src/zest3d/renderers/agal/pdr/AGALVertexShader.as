@@ -56,7 +56,7 @@ package zest3d.renderers.agal.pdr
 						//program = assembler.assemble( Context3DProgramType.VERTEX, programText );
 					break;
 				case VertexShaderProfileType.AGAL_2_0:
-						//program = assembler.assemble( Context3DProgramType.VERTEX, programText, 2 );
+						program = assembler.assemble( Context3DProgramType.VERTEX, programText, 2 );
 					break;
 			}
 		}
@@ -91,7 +91,7 @@ package zest3d.renderers.agal.pdr
 			var agalRenderer: AGALRenderer = renderer as AGALRenderer;
 			
 			
-			setSamplerState( renderer, vShader, profile, parameters, agalRenderer.data.maxVShaderImages, agalRenderer.data.currentSS );
+			setSamplerState( renderer, vShader, profile, parameters, agalRenderer.data.maxVShaderImages, agalRenderer.data.currentSS, _context );
 		}
 		
 		public function disable( renderer: Renderer, vShader: VertexShader, parameters: ShaderParameters ): void

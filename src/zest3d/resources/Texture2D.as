@@ -15,7 +15,7 @@ package zest3d.resources
 	 * ...
 	 * @author Gary Paluk
 	 */
-	public class Texture2D extends Texture implements IDisposable 
+	public class Texture2D extends TextureBase implements IDisposable 
 	{
 		
 		public function Texture2D( format: TextureFormat, dimension0: int, dimension1: int, numLevels: int, usage: BufferUsageType = null ) 
@@ -165,6 +165,11 @@ package zest3d.resources
 			Renderer.updateAllTexture2D( this, 0 ); //TODO this is currently hardcoded until we load via mipmaps levels
 		}
 		*/
+		
+		public static function fromByteArray( data:ByteArray ):Texture2D
+		{
+			return Texture.fromByteArray( data ) as Texture2D;
+		}
 	}
 
 }

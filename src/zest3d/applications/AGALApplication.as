@@ -89,7 +89,7 @@ package zest3d.applications
 			
 			var rendererInput: AGALRendererInput = new AGALRendererInput( stage3D.context3D );
 			
-			_renderer = new AGALRenderer( rendererInput, stage.stageWidth, stage.stageHeight, _colorFormat, _depthStencilFormat, 4 );
+			_renderer = new AGALRenderer( rendererInput, stage.stageWidth, stage.stageHeight, _colorFormat, _depthStencilFormat, 2 );
 			
 			if ( onInitialize() )
 			{

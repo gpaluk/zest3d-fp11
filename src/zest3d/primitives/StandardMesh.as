@@ -59,14 +59,12 @@ package zest3d.primitives
 			_usage = isStatic ? BufferUsageType.STATIC : BufferUsageType.DYNAMIC;
 			
 			var posIndex: int = _vFormat.getIndex( AttributeUsageType.POSITION );
-			
-			// TODO check for positions given the 0 
 			Assert.isTrue( posIndex == 0, "Positions must be in 0" );
 			
 			var posType: AttributeType = _vFormat.getAttributeType( posIndex );
 			Assert.isTrue( posType == AttributeType.FLOAT3, "Positions must be 3-tuples of floats." );
 			
-			var norIndex: int = _vFormat.getIndex(AttributeUsageType.NORMAL);
+			var norIndex: int = _vFormat.getIndex( AttributeUsageType.NORMAL );
 			if ( norIndex >= 0 )
 			{
 				var norType: AttributeType = _vFormat.getAttributeType( norIndex );
@@ -92,12 +90,6 @@ package zest3d.primitives
 					}
 				}
 			}
-			
-			if ( transform )
-			{
-				_transform = transform;
-			}
-			
 		}
 		
 		public function dispose(): void
@@ -749,15 +741,14 @@ package zest3d.primitives
 					v2 = v1 + xSamples;
 					v3 = v0 + xSamples;
 					
-					iBuffer.setIndexAt( pointer++, v0 );
+					iBuffer.setIndexAt( pointer++, v2 );
 					iBuffer.setIndexAt( pointer++, v1 );
+					iBuffer.setIndexAt( pointer++, v0 );
+					iBuffer.setIndexAt( pointer++, v3 );
 					iBuffer.setIndexAt( pointer++, v2 );
 					iBuffer.setIndexAt( pointer++, v0 );
-					iBuffer.setIndexAt( pointer++, v2 );
-					iBuffer.setIndexAt( pointer++, v3 );
 				}
 			}
-			
 			return new TriMesh( _vFormat, vBuffer, iBuffer );
 		}
 		

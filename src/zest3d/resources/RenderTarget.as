@@ -38,7 +38,7 @@ package zest3d.resources
 			
 			if ( hasDepthStencil )
 			{
-				_depthStencilTexture = new Texture2D( TextureFormat.BITMAP, width,
+				_depthStencilTexture = new Texture2D( TextureFormat.RGBA8888, width,
 					height, 1, BufferUsageType.DEPTHSTENCIL );
 			}
 		}

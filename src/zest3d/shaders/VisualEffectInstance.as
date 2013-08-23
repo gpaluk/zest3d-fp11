@@ -14,7 +14,7 @@
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.core.system.Assert;
 	import io.plugin.core.system.object.PluginObject;
-	import zest3d.resources.Texture;
+	import zest3d.resources.TextureBase;
 	import zest3d.shaderfloats.ShaderFloat;
 	
 	/**
@@ -137,7 +137,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function setVertexTextureByName( pass: int, name: String, texture: Texture ): int
+		public function setVertexTextureByName( pass: int, name: String, texture: TextureBase ): int
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -146,7 +146,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function setPixelTextureByName( pass: int, name: String, texture: Texture ): int
+		public function setPixelTextureByName( pass: int, name: String, texture: TextureBase ): int
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -176,7 +176,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function setVertexTextureByHandle( pass: int, handle: int, texture: Texture ): void
+		public function setVertexTextureByHandle( pass: int, handle: int, texture: TextureBase ): void
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -186,7 +186,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function setPixelTextureByHandle( pass: int, handle: int, texture: Texture ): void
+		public function setPixelTextureByHandle( pass: int, handle: int, texture: TextureBase ): void
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -216,7 +216,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function getVertexTextureByName( pass: int, name: String ): Texture
+		public function getVertexTextureByName( pass: int, name: String ): TextureBase
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -225,7 +225,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function getPixelTextureByName( pass: int, name: String ): Texture
+		public function getPixelTextureByName( pass: int, name: String ): TextureBase
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -252,7 +252,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function getVertexTextureByHandle( pass: int, handle: int ): Texture
+		public function getVertexTextureByHandle( pass: int, handle: int ): TextureBase
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{
@@ -261,7 +261,7 @@
 			throw new IllegalArgumentError( "Invalid pass index." );
 		}
 		
-		public function getPixelTextureByHandle( pass: int, handle: int ): Texture
+		public function getPixelTextureByHandle( pass: int, handle: int ): TextureBase
 		{
 			if ( 0 <= pass && pass < _numPasses )
 			{

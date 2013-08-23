@@ -14,7 +14,7 @@ package zest3d.resources
 	 * ...
 	 * @author Gary Paluk
 	 */
-	public class TextureCube extends Texture implements IDisposable 
+	public class TextureCube extends TextureBase implements IDisposable 
 	{
 		
 		public function TextureCube( format: TextureFormat, dimension: int, numLevels: int, usage: BufferUsageType = null ) 
@@ -93,6 +93,11 @@ package zest3d.resources
 		protected function computeNumLevelBytes(): void
 		{
 			throw new Error( "TextureCube::computeNumLevelBytes() is currently unsupported" );
+		}
+		
+		public static function fromByteArray( data:ByteArray ):TextureCube
+		{
+			return Texture.fromByteArray( data ) as TextureCube;
 		}
 	}
 

@@ -272,13 +272,9 @@ package zest3d.datatypes
 					product.rotate = _rotate.multiply( transform._rotate );
 					
 					
-					/**
-					 * product.SetTranslate(GetUniformScale()*( mMatrix*transform.mTranslate) + mTranslate);
-					 */
+					// product.SetTranslate(GetUniformScale()*( mMatrix*transform.mTranslate) + mTranslate);
+					// product.translate = uniformScale * (_rotate * transform._translate) + _translate;
 					
-					/*
-					 * product.translate = uniformScale * (_rotate * transform._translate) + _translate;
-					 */
 					
 					product.translate = _rotate.multiplyAPoint( transform._translate ).scale( uniformScale ).add( _translate );
 					

@@ -1188,7 +1188,7 @@ package zest3d.renderers
 				for ( var i: int = 0; i < numVisible; ++i )
 				{
 					var visual: Visual = visibleSet.getVisibleAt( i ) as Visual;
-					var instance: VisualEffectInstance = visual.effectInstance;
+					var instance: VisualEffectInstance = visual.effect;
 					drawVisual( visual, instance );
 				}
 			}
@@ -1202,7 +1202,7 @@ package zest3d.renderers
 		{
 			if ( !instance )
 			{
-				instance = visual.effectInstance;
+				instance = visual.effect;
 			}
 			
 			if ( !instance )

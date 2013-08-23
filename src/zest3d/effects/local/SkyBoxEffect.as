@@ -25,7 +25,7 @@ package zest3d.effects.local
 	 * ...
 	 * @author Gary Paluk
 	 */
-	public class Texture2DEffect extends VisualEffect implements IDisposable 
+	public class SkyBoxEffect extends VisualEffect implements IDisposable 
 	{
 		
 		public static const msAGALVRegisters: Array = [ 0, 1 ];
@@ -69,7 +69,7 @@ package zest3d.effects.local
 			"",
 			// AGAL_1_0
 			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear,dxt1> \n" +
+			"tex ft1, ft0, fs1 <2d,repeat,linear,miplinear> \n" +
 			"mov oc, ft1",
 			// AGAL_2_0
 			"",
@@ -77,14 +77,14 @@ package zest3d.effects.local
 			""
 		];
 		
-		public function Texture2DEffect( filter: SamplerFilterType = null,
+		public function SkyBoxEffect( filter: SamplerFilterType = null,
 										 coord0: SamplerCoordinateType = null,
 										 coord1: SamplerCoordinateType = null ) 
 		{
 			
 			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
+			coord0 ||= SamplerCoordinateType.REPEAT;
+			coord1 ||= SamplerCoordinateType.REPEAT;
 			
 			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 2, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
@@ -110,6 +110,7 @@ package zest3d.effects.local
 			pass.alphaState = new AlphaState();
 			pass.cullState = new CullState();
 			pass.depthState = new DepthState();
+			//pass.depthState.enabled = false;
 			pass.offsetState = new OffsetState();
 			pass.stencilState = new StencilState();
 			pass.wireState = new WireState();
@@ -143,18 +144,13 @@ package zest3d.effects.local
 			return instance;
 		}
 		
-		public static function create( texture: Texture2D, filter:SamplerFilterType = null,
-													 coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ): VisualEffectInstance
+		public static function createUniqueInstance( texture: Texture2D ): VisualEffectInstance
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP;
-			coord1 ||= SamplerCoordinateType.CLAMP;
-			
-			var effect: Texture2DEffect = new Texture2DEffect();
+			var effect: SkyBoxEffect = new SkyBoxEffect();
 			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
+			pShader.setFilter( 0, SamplerFilterType.LINEAR );
+			pShader.setCoordinate( 0, 0, SamplerCoordinateType.REPEAT );
+			pShader.setCoordinate( 0, 1, SamplerCoordinateType.REPEAT );
 			
 			return effect.createInstance( texture );
 		}

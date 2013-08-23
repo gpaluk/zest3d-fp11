@@ -22,14 +22,6 @@ package zest3d.resources.enum
 		public static const FLOAT2: AttributeType = new AttributeType( "float2", 2 );
 		public static const FLOAT3: AttributeType = new AttributeType( "float3", 3 );
 		public static const FLOAT4: AttributeType = new AttributeType( "float4", 4 );
-		//public static const HALF1: AttributeType = new AttributeType( "half1", 5 );
-		//public static const HALF2: AttributeType = new AttributeType( "half2", 6 );
-		//public static const HALF3: AttributeType = new AttributeType( "half3", 7 );
-		//public static const HALF4: AttributeType = new AttributeType( "half4", 8 );
-		//public static const UBYTE4: AttributeType = new AttributeType( "ubyte4", 9 );
-		//public static const SHORT1: AttributeType = new AttributeType( "short1", 10 );
-		//public static const SHORT2: AttributeType = new AttributeType( "short2", 11 );
-		//public static const SHORT4: AttributeType = new AttributeType( "short4", 12 );
 		
 		public static const QUANTITY: int = 5;
 		

@@ -1,8 +1,9 @@
-package zest3d.effects.local 
+package zest3d.effects 
 {
-	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture2D;
+	import zest3d.resources.TextureCube;
+	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
+	import zest3d.shaderfloats.matrix.VWMatrixConstant;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
@@ -23,13 +24,13 @@ package zest3d.effects.local
 	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class Texture2DEffect extends VisualEffect implements IDisposable 
+	public class ReflectionEffect extends VisualEffectInstance 
 	{
 		
 		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 1 ];
+		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
 		[
@@ -53,51 +54,60 @@ package zest3d.effects.local
 		[
 			"",
 			// AGAL_1_0
-			"m44 op, va0, vc0 \n" +
-			"mov v0, va1",
+			"mov vt0, va1\n"+
+			"m33 vt0.xyz, vt0.xyz, vc5\n"+
+			"sub vt1, vc4, va0\n"+
+			"m33 vt1.xyz, vt1.xyz, vc5\n"+
+			"dp3 vt2, vt1, vt0\n"+
+			"add vt2, vt2, vt2\n"+
+			"mul vt2, vt0, vt2\n"+
+			"sub vt2, vt1, vt2\n"+
+			"neg vt2, vt2\n"+
+			"nrm vt2.xyz, vt2.xyz\n"+
+			"mov v0, vt2\n"+
+			"m44 op, va0, vc0",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
-		
-		
-		// TODO rebuild to accept changes to sampler (this is just an example)
-		
+			
 		public static const msPPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
-			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear,dxt1> \n" +
-			"mov oc, ft1",
+			"tex ft0,v0.xyz,fs0 <cube,linear,mipnearest,clamp,dxt1>\n"+
+			"mov oc, ft0",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
 		
-		public function Texture2DEffect( filter: SamplerFilterType = null,
-										 coord0: SamplerCoordinateType = null,
-										 coord1: SamplerCoordinateType = null ) 
+		private var _visualEffect:VisualEffect;
+		
+		public function ReflectionEffect( texture: TextureCube, filter:SamplerFilterType = null,
+										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			
 			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
+			coord0 ||= SamplerCoordinateType.CLAMP;
+			coord1 ||= SamplerCoordinateType.CLAMP;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.Reflection", 2, 1, 3, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			vShader.setInput( 1, "modelNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
+			vShader.setConstant( 1, "CameraModelPosition", 1 );
+			vShader.setConstant( 2, "VWMatrix", 4 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.MaterialTexture", 1, 1, 0, 1, false );
-			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Reflection", 1, 1, 0, 1, false );
+			pShader.setInput( 0, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.CUBE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -116,22 +126,18 @@ package zest3d.effects.local
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
 			
-		}
-		
-		override public function dispose():void 
-		{
-			super.dispose();
-		}
-		
-		public function createInstance( texture: Texture2D ): VisualEffectInstance
-		{
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setPixelTextureByHandle( 0, 0, texture );
+			_visualEffect = new VisualEffect();
+			_visualEffect.insertTechnique( technique );
 			
-			var filter: SamplerFilterType = getPixelShader( 0, 0 ).getFilter( 0 );
+			super( _visualEffect, 0 );
+			
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
+			setVertexConstantByHandle( 0, 1, new CameraModelPositionConstant() );
+			setVertexConstantByHandle( 0, 2, new VWMatrixConstant() );
+			setPixelTextureByHandle( 0, 0, texture );
+			
+			var filter: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
 			if ( filter != SamplerFilterType.NEAREST &&
 				 filter != SamplerFilterType.LINEAR &&
@@ -140,23 +146,11 @@ package zest3d.effects.local
 				texture.generateMipmaps();
 			}
 			
-			return instance;
 		}
 		
-		public static function create( texture: Texture2D, filter:SamplerFilterType = null,
-													 coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ): VisualEffectInstance
+		public function get visualEffect():VisualEffect 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP;
-			coord1 ||= SamplerCoordinateType.CLAMP;
-			
-			var effect: Texture2DEffect = new Texture2DEffect();
-			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
-			
-			return effect.createInstance( texture );
+			return _visualEffect;
 		}
 		
 	}

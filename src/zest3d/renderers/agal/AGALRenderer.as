@@ -66,7 +66,7 @@ package zest3d.renderers.agal
 							_defaultOffsetState, _defaultStencilState, _defaultWireState );
 			
 			// Configure the back buffer
-			data.context.configureBackBuffer( width, height, numMultiSamples );
+			data.context.configureBackBuffer( width, height, numMultiSamples, true );
 		}
 		
 		override public function dispose():void 

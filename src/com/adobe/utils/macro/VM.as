@@ -6,7 +6,10 @@ package com.adobe.utils.macro
 	{
 		public var vars:flash.utils.Dictionary = new flash.utils.Dictionary();
 		public var stack:Array = new Array();
-		
+		public function VM()
+		{
+			
+		}
 		public function pushIf():void	
 		{ 
 			m_ifIsTrue.push( false );

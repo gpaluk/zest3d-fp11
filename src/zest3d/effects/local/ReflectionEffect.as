@@ -5,9 +5,12 @@ package zest3d.effects.local
 	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaders.enum.CompareMode;
+	import zest3d.shaders.enum.DstBlendMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
+	import zest3d.shaders.enum.SrcBlendMode;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
 	import zest3d.shaders.PixelShader;
@@ -78,7 +81,7 @@ package zest3d.effects.local
 		[
 			"",
 			// AGAL_1_0
-			"tex ft0,v0.xyz,fs0 <cube,linear,mipneares,clamp,dxt1>\n"+
+			"tex ft0,v0.xyz,fs0 <cube,linear,mipnearest,clamp,dxt1>\n"+
 			"mov oc, ft0",
 			// AGAL_2_0
 			"",
@@ -96,7 +99,7 @@ package zest3d.effects.local
 			
 			var vShader: VertexShader = new VertexShader( "Zest3D.Reflection", 2, 1, 3, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT3, VariableSemanticType.NORMAL );
+			vShader.setInput( 1, "modelNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setConstant( 1, "CameraModelPosition", 1 );
@@ -149,9 +152,13 @@ package zest3d.effects.local
 			return instance;
 		}
 		
-		public static function createUniqueInstance( texture: TextureCube, filter:SamplerFilterType,
-													 coord0: SamplerCoordinateType, coord1: SamplerCoordinateType ): VisualEffectInstance
+		public static function create( texture: TextureCube, filter:SamplerFilterType = null,
+										coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ): VisualEffectInstance
 		{
+			filter ||= SamplerFilterType.LINEAR;
+			coord0 ||= SamplerCoordinateType.CLAMP;
+			coord1 ||= SamplerCoordinateType.CLAMP;
+			
 			var effect: ReflectionEffect = new ReflectionEffect();
 			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
 			pShader.setFilter( 0, filter );

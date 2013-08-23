@@ -1,7 +1,7 @@
 package zest3d.shaders 
 {
 	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture;
+	import zest3d.resources.TextureBase;
 	import zest3d.scenegraph.Camera;
 	import zest3d.scenegraph.Visual;
 	import zest3d.shaderfloats.ShaderFloat;
@@ -16,7 +16,7 @@ package zest3d.shaders
 		protected var _numConstants: int;
 		protected var _constants:Vector.<ShaderFloat>;
 		protected var _numTextures: int;
-		protected var _textures:Vector.<Texture>;
+		protected var _textures:Vector.<TextureBase>;
 		
 		public function ShaderParameters( shader: Shader ) 
 		{
@@ -31,7 +31,7 @@ package zest3d.shaders
 			_numTextures = _shader.numSamplers;
 			if ( _numTextures )
 			{
-				_textures = new Vector.<Texture>( _numTextures );
+				_textures = new Vector.<TextureBase>( _numTextures );
 			}
 		}
 		
@@ -48,7 +48,7 @@ package zest3d.shaders
 			
 			if ( _textures )
 			{
-				for each( var texture: Texture in _textures )
+				for each( var texture: TextureBase in _textures )
 				{
 					texture.dispose();
 				}
@@ -75,7 +75,7 @@ package zest3d.shaders
 		}
 		
 		[inline]
-		public final function get textures(): Vector.<Texture>
+		public final function get textures(): Vector.<TextureBase>
 		{
 			return _textures;
 		}
@@ -93,7 +93,7 @@ package zest3d.shaders
 			throw new Error( "Cannot find constant." );
 		}
 		
-		public function setTextureByName( name: String, texture: Texture ): int
+		public function setTextureByName( name: String, texture: TextureBase ): int
 		{
 			for ( var i: int = 0; i < _numTextures; ++i )
 			{
@@ -116,7 +116,7 @@ package zest3d.shaders
 			throw new Error( "Invalid constant handle." );
 		}
 		
-		public function setTextureByHandle( handle: int, texture: Texture ): void
+		public function setTextureByHandle( handle: int, texture: TextureBase ): void
 		{
 			if ( 0 <= handle && handle < _numTextures )
 			{
@@ -138,7 +138,7 @@ package zest3d.shaders
 			throw new Error( "Cannot find constant." );
 		}
 		
-		public function getTextureByName( name: String ): Texture
+		public function getTextureByName( name: String ): TextureBase
 		{
 			for ( var i: int = 0; i < _numTextures; ++i )
 			{
@@ -160,7 +160,7 @@ package zest3d.shaders
 			throw new Error( "Invalid constant handle." );
 		}
 		
-		public function getTextureByHandle( handle: int ): Texture
+		public function getTextureByHandle( handle: int ): TextureBase
 		{
 			if ( 0 <= handle && handle < _numTextures )
 			{

@@ -2,6 +2,7 @@ package com.adobe.utils.macro
 {
 	internal class BinaryExpression extends com.adobe.utils.macro.Expression
 	{
+		public function BinaryExpression() { };
 		public var op:String;
 		public var left:Expression;
 		public var right:Expression;

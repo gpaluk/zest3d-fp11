@@ -49,5 +49,4 @@ package zest3d.scenegraph
 		}
 		
 	}
-
 }

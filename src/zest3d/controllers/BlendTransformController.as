@@ -1,13 +1,3 @@
-/**
- * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
- *
- * Geometric Tools, LLC
- * Copyright (c) 1998-2012
- * 
- * Distributed under the Boost Software License, Version 1.0.
- * http://www.boost.org/LICENSE_1_0.txt
- */
 package zest3d.controllers 
 {
 	import io.plugin.core.interfaces.IDisposable;
@@ -165,7 +155,8 @@ package zest3d.controllers
 				}
 				else
 				{
-					blendSca[i] = oneMinusWeight * sca0 + _weight * sca1;
+					//blendSca[i] = oneMinusWeight * sca0 + _weight * sca1;
+					blendSca[i] =  sca0.scale( oneMinusWeight ).add( sca1.scale( _weight ) );
 				}
 				_localTransform.scale = blendSca;
 			}
@@ -174,7 +165,7 @@ package zest3d.controllers
 				var mat0: HMatrix = xfrm0.matrix;
 				var mat1: HMatrix = xfrm1.matrix;
 				var blendMat: HMatrix = mat0.scale( oneMinusWeight ).add( mat1.scale( _weight ) );
-				_localTransform.matrix = blendMat;
+				_localTransform.rotate = blendMat;
 			}
 			
 			var spatial: Spatial = _object as Spatial;

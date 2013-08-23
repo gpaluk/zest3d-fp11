@@ -15,7 +15,7 @@ package zest3d.applications
 	public class Zest3DApplication extends AGALApplication implements IDisposable 
 	{
 		
-		protected var _scene: Node;
+		private var _scene: Node;
 		protected var _culler: Culler;
 		
 		public function Zest3DApplication( ) 
@@ -30,7 +30,7 @@ package zest3d.applications
 				return false;
 			}
 			
-			_camera.setFrustumFOV( 60, aspectRatio, 0.001, 100000 );
+			_camera.setFrustumFOV( 60, aspectRatio, 0.01, 1000 );
 			var camPosition: APoint = new APoint( 0, 0, -5 );
 			var camDVector: AVector = AVector.UNIT_Z;
 			var camUVector: AVector = AVector.UNIT_Y_NEGATIVE;
@@ -43,7 +43,7 @@ package zest3d.applications
 			_culler = new Culler( _camera );
 			_culler.computeVisibleSet( _scene );
 			
-			initializeCameraMotion( 0.1, 0.1 );
+			initializeCameraMotion( 0.1, 0.01 );
 			initializeObjectMotion( _scene );
 			
 			initialize();
@@ -56,6 +56,13 @@ package zest3d.applications
 			
 			var appTime: Number = getTimer();
 			update( appTime );
+			
+			if ( moveCamera() || moveObject() )
+			{
+				_scene.update( appTime );
+				_culler.computeVisibleSet( _scene );
+			}
+			
 			draw( appTime );
 			
 			updateFrameCount();
@@ -63,11 +70,7 @@ package zest3d.applications
 		
 		protected function update( appTime: Number ): void
 		{
-			if ( moveCamera() || moveObject() )
-			{
-				_scene.update( appTime );
-				_culler.computeVisibleSet( _scene );
-			}
+			// hook
 		}
 		
 		protected function draw( appTime: Number ): void
@@ -88,6 +91,11 @@ package zest3d.applications
 		override public function dispose(): void 
 		{
 			super.dispose();
+		}
+		
+		public function get scene():Node 
+		{
+			return _scene;
 		}
 		
 		

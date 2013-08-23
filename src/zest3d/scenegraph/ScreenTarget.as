@@ -25,10 +25,15 @@ package zest3d.scenegraph
 			
 		}
 		
+		public function dispose(): void
+		{
+			
+		}
+		
 		public static function createCamera(): Camera
 		{
 			var camera: Camera = new Camera( false );
-			camera.setFrustum( 0, 1, 0, 1, 0, 1 );
+			camera.setFrustum( [0, 1, 0, 1, 0, 1] );
 			camera.setFrame( APoint.ORIGIN, AVector.UNIT_Z, AVector.UNIT_Y, AVector.UNIT_X );
 			return camera;
 		}
@@ -42,7 +47,7 @@ package zest3d.scenegraph
 			{
 				//TODO check shader type
 				if ( VertexShader.profile == VertexShaderProfileType.AGAL_1_0 ||
-					 VertexShader.profile == VertexShaderProfileType.AGAL_2_0 );
+					 VertexShader.profile == VertexShaderProfileType.AGAL_2_0 )
 				{
 					var tc0: Array = [0, 0];
 					var tc1: Array = [1, 0];
@@ -94,7 +99,7 @@ package zest3d.scenegraph
 		public static function createPositions( rtWidth: int, rtHeight: int, xMin: Number, xMax: Number, yMin: Number, yMax: Number,
 				zValue: Number, positions: Array ): Boolean
 		{
-			if ( validSizes( rtWidth, rtHeight )
+			if ( validSizes( rtWidth, rtHeight ) )
 			{
 				if ( VertexShader.profile == VertexShaderProfileType.AGAL_1_0 ||
 					 VertexShader.profile == VertexShaderProfileType.AGAL_2_0 )
@@ -149,6 +154,7 @@ package zest3d.scenegraph
 				return true;
 			}
 			Assert.isTrue( false, "Invalid dimensions" );
+			return false;
 		}
 		
 		private static function validFormat( vFormat: VertexFormat ): Boolean

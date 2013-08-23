@@ -700,6 +700,7 @@ package com.adobe.utils
 
 internal class Macro 
 {
+	public function Macro() { };
 	public var mangledName:String = "";
 	public var name:String	   = "";
 	public var args:Vector.<String>   = new Vector.<String>();	

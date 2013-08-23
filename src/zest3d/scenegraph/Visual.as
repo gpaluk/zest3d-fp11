@@ -126,7 +126,7 @@ package zest3d.scenegraph
 		}
 		
 		[Inline]
-		public final function get effectInstance(): VisualEffectInstance
+		public final function get effect(): VisualEffectInstance
 		{
 			return _effect;
 		}

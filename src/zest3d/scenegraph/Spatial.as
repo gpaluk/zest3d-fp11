@@ -42,7 +42,7 @@ package zest3d.scenegraph
 		
 		////////////////////////////////////////////////////////////////////////
 		// helpers
-		/*
+		
 		protected var _rotate: HMatrix;
 		
 		protected var _rotationX: Number = 0;
@@ -59,9 +59,9 @@ package zest3d.scenegraph
 		protected var _rotationNeedsUpdate: Boolean;
 		protected var _translateNeedsUpdate: Boolean;
 		protected var _scaleNeedsUpdate: Boolean;
-		*/
+		
 		// scale ===========================
-		/*
+		
 		public function set scaleUniform( value: Number ): void
 		{
 			_scale.set( value, value, value );
@@ -90,13 +90,13 @@ package zest3d.scenegraph
 		{
 			_scaleNeedsUpdate = true;
 			_scale.set( x, y, z );
-		}*/
+		}
 		////////////////////////////////////////////////////////////////////////
 		
 		
 		
 		// rotation ////////////////////////////////////////////////////////////
-		/*
+		
 		public function set rotationX( radians: Number ): void
 		{
 			_rotationX = radians;
@@ -128,12 +128,12 @@ package zest3d.scenegraph
 			rotationX = radiansX;
 			rotationY = radiansY;
 			rotationZ = radiansZ;
-		}*/
+		}
 		////////////////////////////////////////////////////////////////////////
 		
 		
 		// translation /////////////////////////////////////////////////////////
-		/*
+		
 		public function set x( value: Number ): void
 		{
 			_translate.x = value;
@@ -166,16 +166,16 @@ package zest3d.scenegraph
 		{
 			return z;
 		}
-		*/
+		
 		////////////////////////////////////////////////////////////////////////
 		
 		
 		public function Spatial() 
 		{
 			localTransform = new Transform();
-			//_scale = localTransform.scale;
-			//_rotate = localTransform.rotate;
-			//_translate = localTransform.translate;
+			_scale = localTransform.scale;
+			_rotate = localTransform.rotate;
+			_translate = localTransform.translate;
 			
 			worldTransform = new Transform();
 			worldTransformIsCurrent = false;
@@ -186,9 +186,9 @@ package zest3d.scenegraph
 			culling = CullingType.DYNAMIC;
 			_parent = null;
 			
-			//_rotMatX = HMatrix.IDENTITY;
-			//_rotMatY = HMatrix.IDENTITY;
-			//_rotMatZ = HMatrix.IDENTITY;
+			_rotMatX = HMatrix.IDENTITY;
+			_rotMatY = HMatrix.IDENTITY;
+			_rotMatZ = HMatrix.IDENTITY;
 		}
 		
 		override public function dispose(): void
@@ -209,7 +209,7 @@ package zest3d.scenegraph
 		}
 		
 		public function update( applicationTime: Number = -1.79e+308, initiator:Boolean = true ): void
-		{/*
+		{
 			if ( _scaleNeedsUpdate )
 			{
 				localTransform.scale = _scale;
@@ -228,7 +228,7 @@ package zest3d.scenegraph
 				localTransform.translate = _translate;
 				_translateNeedsUpdate = false;
 			}
-			*/
+			
 			updateWorldData( applicationTime );
 			updateWorldBound();
 			if ( initiator )
