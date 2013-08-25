@@ -120,7 +120,7 @@ package zest3d.scenegraph
 		
 		
 		[Inline]
-		public final function set effectInstance( effect: VisualEffectInstance ): void
+		public final function set effect( effect: VisualEffectInstance ): void
 		{
 			_effect = effect;
 		}

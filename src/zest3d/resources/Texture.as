@@ -1,6 +1,7 @@
 package zest3d.resources 
 {
 	import flash.utils.ByteArray;
+	import flash.utils.Endian;
 	import plugin.image.atf.ATFReader;
 	import plugin.image.atf.enum.ATFTextureType;
 	import zest3d.resources.enum.TextureFormat;
@@ -15,14 +16,16 @@ package zest3d.resources
 		public static function fromByteArray( data:ByteArray ):TextureBase
 		{
 			var reader:ATFReader = new ATFReader( data );
-			var texture:TextureBase;
 			var format:TextureFormat;
+			var texture:TextureBase;
 			
-			switch( reader.type.value )
+			switch( reader.format )
 			{
 				case 0:
+						format = TextureFormat.RGB888;
+						break;
 				case 1:
-						format = TextureFormat.DXT1;
+						format = TextureFormat.RGBA8888;
 					break;
 				case 2:
 				case 3:
@@ -36,17 +39,16 @@ package zest3d.resources
 					throw new Error( "Invalid ATF format " + format );
 			}
 			
-			// TODO hack because it's not flipping to cube texture
-			switch( ATFTextureType.TYPE_CUBE )
+			switch( reader.cubemap )
 			{
-				case ATFTextureType.TYPE_2D:
-						texture = new Texture2D( format, reader.width, reader.height, reader.numTextures );
+				case 0x0:
+						texture = new Texture2D( format, reader.width, reader.height, reader.count );
 					break;
-				case ATFTextureType.TYPE_CUBE:
-						texture = new TextureCube( format, reader.width, reader.numTextures );
+				case 0x1:
+						texture = new TextureCube( format, reader.width, reader.count );
 					break;
 				default :
-						throw new Error( "Invalid ATF type " + reader.type );
+						throw new Error( "Invalid ATF type " + reader.cubemap );
 			}
 			texture.data = reader.data;
 			return texture as TextureBase;

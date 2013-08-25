@@ -100,17 +100,22 @@ package zest3d.renderers.agal
 			
 			if ( _alphaBlendEnabled )
 			{
-				//_context.setBlendFactors( _alphaSrcBlend, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
 				_context.setBlendFactors( _alphaSrcBlend, _alphaDstBlend );
-				//_context.
 			}
 			else
 			{
-				_context.setBlendFactors( Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO );
-				
+				_context.setBlendFactors( _alphaSrcBlend, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );	
 			}
 			
-			_context.setBlendFactors( Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
+			if ( _alphaCompareEnabled )
+			{
+				
+			}
+			else
+			{
+				
+			}
+			//_context.setBlendFactors( Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
 			//_context.setDepthTest( false, Context3DCompareMode.LESS );
 			
 			/*
@@ -148,12 +153,10 @@ package zest3d.renderers.agal
 				_context.setCulling( Context3DTriangleFace.NONE );
 			}
 			
-			
 			// depth state
 			_depthEnabled = depthState.enabled;
 			_depthWriteEnabled = depthState.writable;
 			_depthCompareFunction = AGALMapping.depthCompare[ depthState.compare.index ];
-			
 			
 			//TODO investigate here depthstates
 			/*
@@ -169,7 +172,6 @@ package zest3d.renderers.agal
 			
 			// TODO investigate offsetState
 			
-			
 			// stencil state
 			_stencilEnabled = stencilState.enabled;
 			_stencilCompareFunction = AGALMapping.stencilCompare[ stencilState.compare.index ];
@@ -180,9 +182,7 @@ package zest3d.renderers.agal
 			_stencilOnZFail = AGALMapping.stencilOperation[ stencilState.onZFail.index ];
 			_stencilOnZPass = AGALMapping.stencilOperation[ stencilState.onZPass.index ];
 			
-			
 			// TODO investigate setStencilActions( triangleFace ...
-			
 			if ( _stencilEnabled )
 			{
 				_context.setStencilActions( Context3DTriangleFace.FRONT_AND_BACK,

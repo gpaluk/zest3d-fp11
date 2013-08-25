@@ -63,7 +63,7 @@ package zest3d.renderers.agal
 			_data = new AGALRendererData( input, width, height, colorFormat, depthStencilFormat, numMultiSamples );
 			
 			data.currentRS.initialize( _defaultAlphaState, _defaultCullState, _defaultDepthState,
-							_defaultOffsetState, _defaultStencilState, _defaultWireState );
+									   _defaultOffsetState, _defaultStencilState, _defaultWireState );
 			
 			// Configure the back buffer
 			data.context.configureBackBuffer( width, height, numMultiSamples, true );
@@ -277,7 +277,7 @@ package zest3d.renderers.agal
 				{
 					data.currentRS._depthEnabled = false;
 					//  glDisable(GL_DEPTH_TEST);
-					data.context.setDepthTest( false, Context3DCompareMode.NEVER );
+					data.context.setDepthTest( false, Context3DCompareMode.LESS );
 					
 				}
 			}

@@ -29,7 +29,6 @@ package zest3d.scenegraph
 			
 			_positionSizes = positionSizes;
 			
-			
 			Assert.isTrue( indexSize == 2 || indexSize == 4, "Invlaid index size." );
 			
 			var numVertices: int = _vBuffer.numElements;
