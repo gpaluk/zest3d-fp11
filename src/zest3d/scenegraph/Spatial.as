@@ -26,8 +26,14 @@ package zest3d.scenegraph
 	 */
 	public class Spatial extends ControlledObject implements IDisposable 
 	{
-		
+		/**
+		 * Internal use only
+		 */
 		public var localTransform: Transform;
+		
+		/**
+		 * Internal use only
+		 */
 		public var worldTransform: Transform;
 		public var worldTransformIsCurrent: Boolean;
 		
@@ -41,8 +47,8 @@ package zest3d.scenegraph
 		
 		
 		////////////////////////////////////////////////////////////////////////
-		// helpers
-		
+		// convenience API
+		////////////////////////////////////////////////////////////////////////
 		protected var _rotate: HMatrix;
 		
 		protected var _rotationX: Number = 0;

@@ -159,7 +159,6 @@ package zest3d.primitives
 			
 			localTransform.scale = new APoint( 50, 50, 50 );
 		}
-		
 	}
 
 }

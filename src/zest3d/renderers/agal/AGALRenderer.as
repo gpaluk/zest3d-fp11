@@ -113,9 +113,9 @@ package zest3d.renderers.agal
 					data.currentRS._alphaDstBlend = dstBlend;
 					
 					// glBlendFunc(srcBlend, dstBlend);
-					data.context.setBlendFactors( srcBlend, dstBlend );
+					
 				}
-				
+				data.context.setBlendFactors( srcBlend, dstBlend );
 				
 				
 				if ( _alphaState.constantColor != data.currentRS._blendColor )
@@ -238,12 +238,11 @@ package zest3d.renderers.agal
 					data.context.setCulling(Context3DTriangleFace.NONE);
 				}
 			}
-			
-			
 		}
 		
 		override public function set depthState( depthState:DepthState):void 
 		{
+			
 			if ( !_overrideDepthState )
 			{
 				_depthState = depthState;
@@ -255,21 +254,29 @@ package zest3d.renderers.agal
 			
 			if ( _depthState.enabled )
 			{
-				if ( !data.currentRS._depthEnabled )
-				{
-					data.currentRS._depthEnabled = true;
-					// glEnable( GL_DEPTH_TEST )
-					
-				}
+				var depthRequiresUpdate:Boolean = false;
+				var compare: String = AGALMapping.depthCompare[ _depthState.compare.index ];
 				
+				if ( !data.currentRS._depthEnabled || compare != data.currentRS._depthCompareFunction )
+				{
+					depthRequiresUpdate = true;
+					data.currentRS._depthEnabled = true;
+					data.currentRS._depthCompareFunction = compare;
+					
+					// glEnable( GL_DEPTH_TEST )
+				}
+				if ( depthRequiresUpdate )
+				{
+					data.context.setDepthTest( depthState.writable, compare );
+				}
+				/*
 				var compare: String = AGALMapping.depthCompare[ _depthState.compare.index ];
 				if ( compare != data.currentRS._depthCompareFunction )
 				{
 					data.currentRS._depthCompareFunction = compare;
 					// glDepthFunc(compare);
 					
-					data.context.setDepthTest( true, compare );
-				}
+				}*/
 			}
 			else
 			{
@@ -278,28 +285,10 @@ package zest3d.renderers.agal
 					data.currentRS._depthEnabled = false;
 					//  glDisable(GL_DEPTH_TEST);
 					data.context.setDepthTest( false, Context3DCompareMode.LESS );
-					
 				}
 			}
 			
-			if ( _depthState.writable )
-			{
-				if ( !data.currentRS._depthWriteEnabled )
-				{
-					data.currentRS._depthWriteEnabled = true;
-					//  glDepthMask(GL_TRUE);
-					data.context.setDepthTest( true, Context3DCompareMode.ALWAYS );
-				}
-			}
-			else
-			{
-				if ( data.currentRS._depthWriteEnabled )
-				{
-					data.currentRS._depthWriteEnabled = false;
-					//   glDepthMask(GL_FALSE);
-					data.context.setDepthTest( false, Context3DCompareMode.NEVER );
-				}
-			}
+			
 		}
 		
 		override public function set offsetState(offsetState:OffsetState):void 

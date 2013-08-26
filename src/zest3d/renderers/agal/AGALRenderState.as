@@ -100,38 +100,25 @@ package zest3d.renderers.agal
 			
 			if ( _alphaBlendEnabled )
 			{
+				//glEnable(GL_BLEND) // NOTE: ONE for premultiplied alpha
 				_context.setBlendFactors( _alphaSrcBlend, _alphaDstBlend );
 			}
 			else
 			{
-				_context.setBlendFactors( _alphaSrcBlend, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );	
+				//glDisable(GL_BLEND);
+				_context.setBlendFactors( Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO );	
 			}
+			//glBlendFunc(alphaSrcBlend, GL_ONE_MINUS_SRC_ALPHA);
 			
+			// TODO replicate glEnable( GL_ALPHA_TEST );
 			if ( _alphaCompareEnabled )
 			{
-				
+				//glEnable( GL_ALPHA_TEST );
 			}
 			else
 			{
-				
+				//glDisable( GL_ALPHA_TEST );
 			}
-			//_context.setBlendFactors( Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA );
-			//_context.setDepthTest( false, Context3DCompareMode.LESS );
-			
-			/*
-			_context.setColorMask( 1,
-											   0,
-											   0,
-											   1 );*/
-			/*
-			if ( _alphaCompareEnabled )
-			{
-				// _context.set
-			}
-			*/
-			
-			// TODO investigate alphaCompareFunction
-			//_context.setColorMask( _blendColor[ 0 ], _blendColor[ 1 ], _blendColor[ 2 ], _blendColor[ 3 ] );
 			
 			// cull state
 			_cullEnabled = cullState.enabled;
@@ -159,17 +146,19 @@ package zest3d.renderers.agal
 			_depthCompareFunction = AGALMapping.depthCompare[ depthState.compare.index ];
 			
 			//TODO investigate here depthstates
-			/*
+			
 			if ( _depthEnabled )
 			{
-				_context.setDepthTest( true, AGALMapping.alphaCompare[ alphaState.compare.index ] );
+				_context.setDepthTest( _depthWriteEnabled, _depthCompareFunction );
 			}
 			else
 			{
-				_context.setDepthTest( false, Context3DCompareMode.NEVER );
+				_context.setDepthTest( _depthWriteEnabled, Context3DCompareMode.ALWAYS );
 			}
-			*/
 			
+			
+			
+			/*
 			// TODO investigate offsetState
 			
 			// stencil state
@@ -181,6 +170,7 @@ package zest3d.renderers.agal
 			_stencilOnFail = AGALMapping.stencilOperation[ stencilState.onFail.index ];
 			_stencilOnZFail = AGALMapping.stencilOperation[ stencilState.onZFail.index ];
 			_stencilOnZPass = AGALMapping.stencilOperation[ stencilState.onZPass.index ];
+			*/
 			
 			// TODO investigate setStencilActions( triangleFace ...
 			if ( _stencilEnabled )
@@ -194,7 +184,7 @@ package zest3d.renderers.agal
 			}
 			else
 			{
-				_context.setStencilActions();
+				//_context.setStencilActions( null, null, null, null );
 				_context.setStencilReferenceValue( _stencilReference );
 			}
 			
