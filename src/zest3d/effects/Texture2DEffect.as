@@ -27,8 +27,8 @@ package zest3d.effects
 	public class Texture2DEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
 		[
@@ -68,7 +68,7 @@ package zest3d.effects
 			"",
 			// AGAL_1_0
 			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear,dxt1> \n" +
+			"tex ft1, ft0, fs0 <2d,clamp,linear,miplinear,dxt1> \n" +
 			"mov oc, ft1",
 			// AGAL_2_0
 			"",

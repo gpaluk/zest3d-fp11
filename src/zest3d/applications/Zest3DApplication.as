@@ -5,6 +5,7 @@ package zest3d.applications
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.math.algebra.APoint;
 	import io.plugin.math.algebra.AVector;
+	import zest3d.geometry.SkyboxGeometry;
 	import zest3d.scenegraph.Culler;
 	import zest3d.scenegraph.Node;
 	
@@ -16,6 +17,8 @@ package zest3d.applications
 	{
 		
 		private var _scene: Node;
+		private var _skybox:SkyboxGeometry;
+		
 		protected var _culler: Culler;
 		
 		public function Zest3DApplication( ) 
@@ -64,8 +67,13 @@ package zest3d.applications
 			}
 			
 			draw( appTime );
-			
 			updateFrameCount();
+		}
+		
+		private var _numVisibleObjects:int = 0;
+		public function get numVisibleObjects():int
+		{
+			return _numVisibleObjects; ///_culler.visibleSet.numVisible;
 		}
 		
 		protected function update( appTime: Number ): void
@@ -75,10 +83,16 @@ package zest3d.applications
 		
 		protected function draw( appTime: Number ): void
 		{
+			
 			if ( _renderer.preDraw() )
 			{
-				_renderer.clearBuffers();
+				_renderer.clearBuffers();if( _skybox )
+				{
+					_renderer.drawVisual( _skybox );
+				}
 				_renderer.drawVisibleSet( _culler.visibleSet );
+				
+				_numVisibleObjects = _culler.visibleSet.numVisible;
 				_renderer.postDraw();
 			}
 		}
@@ -98,7 +112,20 @@ package zest3d.applications
 			return _scene;
 		}
 		
+		public function get skybox():SkyboxGeometry
+		{
+			return _skybox;
+		}
 		
+		public function set skybox( skybox:SkyboxGeometry ):void
+		{
+			_skybox = skybox;
+			if ( _skybox )
+			{
+				_skybox.scaleUniform = 400;
+				_skybox.camera = _renderer.camera;
+				_skybox.update();
+			}
+		}	
 	}
-
 }

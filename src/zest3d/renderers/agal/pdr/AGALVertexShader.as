@@ -44,16 +44,13 @@ package zest3d.renderers.agal.pdr
 			
 			var programText: String = vShader.getProgram( VertexShader.profile.index );
 			// trace( programText );
-			
-			var assembler:AGALMiniAssembler = new AGALMiniAssembler();
-			//var assembler: AGALMacroAssembler = new AGALMacroAssembler( true );
-			
+			trace( "Vertex Shader >>>>> " + programText );
+			var assembler:AGALMiniAssembler = new AGALMiniAssembler( true );
 			
 			switch( VertexShader.profile )
 			{
 				case VertexShaderProfileType.AGAL_1_0:
 						program = assembler.assemble( Context3DProgramType.VERTEX, programText, 1 );
-						//program = assembler.assemble( Context3DProgramType.VERTEX, programText );
 					break;
 				case VertexShaderProfileType.AGAL_2_0:
 						program = assembler.assemble( Context3DProgramType.VERTEX, programText, 2 );
@@ -85,11 +82,9 @@ package zest3d.renderers.agal.pdr
 				// TODO set all offsets etc (We have lots of power here)
 				_context.setProgramConstantsFromByteArray( Context3DProgramType.VERTEX, offset, numRegisters, data, 0 );
 				offset += numRegisters;
-				
 			}
 			
 			var agalRenderer: AGALRenderer = renderer as AGALRenderer;
-			
 			
 			setSamplerState( renderer, vShader, profile, parameters, agalRenderer.data.maxVShaderImages, agalRenderer.data.currentSS, _context );
 		}

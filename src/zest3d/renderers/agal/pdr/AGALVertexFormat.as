@@ -147,7 +147,6 @@ package zest3d.renderers.agal.pdr
 				_tangentIndex = vFormat.getIndex( AttributeUsageType.TANGENT, 0 );
 			}
 			
-			
 			i = vFormat.getIndex( AttributeUsageType.BINORMAL );
 			if ( i >= 0 )
 			{
@@ -172,7 +171,6 @@ package zest3d.renderers.agal.pdr
 					_tCoordIndex[ unit ] = vFormat.getIndex( AttributeUsageType.TEXCOORD, unit );
 				}
 			}
-			
 			
 			for ( unit = 0; unit < VertexFormat.MAX_COLOR_UNITS; ++unit )
 			{
@@ -239,48 +237,29 @@ package zest3d.renderers.agal.pdr
 			_vFormat.dispose();
 		}
 		
-		
 		public function enable( renderer: Renderer): void
 		{
-			
 			var agalRenderer: AGALRenderer = renderer as AGALRenderer;
 			var context: Context3D = agalRenderer.data.context
 			var buffer: VertexBuffer3D = AGALVertexBuffer.currentVBuffer;
 			
 			if ( _hasPosition )
-			{/*
-				trace( "_positionChannels: " + _positionChannels );
-				trace( "_positionOffset: " + _positionOffset );
-				trace( "_positionType: " + _positionType );
-				*/
+			{
 				context.setVertexBufferAt( _positionIndex, buffer, _positionOffset/4, _positionType );
-				
 			}
 			
 			if ( _hasNormal )
-			{/*
-				trace( "_normalChannels: " + _normalChannels );
-				trace( "_normalOffset: " + _normalOffset );
-				trace( "_normalType: " + _normalType );
-				*/
+			{
 				context.setVertexBufferAt( _normalIndex, buffer, _normalOffset/4, _normalType );
 			}
 			
 			if ( _hasTangent )
-			{/*
-				trace( "_tangentChannels: " + _tangentChannels );
-				trace( "_tangentOffset: " + _tangentOffset );
-				trace( "_tangentType: " + _tangentType );
-				*/
+			{
 				context.setVertexBufferAt( _tangentIndex, buffer, _tangentOffset/4, _tangentType );
 			}
 			
 			if ( _hasBinormal )
-			{/*
-				trace( "_binormalChannels: " + _binormalChannels );
-				trace( "_binormalOffset: " + _binormalOffset );
-				trace( "_binormalType: " + _binormalType );
-				*/
+			{
 				context.setVertexBufferAt( _binormalIndex, buffer, _binormalOffset/4, _binormalType );
 			}
 			
@@ -289,11 +268,7 @@ package zest3d.renderers.agal.pdr
 			for ( unit = 0; unit < VertexFormat.MAX_TCOORD_UNITS; ++unit )
 			{
 				if ( _hasTCoord[ unit ] )
-				{/*
-					trace( "_tCoordChannels unit[" + unit + "] : " + _tCoordChannels[ unit ] );
-					trace( "_tCoordOffset unit["  + unit + "] : " + _tCoordOffset[ unit ] );
-					trace( "_tCoordType unit["  + unit + "] : " + _tCoordType[ unit ] );
-					*/
+				{
 					context.setVertexBufferAt( _tCoordIndex[ unit ], buffer, _tCoordOffset[ unit ]/4, _tCoordType[ unit ] );
 				}
 			}
@@ -301,11 +276,7 @@ package zest3d.renderers.agal.pdr
 			for ( unit = 0; unit < VertexFormat.MAX_COLOR_UNITS; ++unit )
 			{
 				if ( _hasColor[ unit ] )
-				{/*
-					trace( "_colorChannels unit[" + unit + "] : " + _colorChannels[ unit ] );
-					trace( "_colorOffset unit["  + unit + "] : " + _colorOffset[ unit ] );
-					trace( "_colorType unit["  + unit + "] : " + _colorType[ unit ] );
-					*/
+				{
 					context.setVertexBufferAt( _colorIndex[ unit ], buffer, _colorOffset[ unit ]/4, _colorType[ unit ] );
 				}
 			}
@@ -319,25 +290,24 @@ package zest3d.renderers.agal.pdr
 			var context: Context3D = agalRenderer.data.context;
 			
 			//TODO check here
-			/*
 			if ( _hasPosition )
 			{
-				context.setVertexBufferAt( _positionIndex, null, null, null );
+				context.setVertexBufferAt( _positionIndex, null );
 			}
 			
 			if ( _hasNormal )
 			{
-				context.setVertexBufferAt( _normalIndex, null, null, null );
+				context.setVertexBufferAt( _normalIndex, null );
 			}
 			
 			if ( _hasTangent )
 			{
-				context.setVertexBufferAt( _tangentIndex, null, null, null );
+				context.setVertexBufferAt( _tangentIndex, null );
 			}
 			
 			if ( _hasBinormal )
 			{
-				context.setVertexBufferAt( _binormalIndex, null, null, null );
+				context.setVertexBufferAt( _binormalIndex, null );
 			}
 			
 			var unit: int;
@@ -345,7 +315,7 @@ package zest3d.renderers.agal.pdr
 			{
 				if ( _hasTCoord[ unit ] )
 				{
-					context.setVertexBufferAt( _tCoordIndex[ unit ], null, null, null );
+					context.setVertexBufferAt( _tCoordIndex[ unit ], null );
 				}
 			}
 			
@@ -353,32 +323,29 @@ package zest3d.renderers.agal.pdr
 			{
 				if ( _hasColor[ unit ] )
 				{
-					context.setVertexBufferAt( _colorIndex[ unit ], null, null, null );
+					context.setVertexBufferAt( _colorIndex[ unit ], null );
 				}
 			}
 			
 			if ( _hasBlendIndices )
 			{
-				context.setVertexBufferAt( _blendIndicesIndex, null, null, null );
+				context.setVertexBufferAt( _blendIndicesIndex, null );
 			}
 			
 			if ( _hasBlendWeight )
 			{
-				context.setVertexBufferAt( _blendWeightIndex, null, null, null );
+				context.setVertexBufferAt( _blendWeightIndex, null );
 			}
 			
 			if ( _hasFogCoord )
 			{
-				context.setVertexBufferAt( _fogCoordIndex, null, null, null );
+				context.setVertexBufferAt( _fogCoordIndex, null );
 			}
 			
 			if ( _hasPSize )
 			{
-				context.setVertexBufferAt( _pSizeIndex, null, null, null );
+				context.setVertexBufferAt( _pSizeIndex, null );
 			}
-			*/
-			
 		}
 	}
-
 }

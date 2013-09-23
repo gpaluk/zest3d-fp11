@@ -186,12 +186,8 @@ package zest3d.scenegraph
 				vba.setPositionAt( j++, posAddUmR );
 			}
 			
-			
 			updateModelSpace( UpdateType.NORMALS );
-			
-			
 			Renderer.updateAllVertexBuffer( _vBuffer );
-			
 		}
 		
 		//virtual

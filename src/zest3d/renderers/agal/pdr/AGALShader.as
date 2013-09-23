@@ -63,7 +63,7 @@ package zest3d.renderers.agal.pdr
 				var texture: TextureBase = parameters.getTextureByHandle( i );
 				var current: AGALSamplerState = currentSS[ textureUnit ];
 				
-				//context3D.setSamplerStateAt( textureUnit, Context3DWrapMode.CLAMP, Context3DTextureFilter.LINEAR, Context3DMipFilter.MIPLINEAR );
+				//TODO context3D.setSamplerStateAt( textureUnit, Context3DWrapMode.CLAMP, Context3DTextureFilter.LINEAR, Context3DMipFilter.MIPLINEAR );
 				
 				// TODO set up any wrap mode where/if possisble via AGAL and recompile
 				switch( type )

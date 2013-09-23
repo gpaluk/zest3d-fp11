@@ -1,9 +1,10 @@
 package zest3d.effects 
 {
-	import zest3d.resources.Texture2D;
-	import zest3d.shaderfloats.matrix.PVMatrixConstant;
+	import zest3d.resources.TextureCube;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
-	import zest3d.shaderfloats.matrix.VMatrixConstant;
+	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaderfloats.matrix.WMatrixConstant;
+	import zest3d.shaders.enum.CompareMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
@@ -29,8 +30,8 @@ package zest3d.effects
 	public class SkyboxEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
 		[
@@ -50,43 +51,26 @@ package zest3d.effects
 			null
 		];
 		
-		/*
 		public static const msVPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
 			"m44 op, va0, vc0 \n" +
-			"mov v0, va1",
+			"neg vt0, va0\n" +
+			"mov v0, vt0,xyww",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
-		*/
-		
-		public static const msVPrograms: Array =
-		[
-			"",
-			// AGAL_1_0
-			"m44 vt0, va0, vc0 \n" +
-			"mov op vt0.xyww \n" +
-			"mov v0, va1",
-			// AGAL_2_0
-			"",
-			"",
-			""
-		];
-		
-		
-		// TODO rebuild to accept changes to sampler (this is just an example)
-		
+			
 		public static const msPPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
-			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear,dxt1> \n" +
-			"mov oc, ft1",
+			//"mov ft0, v0 \n" +
+			"tex ft0, v0, fs0 <cube,clamp,linear,miplinear,dxt1> \n" +
+			"mov oc, ft0",
 			// AGAL_2_0
 			"",
 			"",
@@ -95,25 +79,25 @@ package zest3d.effects
 		
 		private var _visualEffect:VisualEffect;
 		
-		public function SkyboxEffect( texture:Texture2D, filter:SamplerFilterType = null,
-										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
+		public function SkyboxEffect( texture: TextureCube, filter:SamplerFilterType = null,
+									  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
+			
 			filter ||= SamplerFilterType.LINEAR;
 			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
 			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.Skybox", 1, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.MaterialTexture", 1, 1, 0, 1, false );
-			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Skybox", 1, 1, 0, 1, false );
+			pShader.setInput( 0, "vertexPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.CUBE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -126,6 +110,9 @@ package zest3d.effects
 			pass.alphaState = new AlphaState();
 			pass.cullState = new CullState();
 			pass.depthState = new DepthState();
+			pass.depthState.enabled = true;
+			pass.depthState.compare = CompareMode.LEQUAL;
+			//pass.depthState.writable = false;
 			pass.offsetState = new OffsetState();
 			pass.stencilState = new StencilState();
 			pass.wireState = new WireState();
@@ -156,5 +143,4 @@ package zest3d.effects
 			return _visualEffect;
 		}
 	}
-
 }

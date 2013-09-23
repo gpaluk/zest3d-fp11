@@ -125,6 +125,7 @@ package zest3d.applications
 			_lastTime = -1;
 		}
 		
+		//TODO consolidate the getTimer() calls
 		protected function measureTime(): void
 		{
 			if ( _lastTime == -1 )

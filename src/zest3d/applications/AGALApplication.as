@@ -1,7 +1,6 @@
 package zest3d.applications 
 {
 	import flash.display.Stage3D;
-	import flash.display3D.Context3D;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
@@ -13,7 +12,6 @@ package zest3d.applications
 	import io.plugin.math.base.MathHelper;
 	import io.plugin.utils.KeyMapper;
 	import zest3d.renderers.agal.AGALRenderer;
-	import zest3d.renderers.agal.AGALRendererData;
 	import zest3d.renderers.agal.AGALRendererInput;
 	import zest3d.scenegraph.Camera;
 	import zest3d.scenegraph.Spatial;
@@ -83,9 +81,8 @@ package zest3d.applications
 		{
 			stage.stage3Ds[ 0 ].removeEventListener(Event.CONTEXT3D_CREATE, onContext3DCreated );
 			
-			
 			var stage3D: Stage3D = Stage3D( e.currentTarget );
-			stage3D.context3D.enableErrorChecking = false;
+			stage3D.context3D.enableErrorChecking = true;
 			
 			var rendererInput: AGALRendererInput = new AGALRendererInput( stage3D.context3D );
 			
@@ -113,7 +110,6 @@ package zest3d.applications
 			
 			_camera = new Camera();
 			_renderer.camera = _camera;
-			
 			
 			_keyMapper = new KeyMapper( stage );
 			_keyMapper.addKeyDown( Keyboard.W, dummy, false );
@@ -327,9 +323,7 @@ package zest3d.applications
 				return false;
 			}
 			
-			
 			var bMoved: Boolean = false;
-			
 			
 			if( _keyMapper.isKeyDown( Keyboard.W) )
 			{

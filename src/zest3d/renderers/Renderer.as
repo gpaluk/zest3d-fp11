@@ -71,7 +71,7 @@ package zest3d.renderers
 		protected var CPdrIndexBuffer: Class;
 		protected var CPdrPixelShader: Class;
 		protected var CPdrRenderTarget: Class;
-		protected var CPdrTexture1D: Class;
+		//protected var CPdrTexture1D: Class;
 		protected var CPdrTexture2D: Class;
 		protected var CPdrTexture3D: Class;
 		protected var CPdrTextureCube: Class;
@@ -127,6 +127,60 @@ package zest3d.renderers
 		private var _vertexShaders: Dictionary;
 		private var _pixelShaders: Dictionary;
 		
+		[Inline]
+		public function get vertexFormats():Dictionary
+		{
+			return _vertexFormats;
+		}
+		
+		[Inline]
+		public function get vertexBuffers():Dictionary
+		{
+			return _vertexBuffers;
+		}
+		
+		[Inline]
+		public function get indexBuffers():Dictionary
+		{
+			return _indexBuffers;
+		}
+		
+		[Inline]
+		public function get texture2Ds():Dictionary
+		{
+			return _texture2Ds;
+		}
+		
+		[Inline]
+		public function get texture3Ds():Dictionary
+		{
+			return _texture3Ds;
+		}
+		
+		[Inline]
+		public function get textureCubes():Dictionary
+		{
+			return _textureCubes;
+		}
+		
+		[Inline]
+		public function get renderTargets():Dictionary
+		{
+			return _renderTargets;
+		}
+		
+		[Inline]
+		public function get vertexShaders():Dictionary
+		{
+			return _vertexShaders;
+		}
+		
+		[Inline]
+		public function get pixelShaders():Dictionary
+		{
+			return _pixelShaders;
+		}
+		
 		public function Renderer( CGlobalEffect: Class, CPdrIndexBuffer:Class, CPdrPixelShader: Class,
 				CPdrRenderTarget: Class, /*CPdrTexture1D: Class,*/ CPdrTexture2D: Class, CPdrTexture3D: Class,
 				CPdrTextureCube: Class, CPdrVertexBuffer: Class, CPdrVertexFormat: Class, CPdrVertexShader: Class ) 
@@ -138,7 +192,7 @@ package zest3d.renderers
 			this.CPdrIndexBuffer = CPdrIndexBuffer;
 			this.CPdrPixelShader = CPdrPixelShader;
 			this.CPdrRenderTarget = CPdrRenderTarget;
-			this.CPdrTexture1D = CPdrTexture1D;
+			//this.CPdrTexture1D = CPdrTexture1D;
 			this.CPdrTexture2D = CPdrTexture2D;
 			this.CPdrTexture3D = CPdrTexture3D;
 			this.CPdrTextureCube = CPdrTextureCube;
@@ -152,7 +206,7 @@ package zest3d.renderers
 		}
 		
 		protected function _initialize( width: int, height: int, colorFormat:TextureFormat,
-						depthStencilFormat: TextureFormat, numMultiSamples: int ): void
+										depthStencilFormat: TextureFormat, numMultiSamples: int ): void
 		{
 			Assert.isTrue( width > 0, "Width must be positive." );
 			Assert.isTrue( height > 0, "Height must be positive." );
@@ -211,7 +265,6 @@ package zest3d.renderers
 			_allowAlpha = true;
 			
 			msRenderers[ this ] = this;
-			
 		}
 		
 		public function terminate(): void
@@ -594,44 +647,63 @@ package zest3d.renderers
 		
 		public function updateTexture2D( texture: Texture2D, textureUnit: int ): void
 		{
-			
+			_texture2Ds[ texture ] = new CPdrTexture2D( this, texture );
 		}
 		
 		public static function updateAllTexture2D( texture: Texture2D, textureUnit: int ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.updateTexture2D( texture, textureUnit );
+			}
 		}
 		//}
 		
 		//{region texture 3d (not yet implemented)
 		public function bindTexture3D( texture: Texture3D ): void
 		{
-			
+			if ( !_texture3Ds[ texture ] )
+			{
+				_texture3Ds[ texture ] = new CPdrTexture3D( this, texture );
+			}
 		}
 		
 		public static function bindAllTexture3D( texture: Texture3D ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.bindTexture3D( texture );
+			}
 		}
 		
 		public function unbindTexture3D( texture: Texture3D ): void
 		{
-			
+			_texture3Ds[ texture ] = null;
 		}
 		
 		public static function unbindAllTexture3D( texture: Texture3D ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.unbindTexture3D( texture );
+			}
 		}
 		
 		public function enableTexture3D( texture: Texture3D, textureUnit: int ): void
 		{
-			
+			if ( !_texture3Ds[ texture ] )
+			{
+				_texture3Ds[ texture ] = new CPdrTexture3D( this, texture );
+			}
+			_texture3Ds[ texture ].enable( this, textureUnit );
 		}
 		
 		public function disableTexture3D( texture: Texture3D, textureUnit: int ): void
 		{
-			
+			if ( _texture3Ds[ texture ] )
+			{
+				_texture3Ds[ texture ].disable( this, textureUnit );
+			}
 		}
 		
 		public function lockTexture3D( texture: Texture3D, textureUnit: int, mode: BufferLockingType ): void
@@ -646,12 +718,15 @@ package zest3d.renderers
 		
 		public function updateTexture3D( texture: Texture3D, textureUnit: int ): void
 		{
-			
+			_texture3Ds[ texture ] = new CPdrTexture3D( this, texture );
 		}
 		
-		public static function updateAllTexture3D( iBuffer: Texture3D, textureUnit: int ): void
+		public static function updateAllTexture3D( texture: Texture3D, textureUnit: int ): void
 		{
-			
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.updateTexture3D( texture, textureUnit );
+			}
 		}
 		//}
 		
@@ -1216,11 +1291,11 @@ package zest3d.renderers
 			
 			enableVertexBuffer( vBuffer );
 			enableVertexFormat( vFormat );
+			
 			if ( iBuffer )
 			{
 				enableIndexBuffer( iBuffer );
 			}
-			
 			
 			var numPasses: int = instance.numPasses;
 			for ( var i: int = 0; i < numPasses; ++i )
@@ -1250,6 +1325,15 @@ package zest3d.renderers
 				disablePixelShader( pShader, pParams );
 				
 				//TODO decide to reset the state after drawing
+				
+				alphaState = _defaultAlphaState;
+				cullState = _defaultCullState;
+				depthState = _defaultDepthState;
+				offsetState = _defaultOffsetState;
+				stencilState = _defaultStencilState;
+				wireState = _defaultWireState;
+				
+				
 				if ( iBuffer )
 				{
 					disableIndexBuffer( iBuffer );

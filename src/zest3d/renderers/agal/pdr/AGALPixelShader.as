@@ -45,20 +45,17 @@ package zest3d.renderers.agal.pdr
 			_context = _renderer.data.context;
 			
 			var programText: String = pShader.getProgram( PixelShader.profile.index );
-			
-			
-			var assembler: AGALMiniAssembler = new AGALMiniAssembler();
-			//var assembler: AGALMacroAssembler = new AGALMacroAssembler( true );
+			trace( "Pixel Shader >>>>> " + programText );
+			var assembler: AGALMiniAssembler = new AGALMiniAssembler( true );
 			
 			
 			switch( PixelShader.profile )
 			{
 				case PixelShaderProfileType.AGAL_1_0 :
 						program = assembler.assemble( Context3DProgramType.FRAGMENT, programText, 1 );
-						//program = assembler.assemble( Context3DProgramType.FRAGMENT, programText );
 					break;
 				case PixelShaderProfileType.AGAL_2_0 :
-						//program = assembler.assemble( Context3DProgramType.FRAGMENT, programText, 2 );
+						program = assembler.assemble( Context3DProgramType.FRAGMENT, programText, 2 );
 					break;
 			}
 			

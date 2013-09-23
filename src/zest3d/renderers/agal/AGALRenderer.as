@@ -113,7 +113,6 @@ package zest3d.renderers.agal
 					data.currentRS._alphaDstBlend = dstBlend;
 					
 					// glBlendFunc(srcBlend, dstBlend);
-					
 				}
 				data.context.setBlendFactors( srcBlend, dstBlend );
 				
@@ -142,11 +141,11 @@ package zest3d.renderers.agal
 					data.currentRS._alphaBlendEnabled = false;
 					
 					// glDisable(GL_BLEND);
-					data.context.setBlendFactors( Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO );
 				}
+				data.context.setBlendFactors( Context3DBlendFactor.ONE, Context3DBlendFactor.ZERO );
 			}
 			
-			/*
+			
 			if ( _alphaState.compareEnabled )
 			{
 				
@@ -167,10 +166,10 @@ package zest3d.renderers.agal
 					data.currentRS._alphaReference = reference;
 					
 					// glAlphaFunc(compare, reference);
-					data.context.setDepthTest( true, AGALMapping.alphaCompare[ alphaState.compare.index ] );
-					data.context.setStencilReferenceValue( reference );
+					
 				}
-				
+				data.context.setDepthTest( true, AGALMapping.alphaCompare[ alphaState.compare.index ] );
+				data.context.setStencilReferenceValue( reference );
 			}
 			else
 			{
@@ -179,11 +178,11 @@ package zest3d.renderers.agal
 					data.currentRS._alphaCompareEnabled = false;
 					
 					// glDisable(GL_ALPHA_TEST);
-					data.context.setDepthTest( false, Context3DCompareMode.NEVER );
+					
 				}
-				
+				data.context.setDepthTest( false, Context3DCompareMode.NEVER );
 			}
-			*/
+			
 		}
 		
 		override public function set cullState( cullState:CullState ):void 
@@ -204,7 +203,7 @@ package zest3d.renderers.agal
 					data.currentRS._cullEnabled = true;
 					// glEnable(GL_CULL_FACE);
 					// glFrontFace(GL_CCW);
-					//data.context.setCulling(Context3DTriangleFace.FRONT);
+					data.context.setCulling(Context3DTriangleFace.FRONT);
 				}
 				
 				var order: Boolean = _cullState.ccwOrder;
@@ -257,18 +256,17 @@ package zest3d.renderers.agal
 				var depthRequiresUpdate:Boolean = false;
 				var compare: String = AGALMapping.depthCompare[ _depthState.compare.index ];
 				
-				if ( !data.currentRS._depthEnabled || compare != data.currentRS._depthCompareFunction )
+				if ( !data.currentRS._depthEnabled || !data.currentRS._depthCompareFunction )
 				{
 					depthRequiresUpdate = true;
 					data.currentRS._depthEnabled = true;
 					data.currentRS._depthCompareFunction = compare;
 					
 					// glEnable( GL_DEPTH_TEST )
+					
 				}
-				if ( depthRequiresUpdate )
-				{
-					data.context.setDepthTest( depthState.writable, compare );
-				}
+				
+				data.context.setDepthTest( depthState.writable, compare );
 				/*
 				var compare: String = AGALMapping.depthCompare[ _depthState.compare.index ];
 				if ( compare != data.currentRS._depthCompareFunction )
@@ -284,8 +282,8 @@ package zest3d.renderers.agal
 				{
 					data.currentRS._depthEnabled = false;
 					//  glDisable(GL_DEPTH_TEST);
-					data.context.setDepthTest( false, Context3DCompareMode.LESS );
 				}
+				data.context.setDepthTest( false, Context3DCompareMode.LESS );
 			}
 			
 			

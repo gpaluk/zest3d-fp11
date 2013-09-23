@@ -29,8 +29,8 @@ package zest3d.effects
 	public class ReflectionEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 0 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAllPTextureUnits: Array = [ 0, 1 ];
 		
 		public static const msPTextureUnits: Array =
 		[

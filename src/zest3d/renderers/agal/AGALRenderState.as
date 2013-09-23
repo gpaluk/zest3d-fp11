@@ -173,6 +173,7 @@ package zest3d.renderers.agal
 			*/
 			
 			// TODO investigate setStencilActions( triangleFace ...
+			/*
 			if ( _stencilEnabled )
 			{
 				_context.setStencilActions( Context3DTriangleFace.FRONT_AND_BACK,
@@ -184,10 +185,10 @@ package zest3d.renderers.agal
 			}
 			else
 			{
-				//_context.setStencilActions( null, null, null, null );
-				_context.setStencilReferenceValue( _stencilReference );
+				_context.setStencilActions( null, null, null, null );
+				//_context.setStencilReferenceValue( _stencilReference );
 			}
-			
+			*/
 			//TODO investigate wireState
 			// i.e. can we use a shader to achieve something similar?
 		}

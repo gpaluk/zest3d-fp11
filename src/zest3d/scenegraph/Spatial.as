@@ -140,6 +140,13 @@ package zest3d.scenegraph
 		
 		// translation /////////////////////////////////////////////////////////
 		
+		public function set position( p:APoint ):void
+		{
+			x = p.x;
+			y = p.y;
+			z = p.z;
+		}
+		
 		public function set x( value: Number ): void
 		{
 			_translate.x = value;

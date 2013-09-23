@@ -68,6 +68,9 @@ package zest3d.renderers.agal.pdr
 				case TextureFormat.RGBA4444:
 						_gpuTexture.uploadFromByteArray( _texture.data, 0, 0 );
 					break;
+				default:
+						throw new Error( "Unknown texture format." );
+					break;
 			}
 		}
 		
