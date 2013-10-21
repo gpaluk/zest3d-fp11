@@ -1,5 +1,7 @@
 package zest3d.applications 
 {
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
 	import flash.utils.getTimer;
 	import io.plugin.core.graphics.Color;
 	import io.plugin.core.interfaces.IDisposable;
@@ -24,6 +26,8 @@ package zest3d.applications
 		public function Zest3DApplication( ) 
 		{
 			super( new Color( 0.3, 0.6, 0.9, 1 ) );
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
 		}
 		
 		override public function onInitialize(): Boolean 
@@ -34,7 +38,7 @@ package zest3d.applications
 			}
 			
 			_camera.setFrustumFOV( 60, aspectRatio, 0.01, 1000 );
-			var camPosition: APoint = new APoint( 0, 0, -5 );
+			var camPosition: APoint = new APoint( 0, 0, 5 );
 			var camDVector: AVector = AVector.UNIT_Z;
 			var camUVector: AVector = AVector.UNIT_Y_NEGATIVE;
 			var camRVector: AVector = camDVector.crossProduct( camUVector );
@@ -73,7 +77,7 @@ package zest3d.applications
 		private var _numVisibleObjects:int = 0;
 		public function get numVisibleObjects():int
 		{
-			return _numVisibleObjects; ///_culler.visibleSet.numVisible;
+			return _numVisibleObjects;
 		}
 		
 		protected function update( appTime: Number ): void
@@ -83,10 +87,10 @@ package zest3d.applications
 		
 		protected function draw( appTime: Number ): void
 		{
-			
 			if ( _renderer.preDraw() )
 			{
-				_renderer.clearBuffers();if( _skybox )
+				_renderer.clearBuffers();
+				if( _skybox )
 				{
 					_renderer.drawVisual( _skybox );
 				}

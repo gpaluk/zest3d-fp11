@@ -1601,13 +1601,13 @@ package zest3d.renderers
 		[Inline]
 		public function inTexture2DMap( texture: Texture2D ): Boolean
 		{
-			throw new Error( "inTexture2DMap must be overridden." );
+			return _texture2Ds[ texture ] != null;
 		}
 		
 		[Inline]
 		public function insertInTexture2DMap( texture: Texture2D, platformTexture: * ): void
 		{
-			throw new Error( "insertInTexture2DMap must be overridden." );
+			_texture2Ds[ texture ] = platformTexture;
 		}
 		
 		

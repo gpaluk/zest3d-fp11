@@ -49,10 +49,10 @@ package zest3d.scenegraph
 				if ( VertexShader.profile == VertexShaderProfileType.AGAL_1_0 ||
 					 VertexShader.profile == VertexShaderProfileType.AGAL_2_0 )
 				{
-					var tc0: Array = [0, 0];
-					var tc1: Array = [1, 0];
-					var tc2: Array = [1, 1];
-					var tc3: Array = [0, 1];
+					var tc0: Array = [0, 1];
+					var tc1: Array = [1, 1];
+					var tc2: Array = [1, 0];
+					var tc3: Array = [0, 0];
 				}
 				else
 				{
@@ -164,21 +164,26 @@ package zest3d.scenegraph
 			if ( index < 0 )
 			{
 				Assert.isTrue( false, "Format must have positions." );
+				return false;
 			}
 			
 			if ( vFormat.getAttributeType( index ) != AttributeType.FLOAT3 )
 			{
 				Assert.isTrue( false, "Positions must be 3 tuples." );
+				return false;
 			}
 			
 			index = vFormat.getIndex( AttributeUsageType.TEXCOORD, 0 )
+			if( index < 0 )
 			{
 				Assert.isTrue( false, "Format must have texture coordinates." );
+				return false;
 			}
 			
 			if ( vFormat.getAttributeType( index ) != AttributeType.FLOAT2 )
 			{
 				Assert.isTrue( false, "Texture coordinates in unit 0 must be 2 tuples." );
+				return false;
 			}
 			
 			return true;

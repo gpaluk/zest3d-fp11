@@ -137,10 +137,10 @@ package zest3d.effects
 			setVertexConstantByHandle( 0, 2, new VWMatrixConstant() );
 			setPixelTextureByHandle( 0, 0, texture );
 			
-			var filter: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();

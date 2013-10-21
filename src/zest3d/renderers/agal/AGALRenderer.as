@@ -31,6 +31,7 @@ package zest3d.renderers.agal
 	import zest3d.renderers.Renderer;
 	import zest3d.resources.enum.TextureFormat;
 	import zest3d.resources.IndexBuffer;
+	import zest3d.resources.Texture2D;
 	import zest3d.resources.VertexBuffer;
 	import zest3d.scenegraph.enum.PrimitiveType;
 	import zest3d.scenegraph.TriMesh;
@@ -537,9 +538,15 @@ package zest3d.renderers.agal
 			{
 				throw new Error( "Currently supports meshes only." );
 			}
-			
+			//data.context.present();
 		}
 		
+		//TODO check this
+		/*
+		override public function displayColorBuffer():void 
+		{
+			data.context.present();
+		}*/
 	}
 
 }

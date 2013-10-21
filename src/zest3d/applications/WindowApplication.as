@@ -15,7 +15,7 @@ package zest3d.applications
 	public class WindowApplication extends Sprite implements IDisposable 
 	{
 		
-		protected var _clearColor: Color;
+		private var _clearColor: Color;
 		
 		protected var _colorFormat: TextureFormat;
 		protected var _depthStencilFormat: TextureFormat;
@@ -53,7 +53,6 @@ package zest3d.applications
 		protected function onAddedToStage( e: Event ): void
 		{
 			trace( "Added to the stage" );
-			
 		}
 		
 		[Inline]
@@ -66,6 +65,18 @@ package zest3d.applications
 		public final function get renderer(): Renderer
 		{
 			return _renderer;
+		}
+		
+		[Inline]
+		public final function get clearColor():Color 
+		{
+			return _clearColor;
+		}
+		
+		[Inline]
+		public final function set clearColor(value:Color):void 
+		{
+			_clearColor = value;
 		}
 		
 		// virtual

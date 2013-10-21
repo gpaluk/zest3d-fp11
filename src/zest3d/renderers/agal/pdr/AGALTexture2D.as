@@ -97,6 +97,11 @@ package zest3d.renderers.agal.pdr
 		{
 		}
 		
+		public function get texture():Texture
+		{
+			return _gpuTexture;
+		}
+		
 	}
 
 }

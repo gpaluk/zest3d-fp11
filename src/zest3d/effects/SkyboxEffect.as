@@ -56,8 +56,7 @@ package zest3d.effects
 			"",
 			// AGAL_1_0
 			"m44 op, va0, vc0 \n" +
-			"neg vt0, va0\n" +
-			"mov v0, vt0,xyww",
+			"neg v0, va0\n" ,
 			// AGAL_2_0
 			"",
 			"",
@@ -70,7 +69,7 @@ package zest3d.effects
 			// AGAL_1_0
 			//"mov ft0, v0 \n" +
 			"tex ft0, v0, fs0 <cube,clamp,linear,miplinear,dxt1> \n" +
-			"mov oc, ft0",
+			"mov oc, ft0.xyz",
 			// AGAL_2_0
 			"",
 			"",
@@ -112,7 +111,6 @@ package zest3d.effects
 			pass.depthState = new DepthState();
 			pass.depthState.enabled = true;
 			pass.depthState.compare = CompareMode.LEQUAL;
-			//pass.depthState.writable = false;
 			pass.offsetState = new OffsetState();
 			pass.stencilState = new StencilState();
 			pass.wireState = new WireState();
@@ -128,10 +126,10 @@ package zest3d.effects
 			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
 			setPixelTextureByHandle( 0, 0, texture );
 			
-			var filter: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();

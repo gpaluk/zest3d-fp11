@@ -15,6 +15,9 @@ package zest3d.renderers.agal
 	import flash.display3D.Context3DStencilAction;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.Context3DVertexBufferFormat;
+	import flash.display3D.textures.Texture;
+	import flash.display3D.textures.TextureBase;
+	import zest3d.shaders.enum.SamplerType;
 	/**
 	 * ...
 	 * @author Gary Paluk
@@ -259,5 +262,4 @@ package zest3d.renderers.agal
 			null
 		];
 	}
-
 }

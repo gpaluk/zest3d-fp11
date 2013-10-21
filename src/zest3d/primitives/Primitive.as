@@ -77,7 +77,7 @@ package zest3d.primitives
 			{
 				for ( i = 0; i < effect.numPasses; ++i )
 				{
-					cullState = effect.getPass( i ).cullState;
+					cullState = effect.getPass( 0 ).cullState;
 					cullState.enabled = false;
 				}
 			}
@@ -85,7 +85,7 @@ package zest3d.primitives
 			{
 				for ( i = 0; i < effect.numPasses; ++i )
 				{
-					cullState = effect.getPass( i ).cullState;
+					cullState = effect.getPass( 0 ).cullState;
 					cullState.enabled = true;
 				}
 			}

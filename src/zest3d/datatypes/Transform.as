@@ -437,8 +437,6 @@ package zest3d.datatypes
 			return inverse;
 		}
 		
-		
-		
 		private function updateHMatrix(): void
 		{
 			if ( _isIdentity )

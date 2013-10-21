@@ -54,25 +54,25 @@ package zest3d.resources
 		}
 		
 		[Inline]
-		public final function numTargets(): int
+		public final function get numTargets(): int
 		{
 			return _numTargets;
 		}
 		
 		[Inline]
-		public final function format(): TextureFormat
+		public final function get format(): TextureFormat
 		{
-			return _colorTextures[ 0 ].format;
+			return _colorTextures[0].format;
 		}
 		
 		[Inline]
-		public final function width(): int
+		public final function get width(): int
 		{
 			return _colorTextures[0].width;
 		}
 		
 		[Inline]
-		public final function height(): int
+		public final function get height(): int
 		{
 			return _colorTextures[0].height;
 		}
@@ -84,19 +84,19 @@ package zest3d.resources
 		}
 		
 		[Inline]
-		public final function get depthStencilTextureAt( ): Texture2D
+		public final function get depthStencilTexture(): Texture2D
 		{
 			return _depthStencilTexture;
 		}
 		
 		[Inline]
-		public final function hasMipmaps(): Boolean
+		public final function get hasMipmaps(): Boolean
 		{
 			return _hasMipmaps;
 		}
 		
 		[Inline]
-		public final function hasDepthStencil(): Boolean
+		public final function get hasDepthStencil(): Boolean
 		{
 			return _depthStencilTexture != null;
 		}
