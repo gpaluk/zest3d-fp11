@@ -17,11 +17,12 @@ package zest3d.resources.enum
 	public class TextureType 
 	{
 		
-		public static const TEXTURE_2D: TextureType = new TextureType( "texture2D", 0 )
-		public static const TEXTURE_3D: TextureType = new TextureType( "texture3D", 1 )
-		public static const TEXTURE_CUBE: TextureType = new TextureType( "textureCube", 2 )
+		public static const TEXTURE_2D: TextureType = new TextureType( "texture2D", 0 );
+		public static const TEXTURE_3D: TextureType = new TextureType( "texture3D", 1 );
+		public static const TEXTURE_CUBE: TextureType = new TextureType( "textureCube", 2 );
+		public static const TEXTURE_RECTANGLE: TextureType = new TextureType( "textureRectangle", 3 );
 		
-		public static const MAX_VALUE: int = 3;
+		public static const MAX_VALUE: int = 4;
 		
 		protected var _type: String;
 		protected var _index: int;

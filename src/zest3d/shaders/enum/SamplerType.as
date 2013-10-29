@@ -22,8 +22,9 @@ package zest3d.shaders.enum
 		public static const TYPE_2D: SamplerType = new SamplerType( "2d", 2 );
 		public static const TYPE_3D: SamplerType = new SamplerType( "3d", 3 );
 		public static const CUBE: SamplerType = new SamplerType( "cube", 4 );
+		public static const RECTANGLE: SamplerType = new SamplerType( "rectangle", 5 );
 		
-		public static const QUANTITY: int = 4;
+		public static const QUANTITY: int = 5;
 		
 		protected var _type: String;
 		protected var _index: int;
@@ -41,7 +42,8 @@ package zest3d.shaders.enum
 				//TYPE_1D,
 				TYPE_2D,
 				TYPE_3D,
-				CUBE
+				CUBE,
+				RECTANGLE
 			]);
 		}
 		

@@ -13,7 +13,9 @@ package zest3d.renderers.agal.pdr
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DTextureFormat;
+	import flash.display3D.textures.RectangleTexture;
 	import flash.display3D.textures.Texture;
+	import flash.display3D.textures.TextureBase;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
@@ -25,6 +27,7 @@ package zest3d.renderers.agal.pdr
 	import zest3d.resources.enum.TextureFormat;
 	import zest3d.resources.RenderTarget;
 	import zest3d.resources.Texture2D;
+	import zest3d.resources.TextureRectangle;
 	
 	/**
 	 * ...
@@ -42,10 +45,10 @@ package zest3d.renderers.agal.pdr
 		private var _hasMipmaps:Boolean;
 		private var _hasDepthStencil:Boolean;
 		
-		private var _colorTextures:Vector.<Texture>;
-		private var _depthStencilTexture:Texture;
+		private var _colorTextures:Vector.<RectangleTexture>;
+		private var _depthStencilTexture:RectangleTexture;
 		private var _frameBuffer:Texture;
-		private var _drawBuffers:Vector.<Texture>;
+		private var _drawBuffers:Vector.<RectangleTexture>;
 		private var _prevViewport:Array;
 		private var _prevDepthRange:Array;
 		
@@ -53,6 +56,10 @@ package zest3d.renderers.agal.pdr
 		
 		[Embed(source = "E:/My Flash Documents/Zest3D Testing/lib/uvTexture.png")]
 		private var UVTexture:Class;
+		
+		
+		
+		private var bitmapData:BitmapData;
 		
 		public function AGALRenderTarget( renderer: AGALRenderer, renderTarget: RenderTarget ) 
 		{
@@ -72,8 +79,8 @@ package zest3d.renderers.agal.pdr
 			
 			// previous bound texture
 			// TODO var previousBind:Texture 
-			_colorTextures = new Vector.<Texture>( _numTargets );
-			_drawBuffers = new Vector.<Texture>( _numTargets );
+			_colorTextures = new Vector.<RectangleTexture>( _numTargets );
+			_drawBuffers = new Vector.<RectangleTexture>( _numTargets );
 			
 			
 			// color buffers
@@ -81,31 +88,31 @@ package zest3d.renderers.agal.pdr
 			{
 				
 				// TODO some targets can be packed etc
-				_colorTextures[ i ] = renderer.data.context.createTexture( _width, _height, Context3DTextureFormat.BGRA, true );
-				_drawBuffers[ i ] = renderer.data.context.createTexture( _width, _height, Context3DTextureFormat.BGRA, true );
+				_colorTextures[ i ] = renderer.data.context.createRectangleTexture( _width, _height, Context3DTextureFormat.BGRA, true );
+				_drawBuffers[ i ] = renderer.data.context.createRectangleTexture( _width, _height, Context3DTextureFormat.BGRA, true );
 				
 				
-				/*
-				var colorTexture:Texture2D = renderTarget.getColorTextureAt( i );
+				
+				var colorTexture:TextureRectangle = renderTarget.getColorTextureAt( i );
 				
 				
 				/////// temporary - empty bitmap data ///////////////
 				var bitmap:Bitmap = new UVTexture() as Bitmap;
-				var bitmapData:BitmapData = bitmap.bitmapData;
+				bitmapData = bitmap.bitmapData;
 				
 				var byteArray:ByteArray = new ByteArray();
-				bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 1024, 1024 ), byteArray );
+				bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 800, 600 ), byteArray );
 				
 				colorTexture.data = byteArray;
 				/////////////////////////
 				
-				Assert.isTrue( !renderer.inTexture2DMap( colorTexture ), "Texture shouldn't exist." );
-				var ogColorTexture:AGALTexture2D = new AGALTexture2D( renderer, colorTexture );
+				Assert.isTrue( !renderer.inTextureRectangleMap( colorTexture ), "Texture shouldn't exist." );
+				var ogColorTexture:AGALTextureRectangle = new AGALTextureRectangle( renderer, colorTexture );
 				
 				
-				renderer.insertInTexture2DMap( colorTexture, ogColorTexture );
+				renderer.insertInTextureRectangleMap( colorTexture, ogColorTexture );
 				_colorTextures[i] = ogColorTexture.texture;
-				*/
+				
 				
 				// _renderer.data.context.setTextureAt( i, _colorTextures[ i ] ); // set and make available to the MRTEffect
 				
@@ -128,13 +135,13 @@ package zest3d.renderers.agal.pdr
 			}
 			
 			// depth stencil buffer
-			var depthStencilTexture:Texture2D = renderTarget.depthStencilTexture;
+			var depthStencilTexture:TextureRectangle = renderTarget.depthStencilTexture;
 			if ( depthStencilTexture )
 			{
-				Assert.isTrue( !renderer.inTexture2DMap( depthStencilTexture ), "Texture shouldn't exist." );
+				Assert.isTrue( !renderer.inTextureRectangleMap( depthStencilTexture ), "Texture shouldn't exist." );
 				
-				var ogDepthStencilTexture:AGALTexture2D = new AGALTexture2D( renderer, depthStencilTexture );
-				renderer.insertInTexture2DMap( depthStencilTexture, ogDepthStencilTexture );
+				var ogDepthStencilTexture:AGALTextureRectangle = new AGALTextureRectangle( renderer, depthStencilTexture );
+				renderer.insertInTextureRectangleMap( depthStencilTexture, ogDepthStencilTexture );
 				_depthStencilTexture = ogDepthStencilTexture.texture;
 				
 			}
@@ -147,25 +154,32 @@ package zest3d.renderers.agal.pdr
 		
 		public function enable( renderer: Renderer ): void
 		{
-			_renderer.data.context.clear( 0, 0, 0, 1 );
+			_renderer.data.context.clear( 1, 0, 0, 1 );
+			
 		}
 		
-		private var bitmapData:BitmapData = new BitmapData( 1024, 1024, true, 0x00000000 );
+		//private var bitmapData:BitmapData = new BitmapData( 1024, 1024, true, 0x00000000 );
 		public function disable( renderer: Renderer ): void
 		{
 			
+			/*
+			_renderer.data.context.setRenderToTexture( _renderTarget.getColorTextureAt( 0 ) as TextureBase );
+			_renderer.data.context.setRenderToBackBuffer();
+			*/
 			_renderer.data.context.drawToBitmapData( bitmapData );
 			
-			var colorTexture:Texture2D = _renderTarget.getColorTextureAt( 0 );
-			var byteArray:ByteArray = new ByteArray();
-			bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 1024, 1024 ), byteArray );
-			
-			colorTexture.data = byteArray;
-			
-			var ogColorTexture:AGALTexture2D = new AGALTexture2D( _renderer, colorTexture );
-			renderer.insertInTexture2DMap( colorTexture, ogColorTexture );
-			_colorTextures[0] = ogColorTexture.texture;
-			
+			for ( var i:int = 0; i < _numTargets; ++i )
+			{
+				var colorTexture:TextureRectangle = _renderTarget.getColorTextureAt( i );
+				var byteArray:ByteArray = new ByteArray();
+				byteArray.endian = Endian.LITTLE_ENDIAN;
+				bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 800, 600 ), byteArray );
+				colorTexture.data = byteArray;
+				
+				var ogColorTexture:AGALTextureRectangle = new AGALTextureRectangle( _renderer, colorTexture );
+				renderer.insertInTextureRectangleMap( colorTexture, ogColorTexture );
+				_colorTextures[i] = ogColorTexture.texture;
+			}
 		}
 		
 		public function readColor( i: int, renderer: Renderer, texture: Texture2D ): void
@@ -186,17 +200,28 @@ package zest3d.renderers.agal.pdr
 				{
 					Assert.isTrue( false, "Incompatible texture." );
 					texture = null;
-					texture = new Texture2D( _format, _width, _height, 1 );
+					texture = new Texture2D( _format, _width, _height, 0 );
 				}
 			}
 			else
 			{
-				texture = new Texture2D( _format, _width, _height, 1 );
+				texture = new Texture2D( _format, _width, _height, 0 );
 			}
 			
 			// TODO read buffer here
 			// TODO read data here
+			/*
+			var colorTexture:TextureRectangle = _renderTarget.getColorTextureAt( i );
+			var byteArray:ByteArray = new ByteArray();
+			byteArray.endian = Endian.LITTLE_ENDIAN;
+			bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 1024, 1024 ), byteArray );
+			colorTexture.data = null;
+			colorTexture.data = byteArray;
 			
+			var ogColorTexture:AGALTextureRectangle = new AGALTextureRectangle( _renderer, colorTexture );
+			renderer.insertInTextureRectangleMap( colorTexture, ogColorTexture );
+			_colorTextures[i] = ogColorTexture.texture;
+			*/
 			disable( renderer );
 		}
 	}

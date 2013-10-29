@@ -15,8 +15,8 @@ package zest3d.resources
 	{
 		
 		protected var _numTargets: int;
-		protected var _colorTextures: Vector.<Texture2D>;
-		protected var _depthStencilTexture: Texture2D;
+		protected var _colorTextures: Array;
+		protected var _depthStencilTexture: TextureRectangle;
 		protected var _hasMipmaps: Boolean;
 		
 		public function RenderTarget( numTargets: int, tFormat: TextureFormat, width: int,
@@ -27,26 +27,24 @@ package zest3d.resources
 			
 			Assert.isTrue( _numTargets > 0 );
 			
-			_colorTextures = new Vector.<Texture2D>(_numTargets);
+			_colorTextures = [];
 			
 			var i: int = 0;
 			for ( i = 0; i < _numTargets; ++i )
 			{
-				_colorTextures[i] = new Texture2D( tFormat, width, height,
-					(hasMipmaps ? 0 : 1), BufferUsageType.RENDERTARGET );
+				_colorTextures[i] = new TextureRectangle( tFormat, width, height, BufferUsageType.RENDERTARGET );
 			}
 			
 			if ( hasDepthStencil )
 			{
-				_depthStencilTexture = new Texture2D( TextureFormat.RGBA8888, width,
-					height, 1, BufferUsageType.DEPTHSTENCIL );
+				_depthStencilTexture = new TextureRectangle( TextureFormat.RGBA8888, width, height,BufferUsageType.DEPTHSTENCIL );
 			}
 		}
 		
 		public function dispose(): void
 		{
 			Renderer.unbindAllRenderTarget( this );
-			for each( var texture:Texture3D in _colorTextures )
+			for each( var texture:TextureRectangle in _colorTextures )
 			{
 				texture.dispose();
 			}
@@ -78,13 +76,13 @@ package zest3d.resources
 		}
 		
 		[Inline]
-		public final function getColorTextureAt( index: int ): Texture2D
+		public final function getColorTextureAt( index: int ): TextureRectangle
 		{
 			return _colorTextures[index];
 		}
 		
 		[Inline]
-		public final function get depthStencilTexture(): Texture2D
+		public final function get depthStencilTexture(): TextureRectangle
 		{
 			return _depthStencilTexture;
 		}

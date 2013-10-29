@@ -25,6 +25,7 @@ package zest3d.renderers.agal.pdr
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
 	import zest3d.resources.TextureCube;
+	import zest3d.resources.TextureRectangle;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
 	import zest3d.shaders.ShaderParameters;
@@ -76,6 +77,9 @@ package zest3d.renderers.agal.pdr
 						break;
 					case SamplerType.CUBE:
 							renderer.enableTextureCube( texture as TextureCube, textureUnit );
+						break;
+					case SamplerType.RECTANGLE:
+							renderer.enableTextureRectangle( texture as TextureRectangle, textureUnit );
 						break;
 					default:
 						throw new Error( "Invalid sampler type." );
@@ -130,6 +134,9 @@ package zest3d.renderers.agal.pdr
 						break;
 					case SamplerType.CUBE:
 							renderer.disableTextureCube( texture as TextureCube, textureUnit );
+						break;
+					case SamplerType.RECTANGLE:
+							renderer.disableTextureRectangle( texture as TextureRectangle, textureUnit );
 						break;
 					default:
 							throw new Error( "Invalid sampler type." );

@@ -15,6 +15,7 @@ package zest3d.renderers
 	import zest3d.renderers.interfaces.ITexture2D;
 	import zest3d.renderers.interfaces.ITexture3D;
 	import zest3d.renderers.interfaces.ITextureCube;
+	import zest3d.renderers.interfaces.ITextureRectangle;
 	import zest3d.renderers.interfaces.IVertexBuffer;
 	import zest3d.renderers.interfaces.IVertexFormat;
 	import zest3d.renderers.interfaces.IVertexShader;
@@ -26,6 +27,7 @@ package zest3d.renderers
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
 	import zest3d.resources.TextureCube;
+	import zest3d.resources.TextureRectangle;
 	import zest3d.resources.VertexBuffer;
 	import zest3d.resources.VertexFormat;
 	import zest3d.scenegraph.Camera;
@@ -75,6 +77,7 @@ package zest3d.renderers
 		protected var CPdrTexture2D: Class;
 		protected var CPdrTexture3D: Class;
 		protected var CPdrTextureCube: Class;
+		protected var CPdrTextureRectangle: Class;
 		protected var CPdrVertexBuffer: Class;
 		protected var CPdrVertexFormat: Class;
 		protected var CPdrVertexShader: Class;
@@ -123,6 +126,7 @@ package zest3d.renderers
 		private var _texture2Ds: Dictionary;
 		private var _texture3Ds: Dictionary;
 		private var _textureCubes: Dictionary;
+		private var _textureRectangles: Dictionary;
 		private var _renderTargets: Dictionary;
 		private var _vertexShaders: Dictionary;
 		private var _pixelShaders: Dictionary;
@@ -164,6 +168,12 @@ package zest3d.renderers
 		}
 		
 		[Inline]
+		public function get textureRectangles():Dictionary
+		{
+			return _textureRectangles;
+		}
+		
+		[Inline]
 		public function get renderTargets():Dictionary
 		{
 			return _renderTargets;
@@ -183,7 +193,8 @@ package zest3d.renderers
 		
 		public function Renderer( CGlobalEffect: Class, CPdrIndexBuffer:Class, CPdrPixelShader: Class,
 				CPdrRenderTarget: Class, /*CPdrTexture1D: Class,*/ CPdrTexture2D: Class, CPdrTexture3D: Class,
-				CPdrTextureCube: Class, CPdrVertexBuffer: Class, CPdrVertexFormat: Class, CPdrVertexShader: Class ) 
+				CPdrTextureCube: Class, CPdrTextureRectangle:Class, CPdrVertexBuffer: Class, CPdrVertexFormat: Class, 
+				CPdrVertexShader: Class ) 
 		{
 			//this.CRendererInput = CRendererInput;
 			//this.CRendererData = CRendererData;
@@ -196,6 +207,8 @@ package zest3d.renderers
 			this.CPdrTexture2D = CPdrTexture2D;
 			this.CPdrTexture3D = CPdrTexture3D;
 			this.CPdrTextureCube = CPdrTextureCube;
+			this.CPdrTextureRectangle = CPdrTextureRectangle;
+			
 			this.CPdrVertexBuffer = CPdrVertexBuffer;
 			this.CPdrVertexFormat = CPdrVertexFormat;
 			this.CPdrVertexShader = CPdrVertexShader;
@@ -234,6 +247,7 @@ package zest3d.renderers
 			_texture2Ds = new Dictionary();
 			_texture3Ds = new Dictionary();
 			_textureCubes = new Dictionary();
+			_textureRectangles = new Dictionary();
 			_renderTargets = new Dictionary();
 			_vertexShaders = new Dictionary();
 			_pixelShaders = new Dictionary();
@@ -290,6 +304,7 @@ package zest3d.renderers
 			destroyAllTexture2Ds();
 			destroyAllTexture3Ds();
 			destroyAllTextureCubes();
+			destroyAllTextureRectangles();
 			destroyAllRenderTargets();
 			destroyAllVertexShaders();
 			destroyAllPixelShaders();
@@ -798,6 +813,83 @@ package zest3d.renderers
 		}
 		//}
 		
+		
+		
+		
+		//{region texture rectangle
+		public function bindTextureRectangle( texture: TextureRectangle ): void
+		{
+			if ( !_textureRectangles[ texture ] )
+			{
+				_textureRectangles[ texture ] = new CPdrTextureRectangle( this, texture );
+			}
+		}
+		
+		public static function bindAllTextureRectangle( texture: TextureRectangle ): void
+		{
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.bindTextureRectangle( texture );
+			}
+		}
+		
+		public function unbindTextureRectangle( texture: TextureRectangle ): void
+		{
+			_textureRectangles[ texture ] = null;
+		}
+		
+		public static function unbindAllTextureRectangle( texture: TextureRectangle ): void
+		{
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.unbindTextureRectangle( texture );
+			}
+		}
+		
+		public function enableTextureRectangle( texture: TextureRectangle, textureUnit: int ): void
+		{
+			if ( !_textureRectangles[ texture ] )
+			{
+				_textureRectangles[ texture ] = new CPdrTextureRectangle( this, texture );
+			}
+			_textureRectangles[ texture ].enable( this, textureUnit );
+		}
+		
+		public function disableTextureRectangle( texture: TextureRectangle, textureUnit: int ): void
+		{
+			if ( _texture2Ds[ texture ] )
+			{
+				_texture2Ds[ texture ].disable( this, textureUnit );
+			}
+		}
+		
+		public function lockTextureRectangle( texture: TextureRectangle, textureUnit: int, mode: BufferLockingType ): void
+		{
+			
+		}
+		
+		public function unlockTextureRectangle( texture: TextureRectangle, textureUnit: int ): void
+		{
+			
+		}
+		
+		public function updateTextureRectangle( texture: TextureRectangle, textureUnit: int ): void
+		{
+			_textureRectangles[ texture ] = new CPdrTextureRectangle( this, texture );
+		}
+		
+		public static function updateAllTextureRectangle( texture: TextureRectangle, textureUnit: int ): void
+		{
+			for each( var renderer: Renderer in msRenderers )
+			{
+				renderer.updateTextureRectangle( texture, textureUnit );
+			}
+		}
+		//}
+		
+		
+		
+		
 		//{region render target
 		public function bindRenderTarget( renderTarget: RenderTarget ): void
 		{
@@ -845,9 +937,13 @@ package zest3d.renderers
 			}
 		}
 		
-		public function readColor( i: int, renderTarget: RenderTarget, texture: Texture2D ): void
+		public function readColor( i: int, renderTarget: RenderTarget, texture: TextureRectangle ): void
 		{
-			
+			trace( "yes...I'm called." );
+			for ( var target:* in _renderTargets )
+			{
+				target.readColor( i, this, texture );
+			}
 		}
 		//}
 		
@@ -1325,14 +1421,12 @@ package zest3d.renderers
 				disablePixelShader( pShader, pParams );
 				
 				//TODO decide to reset the state after drawing
-				
 				alphaState = _defaultAlphaState;
 				cullState = _defaultCullState;
 				depthState = _defaultDepthState;
 				offsetState = _defaultOffsetState;
 				stencilState = _defaultStencilState;
 				wireState = _defaultWireState;
-				
 				
 				if ( iBuffer )
 				{
@@ -1407,6 +1501,15 @@ package zest3d.renderers
 			{
 				_textureCubes[ key ].dispose();
 				_textureCubes[ key ] = null;
+			}
+		}
+		
+		private function destroyAllTextureRectangles(): void
+		{
+			for each( var key: TextureRectangle in _textureRectangles )
+			{
+				_textureRectangles[ key ].dispose();
+				_textureRectangles[ key ] = null;
 			}
 		}
 		
@@ -1599,15 +1702,15 @@ package zest3d.renderers
 		}
 		
 		[Inline]
-		public function inTexture2DMap( texture: Texture2D ): Boolean
+		public function inTextureRectangleMap( texture: TextureRectangle ): Boolean
 		{
-			return _texture2Ds[ texture ] != null;
+			return _textureRectangles[ texture ] != null;
 		}
 		
 		[Inline]
-		public function insertInTexture2DMap( texture: Texture2D, platformTexture: * ): void
+		public function insertInTextureRectangleMap( texture: TextureRectangle, platformTexture: * ): void
 		{
-			_texture2Ds[ texture ] = platformTexture;
+			_textureRectangles[ texture ] = platformTexture;
 		}
 		
 		

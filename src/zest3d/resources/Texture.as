@@ -13,7 +13,7 @@ package zest3d.resources
 	public class Texture 
 	{
 		
-		public static function fromByteArray( data:ByteArray ):TextureBase
+		public static function fromByteArray( data:ByteArray, type:String = null ):TextureBase
 		{
 			var reader:ATFReader = new ATFReader( data );
 			var format:TextureFormat;
@@ -42,7 +42,14 @@ package zest3d.resources
 			switch( reader.cubemap )
 			{
 				case 0x0:
+					if ( type == "rectangle" )
+					{
+						texture = new TextureRectangle( format, reader.width, reader.height );
+					}
+					else
+					{
 						texture = new Texture2D( format, reader.width, reader.height, reader.count );
+					}
 					break;
 				case 0x1:
 						texture = new TextureCube( format, reader.width, reader.count );

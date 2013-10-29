@@ -25,6 +25,7 @@ package zest3d.renderers.agal
 	import zest3d.renderers.agal.pdr.AGALTexture2D;
 	import zest3d.renderers.agal.pdr.AGALTexture3D;
 	import zest3d.renderers.agal.pdr.AGALTextureCube;
+	import zest3d.renderers.agal.pdr.AGALTextureRectangle;
 	import zest3d.renderers.agal.pdr.AGALVertexBuffer;
 	import zest3d.renderers.agal.pdr.AGALVertexFormat;
 	import zest3d.renderers.agal.pdr.AGALVertexShader;
@@ -56,7 +57,7 @@ package zest3d.renderers.agal
 		{
 			
 			super( GlobalEffect, AGALIndexBuffer, AGALPixelShader, AGALRenderTarget,
-				/*AGALTexture1D,*/ AGALTexture2D, AGALTexture3D, AGALTextureCube,
+				/*AGALTexture1D,*/ AGALTexture2D, AGALTexture3D, AGALTextureCube, AGALTextureRectangle,
 				AGALVertexBuffer, AGALVertexFormat, AGALVertexShader );
 			
 			_initialize( width, height, colorFormat, depthStencilFormat, numMultiSamples );
@@ -496,7 +497,7 @@ package zest3d.renderers.agal
 		
 		override public function postDraw():void 
 		{
-			data.context.present();
+			//data.context.present();
 		}
 		
 		override protected function drawPrimitive(visual:Visual):void 
@@ -542,11 +543,10 @@ package zest3d.renderers.agal
 		}
 		
 		//TODO check this
-		/*
 		override public function displayColorBuffer():void 
 		{
 			data.context.present();
-		}*/
+		}
 	}
 
 }

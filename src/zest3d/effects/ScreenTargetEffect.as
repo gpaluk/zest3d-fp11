@@ -1,7 +1,9 @@
 package zest3d.effects 
 {
 	import zest3d.resources.Texture2D;
+	import zest3d.resources.TextureRectangle;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
+	import zest3d.shaders.enum.DstBlendMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
@@ -79,7 +81,7 @@ package zest3d.effects
 		
 		private var _visualEffect:VisualEffect;
 		
-		public function ScreenTargetEffect( texture:Texture2D, filter:SamplerFilterType = null,
+		public function ScreenTargetEffect( texture:TextureRectangle, filter:SamplerFilterType = null,
 											coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			filter ||= SamplerFilterType.LINEAR;
@@ -97,7 +99,7 @@ package zest3d.effects
 			var pShader: PixelShader = new PixelShader( "Zest3D.ScreenTargetEffect", 1, 1, 0, 1, false );
 			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.RECTANGLE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -108,7 +110,6 @@ package zest3d.effects
 			pass.vertexShader = vShader;
 			pass.pixelShader = pShader;
 			pass.alphaState = new AlphaState();
-			pass.alphaState.srcBlend = SrcBlendMode.DST_COLOR;
 			pass.cullState = new CullState();
 			pass.depthState = new DepthState();
 			pass.offsetState = new OffsetState();
@@ -128,12 +129,14 @@ package zest3d.effects
 			
 			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
+			/*
 			if ( filterType != SamplerFilterType.NEAREST &&
 				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();
 			}
+			*/
 		}
 		
 		public function get visualEffect():VisualEffect 
