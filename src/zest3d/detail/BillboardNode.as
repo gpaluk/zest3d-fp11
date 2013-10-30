@@ -35,7 +35,6 @@ package zest3d.detail
 		
 		override public function dispose(): void
 		{
-			//TODO BillboardNode::dispose();
 			super.dispose();
 		}
 		

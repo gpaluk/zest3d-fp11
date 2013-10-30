@@ -741,12 +741,12 @@ package zest3d.primitives
 					v2 = v1 + xSamples;
 					v3 = v0 + xSamples;
 					
-					iBuffer.setIndexAt( pointer++, v2 );
+					iBuffer.setIndexAt( pointer++, v0 );
 					iBuffer.setIndexAt( pointer++, v1 );
-					iBuffer.setIndexAt( pointer++, v0 );
-					iBuffer.setIndexAt( pointer++, v3 );
 					iBuffer.setIndexAt( pointer++, v2 );
 					iBuffer.setIndexAt( pointer++, v0 );
+					iBuffer.setIndexAt( pointer++, v2 );
+					iBuffer.setIndexAt( pointer++, v3 );
 				}
 			}
 			return new TriMesh( _vFormat, vBuffer, iBuffer );

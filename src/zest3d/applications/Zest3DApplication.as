@@ -38,7 +38,7 @@ package zest3d.applications
 			}
 			
 			_camera.setFrustumFOV( 60, aspectRatio, 0.01, 1000 );
-			var camPosition: APoint = new APoint( 0, 0, 5 );
+			var camPosition: APoint = new APoint( 0, 0, -5 );
 			var camDVector: AVector = AVector.UNIT_Z;
 			var camUVector: AVector = AVector.UNIT_Y_NEGATIVE;
 			var camRVector: AVector = camDVector.crossProduct( camUVector );
@@ -66,8 +66,12 @@ package zest3d.applications
 			
 			if ( moveCamera() || moveObject() )
 			{
-				_scene.update( appTime );
 				_culler.computeVisibleSet( _scene );
+			}
+			
+			if ( moveObject() )
+			{
+				_scene.update( appTime );
 			}
 			
 			draw( appTime );
@@ -98,6 +102,7 @@ package zest3d.applications
 				
 				_numVisibleObjects = _culler.visibleSet.numVisible;
 				_renderer.postDraw();
+				_renderer.displayColorBuffer();
 			}
 		}
 		

@@ -20,8 +20,6 @@ package zest3d.primitives
 			var primitive:TriMesh = new StandardMesh( vFormat, isStatic, inside, transform ).rectangle( xSamples, ySamples, xExtent, yExtent );
 			
 			super( vFormat, primitive.vertexBuffer, primitive.indexBuffer );
-			
-			// rotate( 0, 90, 0 );
 		}
 		
 	}

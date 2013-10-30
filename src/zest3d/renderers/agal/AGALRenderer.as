@@ -406,7 +406,7 @@ package zest3d.renderers.agal
 		}
 		
 		override public function set wireState(wireState:WireState):void 
-		{
+		{			
 		}
 		
 		override public function setViewport(x:int, y:int, width:int, height:int):void 
