@@ -15,6 +15,9 @@ package zest3d.applications
 	public class WindowApplication extends Sprite implements IDisposable 
 	{
 		
+		protected var _width:int;
+		protected var _height:int;
+		
 		private var _clearColor: Color;
 		
 		protected var _colorFormat: TextureFormat;
@@ -30,6 +33,8 @@ package zest3d.applications
 		protected var _accumulatedFrameCount: int;
 		protected var _timer: int;
 		protected var _maxTimer: int;
+		
+		
 		
 		public function WindowApplication( clearColor: Color ) 
 		{
@@ -47,18 +52,20 @@ package zest3d.applications
 			_depthStencilFormat = TextureFormat.RGBA8888;
 			_numMultisamples = 0;
 			
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage );
+			addEventListener( Event.ADDED_TO_STAGE, onAddedToStage );
 		}
 		
 		protected function onAddedToStage( e: Event ): void
 		{
-			trace( "Added to the stage" );
+			_width = stage.stageWidth;
+			_height = stage.stageHeight;
+			renderer.setViewport( 0, 0, _width, _height );
 		}
 		
 		[Inline]
 		public final function get aspectRatio(): Number
 		{
-			return stage.stageWidth / stage.stageHeight;
+			return _width / _height;
 		}
 		
 		[Inline]
@@ -92,14 +99,12 @@ package zest3d.applications
 			
 		}
 		
-		/*
 		// virtual
 		public function onResize( width: int, height: int ): void
 		{
 			_width = width;
 			_height = height;
 		}
-		*/
 		
 		// virtual
 		public function onPrecreate(): Boolean

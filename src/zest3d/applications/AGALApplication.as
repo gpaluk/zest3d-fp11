@@ -118,8 +118,8 @@ package zest3d.applications
 			_keyMapper.addKeyDown( Keyboard.END, dummy, false );
 			_keyMapper.addKeyDown( Keyboard.LEFT, dummy, false );
 			_keyMapper.addKeyDown( Keyboard.RIGHT, dummy, false );
-			_keyMapper.addKeyDown( Keyboard.PAGE_UP, dummy, false );
-			_keyMapper.addKeyDown( Keyboard.PAGE_DOWN, dummy, false );
+			_keyMapper.addKeyDown( Keyboard.UP, dummy, false );
+			_keyMapper.addKeyDown( Keyboard.DOWN, dummy, false );
 			_keyMapper.addKeyDown( Keyboard.A, dummy, false );
 			_keyMapper.addKeyDown( Keyboard.D, dummy, false );
 			
@@ -361,13 +361,13 @@ package zest3d.applications
 				bMoved = true;
 			}
 			
-			if ( _keyMapper.isKeyDown( Keyboard.PAGE_UP ) )
+			if ( _keyMapper.isKeyDown( Keyboard.UP ) )
 			{
 				lookUp();
 				bMoved = true;
 			}
 			
-			if ( _keyMapper.isKeyDown( Keyboard.PAGE_DOWN ) )
+			if ( _keyMapper.isKeyDown( Keyboard.DOWN ) )
 			{
 				lookDown();
 				bMoved = true;

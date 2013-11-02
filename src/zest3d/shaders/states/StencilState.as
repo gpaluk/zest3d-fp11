@@ -36,8 +36,8 @@ package zest3d.shaders.states
 			enabled = false;
 			compare = CompareMode.NEVER;
 			reference = 0;
-			mask = uint.MAX_VALUE;
-			writeMask = uint.MAX_VALUE;
+			mask = 0xff; // 8-bit mask
+			writeMask = 0xff; // 8-bit mask
 			
 			onFail = OperationType.KEEP;
 			onZFail = OperationType.KEEP;

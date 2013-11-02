@@ -35,6 +35,7 @@ package zest3d.scenegraph
 		 * Internal use only
 		 */
 		public var worldTransform: Transform;
+		
 		public var worldTransformIsCurrent: Boolean;
 		
 		public var worldBound: Bound;
@@ -94,8 +95,8 @@ package zest3d.scenegraph
 		
 		public function scale( x: Number, y: Number, z: Number ): void
 		{
-			_scaleNeedsUpdate = true;
 			_scale.set( x, y, z );
+			_scaleNeedsUpdate = true;
 		}
 		////////////////////////////////////////////////////////////////////////
 		
@@ -122,6 +123,16 @@ package zest3d.scenegraph
 			_rotationZ = radians;
 			_rotMatZ.rotationZ( radians );
 			_rotationNeedsUpdate = true;
+		}
+		
+		public function get rotationX(): Number
+		{
+			return _rotationX;
+		}
+		
+		public function get rotationY(): Number
+		{
+			return _rotationY;
 		}
 		
 		public function get rotationZ(): Number
@@ -208,16 +219,6 @@ package zest3d.scenegraph
 		{
 			// The _parent member is not reference counted by Spatial so do not
 			// release it here.
-			/*
-			localTransform.dispose();
-			worldTransform.dispose();
-			worldBound.dispose();
-			
-			localTransform = null;
-			worldTransform = null;
-			worldBound = null;
-			culling = null;
-			*/
 			super.dispose();
 		}
 		

@@ -2,12 +2,15 @@ package zest3d.applications
 {
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.utils.getTimer;
 	import io.plugin.core.graphics.Color;
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.math.algebra.APoint;
 	import io.plugin.math.algebra.AVector;
 	import zest3d.geometry.SkyboxGeometry;
+	import zest3d.renderers.agal.AGALRenderer;
 	import zest3d.scenegraph.Culler;
 	import zest3d.scenegraph.Node;
 	
@@ -30,6 +33,21 @@ package zest3d.applications
 			stage.align = StageAlign.TOP_LEFT;
 		}
 		
+		private function onMouseWheel(e:MouseEvent):void
+		{
+			trace( e.delta );
+			if ( e.delta > 0 )
+			{
+				moveForward();
+				moveForward();
+			}
+			else
+			{
+				moveBackward();
+				moveBackward();
+			}
+		}
+		
 		override public function onInitialize(): Boolean 
 		{
 			if ( !super.onInitialize() )
@@ -37,14 +55,16 @@ package zest3d.applications
 				return false;
 			}
 			
-			_camera.setFrustumFOV( 60, aspectRatio, 0.01, 1000 );
+			stage.addEventListener( Event.RESIZE, onResizeHandler );
+			
+			_camera.setFrustumFOV( 85, stage.stageWidth/stage.stageHeight, 0.01, 1000 );
 			var camPosition: APoint = new APoint( 0, 0, -5 );
 			var camDVector: AVector = AVector.UNIT_Z;
 			var camUVector: AVector = AVector.UNIT_Y_NEGATIVE;
 			var camRVector: AVector = camDVector.crossProduct( camUVector );
 			
 			_camera.setFrame( camPosition, camDVector, camUVector, camRVector );
-			
+			stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel );
 			_scene = new Node();
 			
 			_culler = new Culler( _camera );
@@ -55,6 +75,25 @@ package zest3d.applications
 			
 			initialize();
 			return true;
+		}
+		
+		private function onResizeHandler( e:Event ):void
+		{
+			onResize( stage.stageWidth, stage.stageHeight );
+		}
+		
+		override public function onResize( width:int, height:int ):void 
+		{
+			if ( width < 50 )
+			{
+				width = 50;
+			}
+			if ( height < 50 )
+			{
+				height = 50;
+			}
+			super.onResize( width, height );
+			_renderer.setViewport( 0, 0, width, height );
 		}
 		
 		override public function onIdle():void 

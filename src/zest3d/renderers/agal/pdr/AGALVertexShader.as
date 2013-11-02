@@ -45,7 +45,7 @@ package zest3d.renderers.agal.pdr
 			var programText: String = vShader.getProgram( VertexShader.profile.index );
 			// trace( programText );
 			trace( "Vertex Shader >>>>> " + programText );
-			var assembler:AGALMiniAssembler = new AGALMiniAssembler( true );
+			var assembler:AGALMiniAssembler = new AGALMiniAssembler( false );
 			
 			switch( VertexShader.profile )
 			{

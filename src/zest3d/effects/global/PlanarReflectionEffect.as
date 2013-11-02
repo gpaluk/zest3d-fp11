@@ -77,7 +77,10 @@ package zest3d.effects.global
 				
 				_stencilState.enabled = true;
 				_stencilState.compare = CompareMode.ALWAYS;
+				
+				// stencil reference update lock to 8 bit
 				_stencilState.reference = uint( i + 1 );
+				
 				_stencilState.onFail = OperationType.KEEP;
 				_stencilState.onZFail = OperationType.KEEP;
 				_stencilState.onZPass = OperationType.REPLACE;
@@ -97,12 +100,15 @@ package zest3d.effects.global
 				
 				_stencilState.enabled = true;
 				_stencilState.compare = CompareMode.EQUAL;
+				
+				// stencil reference update lock to 8 bit
 				_stencilState.reference = uint( i + 1 );
+				
 				_stencilState.onFail = OperationType.KEEP;
 				_stencilState.onZFail = OperationType.KEEP;
 				_stencilState.onZPass = OperationType.KEEP;
 				
-				renderer.setDepthRange( 1, 1 );
+				renderer.setDepthRange( 1, 1 ); // TODO make it fail a depth test
 				
 				_depthState.enabled = true;
 				_depthState.writable = true;
@@ -110,7 +116,7 @@ package zest3d.effects.global
 				
 				renderer.drawVisual( _planes[ i ] );
 				
-				_depthState.compare = CompareMode.LEQUAL;
+				_depthState.compare = CompareMode.GEQUAL; // TODO check edit LEQUAL
 				renderer.setDepthRange( minDepth, maxDepth );
 				
 				var array: Array = getReflectionMatrixAndModelPlaneAt( i );
@@ -134,20 +140,20 @@ package zest3d.effects.global
 				
 				renderer.overrideAlphaState = _alphaState;
 				
-				_alphaState.blendEnabled = true;
+				//_alphaState.blendEnabled = true;
 				//_alphaState.compareEnabled = true;
 				
 				//_alphaState.srcBlend = SrcBlendMode.ONE_MINUS_CONSTANT_ALPHA;
-				//_alphaState.dstBlend = DstBlendMode.CONSTANT_ALPHA;
+				//_alphaState.dstBlend = DstBlendMode.CONSTANT_ALPHA; 
 				
-				_alphaState.srcBlend = SrcBlendMode.CONSTANT_COLOR;
-				_alphaState.dstBlend = DstBlendMode.ONE;
-				
-				_alphaState.constantColor = [ 1, 0, 0, _reflectances[ i ] ];
+				_alphaState.constantColor = [ 1, 0, 0, _reflectances[ i ] ]; //TODO a constant alpha must be part of the shader
 				
 				
 				_stencilState.compare = CompareMode.EQUAL;
+				
+				// stencil reference update lock to 8 bit
 				_stencilState.reference = uint( i + 1 );
+				
 				_stencilState.onFail = OperationType.KEEP;
 				_stencilState.onZFail = OperationType.KEEP;
 				_stencilState.onZPass = OperationType.INVERT;
@@ -155,7 +161,6 @@ package zest3d.effects.global
 				renderer.drawVisual( _planes[ i ] );
 				
 				renderer.overrideAlphaState = saveAState;
-				
 			}
 			
 			renderer.overrideStencilState = saveSState;

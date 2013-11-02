@@ -38,7 +38,7 @@ package zest3d.effects
 			pShader.setCoordinate( 1, 1, SamplerCoordinateType.CLAMP_EDGE );
 		}
 		
-		public function dispose():void
+		override public function dispose():void
 		{
 			super.dispose();
 		}

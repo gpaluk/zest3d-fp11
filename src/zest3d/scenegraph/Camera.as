@@ -230,11 +230,6 @@ package zest3d.scenegraph
 		
 		public function getFrustumFOV( values: Array ): Boolean
 		{
-			if ( values.length != 4 )
-			{
-				throw new Error( "Camera::getFrustumFOV invalid value length." );
-			}
-			
 			if ( _frustum[RMIN] == -_frustum[RMAX]
 			  && _frustum[UMIN] == -_frustum[UMAX] )
 			{

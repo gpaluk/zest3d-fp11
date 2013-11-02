@@ -54,11 +54,6 @@ package zest3d.renderers.agal.pdr
 		
 		private var _renderTarget:RenderTarget;
 		
-		[Embed(source = "E:/My Flash Documents/Zest3D Testing/lib/uvTexture.png")]
-		private var UVTexture:Class;
-		
-		
-		
 		private var bitmapData:BitmapData;
 		
 		public function AGALRenderTarget( renderer: AGALRenderer, renderTarget: RenderTarget ) 
@@ -97,13 +92,13 @@ package zest3d.renderers.agal.pdr
 				
 				
 				/////// temporary - empty bitmap data ///////////////
-				var bitmap:Bitmap = new UVTexture() as Bitmap;
-				bitmapData = bitmap.bitmapData;
+				//var bitmap:Bitmap = new UVTexture() as Bitmap;
+				//bitmapData = bitmap.bitmapData;
 				
-				var byteArray:ByteArray = new ByteArray();
-				bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 800, 600 ), byteArray );
+				//var byteArray:ByteArray = new ByteArray();
+				//bitmapData.copyPixelsToByteArray( new Rectangle( 0, 0, 800, 600 ), byteArray );
 				
-				colorTexture.data = byteArray;
+				//colorTexture.data = byteArray;
 				/////////////////////////
 				
 				Assert.isTrue( !renderer.inTextureRectangleMap( colorTexture ), "Texture shouldn't exist." );
