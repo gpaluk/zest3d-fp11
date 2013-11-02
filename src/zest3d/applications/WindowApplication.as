@@ -83,6 +83,7 @@ package zest3d.applications
 		[Inline]
 		public final function set clearColor(value:Color):void 
 		{
+			_renderer.clearColor = value;
 			_clearColor = value;
 		}
 		

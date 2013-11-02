@@ -114,10 +114,12 @@ package zest3d.renderers.agal
 			if ( _alphaCompareEnabled )
 			{
 				//glEnable( GL_ALPHA_TEST );
+				_context.setDepthTest( true, _compareFunction );
 			}
 			else
 			{
 				//glDisable( GL_ALPHA_TEST );
+				_context.setDepthTest( false, Context3DCompareMode.NEVER );
 			}
 			
 			// cull state

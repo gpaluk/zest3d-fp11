@@ -174,6 +174,6 @@ package zest3d.applications
 				_skybox.camera = _renderer.camera;
 				_skybox.update();
 			}
-		}	
+		}
 	}
 }

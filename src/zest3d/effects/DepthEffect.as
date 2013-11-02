@@ -83,12 +83,8 @@ package zest3d.effects
 		
 		private var _visualEffect:VisualEffect;
 		
-		public function DepthEffect( filter:SamplerFilterType = null, coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
+		public function DepthEffect( ) 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
-			
 			var vShader: VertexShader = new VertexShader( "Zest3D.DepthEffect", 1, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
@@ -124,7 +120,7 @@ package zest3d.effects
 			
 			
 			var fc0:ShaderFloat = new ShaderFloat( 1 );
-			fc0.setRegister( 0, [ 10, 1, 1, 1] ); // 100
+			fc0.setRegister( 0, [ 10, 1, 1, 1] ); // [0] should be the dMax value
 			
 			var fc1:ShaderFloat = new ShaderFloat( 1 );
 			fc1.setRegister( 0, [ 1, 255, 6025, 1681375 ] );
