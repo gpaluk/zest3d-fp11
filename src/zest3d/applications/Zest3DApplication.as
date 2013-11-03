@@ -106,6 +106,12 @@ package zest3d.applications
 			if ( moveCamera() || moveObject() )
 			{
 				_culler.computeVisibleSet( _scene );
+				
+				if ( skybox )
+				{
+					skybox.position = _camera.position
+					skybox.update();
+				}
 			}
 			
 			if ( moveObject() )
@@ -133,12 +139,12 @@ package zest3d.applications
 			if ( _renderer.preDraw() )
 			{
 				_renderer.clearBuffers();
+				
+				_renderer.drawVisibleSet( _culler.visibleSet );
 				if( _skybox )
 				{
 					_renderer.drawVisual( _skybox );
 				}
-				_renderer.drawVisibleSet( _culler.visibleSet );
-				
 				_numVisibleObjects = _culler.visibleSet.numVisible;
 				_renderer.postDraw();
 				_renderer.displayColorBuffer();
@@ -168,12 +174,8 @@ package zest3d.applications
 		public function set skybox( skybox:SkyboxGeometry ):void
 		{
 			_skybox = skybox;
-			if ( _skybox )
-			{
-				_skybox.scaleUniform = 400;
-				_skybox.camera = _renderer.camera;
-				_skybox.update();
-			}
+			_skybox.camera = _renderer.camera;
+			//_skybox.update();
 		}
 	}
 }

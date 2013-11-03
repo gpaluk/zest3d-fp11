@@ -1421,12 +1421,12 @@ package zest3d.renderers
 				disablePixelShader( pShader, pParams );
 				
 				//TODO decide to reset the state after drawing
-				alphaState = _defaultAlphaState;
-				cullState = _defaultCullState;
-				depthState = _defaultDepthState;
-				offsetState = _defaultOffsetState;
-				stencilState = _defaultStencilState;
-				wireState = _defaultWireState;
+				//alphaState = _defaultAlphaState;
+				//cullState = _defaultCullState;
+				//depthState = _defaultDepthState;
+				//offsetState = _defaultOffsetState;
+				//stencilState = _defaultStencilState;
+				//wireState = _defaultWireState;
 				
 				if ( iBuffer )
 				{

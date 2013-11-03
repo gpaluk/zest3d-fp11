@@ -181,12 +181,6 @@ package zest3d.geometry
 			super( vFormat, vBuffer, iBuffer );
 		}
 		
-		override public function update(applicationTime:Number = -1.79e+308, initiator:Boolean = true):void 
-		{
-			this.position = _camera.position;
-			super.update(applicationTime, initiator);
-		}
-		
 		public function get camera():Camera 
 		{
 			return _camera;

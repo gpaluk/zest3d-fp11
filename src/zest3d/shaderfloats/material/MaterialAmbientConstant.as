@@ -44,7 +44,7 @@ package zest3d.shaderfloats.material
 		{
 			var tuple: Array = _material.ambient.toArray();
 			_data.position = 0;
-			for ( var i: int = 1; i < 4; ++i )
+			for ( var i: int = 0; i < 4; ++i )
 			{
 				_data.writeFloat( tuple[ i ] );
 			}

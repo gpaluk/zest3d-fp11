@@ -55,6 +55,11 @@ package zest3d.scenegraph.enum
 			return _index;
 		}
 		
+		public function toString(): String
+		{
+			return "[object LightType] (type: " + type + ", index: " + index + ")";
+		}
+		
 	}
 
 }
