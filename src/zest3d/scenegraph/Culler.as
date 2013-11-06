@@ -137,7 +137,7 @@ package zest3d.scenegraph
 			_plane[Camera.RMAX].normal = normal;
 			_plane[Camera.RMAX].constant = constant;
 			
-			_planeState = 0xFFFFFFFF;
+			_planeState = uint.MAX_VALUE;
 		}
 		
 		[Inline]

@@ -10,6 +10,7 @@
  */
 package zest3d.renderers.agal 
 {
+	import flash.display3D.Context3DStencilAction;
 	import io.plugin.core.interfaces.IDisposable;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DBlendFactor;
@@ -155,14 +156,16 @@ package zest3d.renderers.agal
 			}
 			else
 			{
-				_context.setDepthTest( _depthWriteEnabled, Context3DCompareMode.ALWAYS );
+				_context.setDepthTest( false, Context3DCompareMode.LESS );
 			}
 			
 			
 			
 			/*
 			// TODO investigate offsetState
+			*/
 			
+			/*
 			// stencil state
 			_stencilEnabled = stencilState.enabled;
 			_stencilCompareFunction = AGALMapping.stencilCompare[ stencilState.compare.index ];
@@ -172,10 +175,10 @@ package zest3d.renderers.agal
 			_stencilOnFail = AGALMapping.stencilOperation[ stencilState.onFail.index ];
 			_stencilOnZFail = AGALMapping.stencilOperation[ stencilState.onZFail.index ];
 			_stencilOnZPass = AGALMapping.stencilOperation[ stencilState.onZPass.index ];
-			*/
+			
 			
 			// TODO investigate setStencilActions( triangleFace ...
-			/*
+			
 			if ( _stencilEnabled )
 			{
 				_context.setStencilActions( Context3DTriangleFace.FRONT_AND_BACK,
@@ -187,12 +190,13 @@ package zest3d.renderers.agal
 			}
 			else
 			{
-				_context.setStencilActions( null, null, null, null );
-				//_context.setStencilReferenceValue( _stencilReference );
+				
+				_context.setStencilActions( Context3DTriangleFace.FRONT_AND_BACK, Context3DCompareMode.ALWAYS, Context3DStencilAction.KEEP, Context3DStencilAction.KEEP, Context3DStencilAction.KEEP );
+				_context.setStencilReferenceValue( _stencilReference );
 			}
-			*/
 			//TODO investigate wireState
 			// i.e. can we use a shader to achieve something similar?
+			*/
 		}
 		
 	}

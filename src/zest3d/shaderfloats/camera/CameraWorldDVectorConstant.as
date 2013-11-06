@@ -26,6 +26,7 @@ package zest3d.shaderfloats.camera
 		public function CameraWorldDVectorConstant() 
 		{
 			super( 1 );
+			_allowUpdater = true;
 		}
 		
 		override public function dispose():void 

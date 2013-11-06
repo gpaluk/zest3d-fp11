@@ -108,7 +108,7 @@ package zest3d.effects.global
 				_stencilState.onZFail = OperationType.KEEP;
 				_stencilState.onZPass = OperationType.KEEP;
 				
-				renderer.setDepthRange( 1, 1 ); // TODO make it fail a depth test
+				//renderer.setDepthRange( 1, 1 ); // TODO make it fail a depth test
 				
 				_depthState.enabled = true;
 				_depthState.writable = true;

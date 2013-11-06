@@ -122,17 +122,13 @@ package zest3d.renderers.agal
 			
 			if ( _cullState.enabled )
 			{
-				if ( _reverseCullOrder )
+				if ( _cullState.ccwOrder )
 				{
-					var cull:Boolean = _cullState.ccwOrder;
-				}
-				if ( cull )
-				{
-					data.context.setCulling(Context3DTriangleFace.BACK);
+					data.context.setCulling(Context3DTriangleFace.FRONT );
 				}
 				else
 				{
-					data.context.setCulling(Context3DTriangleFace.FRONT);
+					data.context.setCulling(Context3DTriangleFace.BACK );
 				}
 			}
 			else

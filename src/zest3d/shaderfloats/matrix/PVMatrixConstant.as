@@ -26,12 +26,12 @@ package zest3d.shaderfloats.matrix
 		public function PVMatrixConstant() 
 		{
 			super( 4 );
+			_allowUpdater = true;
 		}
 		
 		override public function dispose():void 
 		{
 			super.dispose();
-			_allowUpdater = true;
 		}
 		
 		override public function update(visual:Visual, camera:Camera):void 

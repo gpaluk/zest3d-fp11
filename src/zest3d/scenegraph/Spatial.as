@@ -171,7 +171,7 @@ package zest3d.scenegraph
 		
 		public function get x(): Number
 		{
-			return x;
+			return _translate.x;
 		}
 		
 		public function set y( value: Number ): void
@@ -182,7 +182,7 @@ package zest3d.scenegraph
 		
 		public function get y(): Number
 		{
-			return y;
+			return _translate.y;
 		}
 		
 		public function set z( value: Number ): void
@@ -193,7 +193,7 @@ package zest3d.scenegraph
 		
 		public function get z(): Number
 		{
-			return z;
+			return _translate.z;
 		}
 		
 		////////////////////////////////////////////////////////////////////////
