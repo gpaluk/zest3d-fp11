@@ -282,7 +282,7 @@ package zest3d.scenegraph
 		}
 		
 		[Inline]
-		public final function depthType(): int
+		public final function get depthType(): int
 		{
 			return _depthType;
 		}

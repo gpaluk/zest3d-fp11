@@ -1,18 +1,16 @@
 package zest3d.effects.local 
 {
-	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture2D;
+	import flash.filters.ShaderFilter;
 	import zest3d.resources.TextureCube;
 	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
+	import zest3d.shaderfloats.camera.CameraWorldPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaderfloats.matrix.WMatrixConstant;
 	import zest3d.shaderfloats.ShaderFloat;
-	import zest3d.shaders.enum.CompareMode;
-	import zest3d.shaders.enum.DstBlendMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
-	import zest3d.shaders.enum.SrcBlendMode;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
 	import zest3d.shaders.PixelShader;
@@ -28,15 +26,15 @@ package zest3d.effects.local
 	import zest3d.shaders.VisualPass;
 	import zest3d.shaders.VisualTechnique;
 	
-	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class GlassEffect extends VisualEffect implements IDisposable 
+	public class GlassEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 2 ];
+		public static const msAGALPRegisters: Array = [ 0 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
 		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
@@ -57,36 +55,29 @@ package zest3d.effects.local
 			null
 		];
 		
+		public static const msPRegisters: Array =
+		[
+			null,
+			msAGALPRegisters,
+			null,
+			null,
+			null
+		];
+		
 		public static const msVPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
-			"mov vt0, va1\n"+
-			"m33 vt0.xyz, vt0.xyz, vc6\n"+
-			"sub vt1, vc4, va0\n"+
-			"m33 vt1.xyz, vt1.xyz, vc6\n"+
-			"dp3 vt2, vt1, vt0\n"+
-			"add vt2, vt2, vt2\n"+
-			"mul vt2, vt0, vt2\n"+
-			"sub vt2, vt1, vt2\n"+
-			"neg vt2, vt2\n"+
-			"nrm vt2.xyz, vt2.xyz\n"+
-			"mov v0, vt2\n"+
-			"dp3 vt3, vt1, vt0\n"+
-			"mul vt3, vt3, vt0\n"+
-			"sub vt3, vt3, vt1\n"+
-			"mul vt3, vt3, vc5.y\n"+
-			"dp3 vt4, vt1, vt0\n"+
-			"mul vt4, vt4, vt4\n"+
-			"sub vt4, vc5.x, vt4\n"+
-			"mul vt4, vc5.z, vt4\n"+
-			"sub vt4, vc5.x, vt4\n"+
-			"sqt vt4, vt4\n"+
-			"mul vt4, vt4, vt0\n"+
-			"sub vt4, vt3, vt4\n"+
-			"nrm vt4.xyz, vt4.xyz\n"+
-			"mov v1, vt4\n"+
-			"m44 op, va0, vc0",
+			"m44 op va0 vc0 \n" +
+			"m44 vt0 va0 vc4 \n" +
+			"m33 vt1.xyz va1 vc4 \n" +
+			"sub vt2 vc8 vt0 \n" +
+			"nrm vt2.xyz vt2 \n" +
+			"mov v0 vt1.xyz \n" +
+			"mov v1 vt2 \n" +
+			"dp3 vt3 vt2.xyz vt1.xyz \n" +
+			"sub vt3 vc9.w vt3 \n" +
+			"mov v2 vt3",
 			// AGAL_2_0
 			"",
 			"",
@@ -97,44 +88,63 @@ package zest3d.effects.local
 		[
 			"",
 			// AGAL_1_0
-			"tex ft0,v0.xyz,fs0 <2d,clamp,linear>\n"+
-			"tex ft1,v1.xyz,fs0 <2d,clamp,linear>\n"+
-			"sub ft3, ft0, ft1\n"+
-			"mul ft3, ft3, fc0\n"+
-			"add ft3, ft3, ft1\n"+
-			"mov ft3.w, fc0.w\n"+
-			"mov oc, ft3",
+			"dp3 ft0 v1 v0 \n" +
+			"add ft0 ft0 ft0 \n" +
+			"mul ft0 v0 ft0 \n" +
+			"sub ft0 v1 ft0 \n" +
+			"neg ft0 ft0 \n" +
+			"nrm ft0.xyz ft0 \n" +
+			"dp3 ft2 v1 v0 \n" +
+			"mul ft2 ft2 v0 \n" +
+			"sub ft2 ft2 v1 \n" +
+			"mul ft2 ft2 fc0.x \n" +
+			"dp3 ft1 v1 v0 \n" +
+			"mul ft1 ft1 ft1 \n" +
+			"sub ft1 fc0.w ft1 \n" +
+			"mul ft1 fc0.y ft1 \n" +
+			"sub ft1 fc0.w ft1 \n" +
+			"sqt ft1 ft1 \n" +
+			"mul ft1 ft1 v0 \n" +
+			"sub ft1 ft2 ft1 \n" +
+			"tex ft0 ft0 fs0 <cube,linear,mipnearest,clamp,dxt1> \n" +
+			"tex ft1 ft1 fs0 <cube,linear,mipnearest,clamp,dxt1> \n" +
+			"sub ft2 ft0 ft1 \n" +
+			"mul ft2 ft2 v2 \n" +
+			"add ft2 ft2 ft1 \n" +
+			"mov oc ft2",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
 		
-		public function GlassEffect( filter: SamplerFilterType = null,
-										 coord0: SamplerCoordinateType = null,
-										 coord1: SamplerCoordinateType = null) 
+		private var _visualEffect:VisualEffect;
+		
+		public function GlassEffect( texture: TextureCube, filter:SamplerFilterType = null,
+										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.Reflection", 2, 1, 4, 0, true );
+			filter ||= SamplerFilterType.LINEAR;
+			coord0 ||= SamplerCoordinateType.CLAMP;
+			coord1 ||= SamplerCoordinateType.CLAMP;
+			
+			var vShader: VertexShader = new VertexShader( "Zest3D.Glass", 2, 1, 4, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT3, VariableSemanticType.NORMAL );
+			vShader.setInput( 1, "modelNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
-			vShader.setConstant( 1, "CameraModelPosition", 1 );
-			vShader.setConstant( 2, "Refraction", 1 );
-			vShader.setConstant( 3, "VWMatrix", 4 );
-			
+			vShader.setConstant( 1, "VWMatrix", 4 );
+			vShader.setConstant( 2, "CameraModelPosition", 1 );
+			vShader.setConstant( 3, "Ones", 1 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.Reflection", 1, 1, 1, 1, true );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Glass", 1, 1, 1, 1, false );
 			pShader.setInput( 0, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setConstant( 0, "Reflection", 1 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setConstant( 0, "rr2", 1 );
+			pShader.setBaseRegisters( msPRegisters );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.CUBE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -153,66 +163,40 @@ package zest3d.effects.local
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
-		}
-		
-		public function createInstance( texture: Texture2D, reflection: Number, refraction: Number, alpha: Number ): VisualEffectInstance
-		{
 			
-			var refractionFloat: ShaderFloat = new ShaderFloat( 1 );
-			refractionFloat.setRegister( 0, [ 1, refraction, refraction * refraction, 1 ] );
+			_visualEffect = new VisualEffect();
+			_visualEffect.insertTechnique( technique );
 			
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setVertexConstantByHandle( 0, 1, new CameraModelPositionConstant() );
-			instance.setVertexConstantByHandle( 0, 2, refractionFloat );
-			instance.setVertexConstantByHandle( 0, 3, new VWMatrixConstant() );
+			super( _visualEffect, 0 );
 			
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
+			setVertexConstantByHandle( 0, 1, new WMatrixConstant() );
+			setVertexConstantByHandle( 0, 2, new CameraWorldPositionConstant() );
 			
+			var ones:ShaderFloat = new ShaderFloat( 1 );
+			ones.setRegister( 0, [ 1, 1, 1, 1 ] );
+			setVertexConstantByHandle( 0, 3, ones );
 			
-			var reflectionFloat: ShaderFloat = new ShaderFloat( 1 );
-			reflectionFloat.setRegister( 0, [ reflection, reflection, reflection, alpha] );
+			setPixelTextureByHandle( 0, 0, texture );
 			
-			instance.setPixelConstantByHandle( 0, 0, reflectionFloat );
+			// frag constants
+			var rr2:ShaderFloat = new ShaderFloat(1);
+			rr2.setRegister( 0, [ 0.9, 0.81, 0, 1 ] );
+			setPixelConstantByHandle( 0, 0, rr2 );
 			
-			instance.setPixelTextureByHandle( 0, 0, texture );
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
-			var filter: SamplerFilterType = getPixelShader( 0, 0 ).getFilter( 0 );
-			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();
 			}
-			
-			return instance;
 		}
 		
-		public static function createUniqueInstance( texture: Texture2D, filter:SamplerFilterType,
-													 coord0: SamplerCoordinateType, coord1: SamplerCoordinateType,
-													 reflection: Number = 0.5, refraction: Number = 0.1, alpha: Number = 0.5 ): VisualEffectInstance
+		public function get visualEffect():VisualEffect 
 		{
-			var effect: GlassEffect = new GlassEffect();
-			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
-			
-			
-			var alphaState: AlphaState = effect.getAlphaState( 0, 0 );
-			alphaState.blendEnabled = true;
-			alphaState.srcBlend = SrcBlendMode.SRC_ALPHA;
-			alphaState.dstBlend = DstBlendMode.ONE_MINUS_SRC_ALPHA;
-			alphaState.compareEnabled = true;
-			alphaState.compare = CompareMode.ALWAYS;
-			
-			var cullingState: CullState = effect.getCullState( 0, 0 );
-			cullingState.enabled = false;
-			
-			
-			
-			return effect.createInstance( texture, reflection, refraction, alpha );
+			return _visualEffect;
 		}
 		
 	}

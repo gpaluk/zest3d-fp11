@@ -1,16 +1,12 @@
 package zest3d.effects.local 
 {
-	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.resources.TextureCube;
 	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaderfloats.matrix.VWMatrixConstant;
-	import zest3d.shaders.enum.CompareMode;
-	import zest3d.shaders.enum.DstBlendMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
-	import zest3d.shaders.enum.SrcBlendMode;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
 	import zest3d.shaders.PixelShader;
@@ -26,15 +22,14 @@ package zest3d.effects.local
 	import zest3d.shaders.VisualPass;
 	import zest3d.shaders.VisualTechnique;
 	
-	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class ReflectionEffect extends VisualEffect implements IDisposable 
+	public class ReflectionEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
 		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
@@ -89,13 +84,15 @@ package zest3d.effects.local
 			""
 		];
 		
-		public function ReflectionEffect( filter: SamplerFilterType = null,
-										 coord0: SamplerCoordinateType = null,
-										 coord1: SamplerCoordinateType = null) 
+		private var _visualEffect:VisualEffect;
+		
+		public function ReflectionEffect( texture: TextureCube, filter:SamplerFilterType = null,
+										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
+			
 			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
+			coord0 ||= SamplerCoordinateType.CLAMP;
+			coord1 ||= SamplerCoordinateType.CLAMP;
 			
 			var vShader: VertexShader = new VertexShader( "Zest3D.Reflection", 2, 1, 3, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
@@ -129,43 +126,31 @@ package zest3d.effects.local
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
-		}
-		
-		public function createInstance( texture: TextureCube ): VisualEffectInstance
-		{
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setVertexConstantByHandle( 0, 1, new CameraModelPositionConstant() );
-			instance.setVertexConstantByHandle( 0, 2, new VWMatrixConstant() );
-			instance.setPixelTextureByHandle( 0, 0, texture );
 			
-			var filter: SamplerFilterType = getPixelShader( 0, 0 ).getFilter( 0 );
+			_visualEffect = new VisualEffect();
+			_visualEffect.insertTechnique( technique );
 			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			super( _visualEffect, 0 );
+			
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
+			setVertexConstantByHandle( 0, 1, new CameraModelPositionConstant() );
+			setVertexConstantByHandle( 0, 2, new VWMatrixConstant() );
+			setPixelTextureByHandle( 0, 0, texture );
+			
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
+			
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();
 			}
 			
-			return instance;
 		}
 		
-		public static function create( texture: TextureCube, filter:SamplerFilterType = null,
-										coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ): VisualEffectInstance
+		public function get visualEffect():VisualEffect 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP;
-			coord1 ||= SamplerCoordinateType.CLAMP;
-			
-			var effect: ReflectionEffect = new ReflectionEffect();
-			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
-			
-			return effect.createInstance( texture );
+			return _visualEffect;
 		}
 		
 	}

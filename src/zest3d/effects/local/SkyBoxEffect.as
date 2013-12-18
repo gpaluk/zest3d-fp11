@@ -1,8 +1,10 @@
 package zest3d.effects.local 
 {
-	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture2D;
+	import zest3d.resources.TextureCube;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
+	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaderfloats.matrix.WMatrixConstant;
+	import zest3d.shaders.enum.CompareMode;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
@@ -23,13 +25,13 @@ package zest3d.effects.local
 	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class SkyBoxEffect extends VisualEffect implements IDisposable 
+	public class SkyboxEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
 		[
@@ -53,51 +55,47 @@ package zest3d.effects.local
 		[
 			"",
 			// AGAL_1_0
-			"m44 op, va0, vc0 \n" +
-			"mov v0, va1",
+			"m44 vt0, va0, vc0 \n" +
+			"mov op, vt0.xyww \n" +
+			"neg v0, va0 \n",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
-		
-		
-		// TODO rebuild to accept changes to sampler (this is just an example)
-		
+			
 		public static const msPPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
-			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,repeat,linear,miplinear> \n" +
-			"mov oc, ft1",
+			//"mov ft0, v0 \n" +
+			"tex ft0, v0, fs0 <cube,clamp,linear,miplinear,dxt1> \n" +
+			"mov oc, ft0",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
 		
-		public function SkyBoxEffect( filter: SamplerFilterType = null,
-										 coord0: SamplerCoordinateType = null,
-										 coord1: SamplerCoordinateType = null ) 
+		public function SkyboxEffect( texture: TextureCube, filter:SamplerFilterType = null,
+									  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			
 			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.REPEAT;
-			coord1 ||= SamplerCoordinateType.REPEAT;
+			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
+			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.Skybox", 1, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.MaterialTexture", 1, 1, 0, 1, false );
-			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Skybox", 1, 1, 0, 1, false );
+			pShader.setInput( 0, "vertexPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
+			pShader.setSampler( 0, "BaseSampler", SamplerType.CUBE );
 			pShader.setFilter( 0, filter );
 			pShader.setCoordinate( 0, 0, coord0 );
 			pShader.setCoordinate( 0, 1, coord1 );
@@ -110,51 +108,29 @@ package zest3d.effects.local
 			pass.alphaState = new AlphaState();
 			pass.cullState = new CullState();
 			pass.depthState = new DepthState();
-			//pass.depthState.enabled = false;
 			pass.offsetState = new OffsetState();
 			pass.stencilState = new StencilState();
 			pass.wireState = new WireState();
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
 			
-		}
-		
-		override public function dispose():void 
-		{
-			super.dispose();
-		}
-		
-		public function createInstance( texture: Texture2D ): VisualEffectInstance
-		{
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setPixelTextureByHandle( 0, 0, texture );
+			var visualEffect:VisualEffect = new VisualEffect();
+			visualEffect.insertTechnique( technique );
 			
-			var filter: SamplerFilterType = getPixelShader( 0, 0 ).getFilter( 0 );
+			super( visualEffect, 0 );
 			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
+			setPixelTextureByHandle( 0, 0, texture );
+			
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
+			
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();
 			}
-			
-			return instance;
 		}
-		
-		public static function createUniqueInstance( texture: Texture2D ): VisualEffectInstance
-		{
-			var effect: SkyBoxEffect = new SkyBoxEffect();
-			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, SamplerFilterType.LINEAR );
-			pShader.setCoordinate( 0, 0, SamplerCoordinateType.REPEAT );
-			pShader.setCoordinate( 0, 1, SamplerCoordinateType.REPEAT );
-			
-			return effect.createInstance( texture );
-		}
-		
 	}
-
 }

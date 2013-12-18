@@ -1,4 +1,4 @@
-package zest3d.effects 
+package zest3d.effects.local 
 {
 	import zest3d.resources.Texture2D;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
@@ -120,7 +120,7 @@ package zest3d.effects
 			
 			
 			var fc0:ShaderFloat = new ShaderFloat( 1 );
-			fc0.setRegister( 0, [ 1000, 1, 1, 1] ); // [0] should be the dMax value
+			fc0.setRegister( 0, [ 100, 1, 1, 1] ); // [0] should be the dMax value
 			
 			var fc1:ShaderFloat = new ShaderFloat( 1 );
 			fc1.setRegister( 0, [ 1, 255, 6025, 1681375 ] );

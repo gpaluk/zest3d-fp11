@@ -1,14 +1,8 @@
 package zest3d.effects.local 
 {
-	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.resources.Texture2D;
-	import zest3d.scenegraph.Material;
-	import zest3d.shaderfloats.material.MaterialDiffuseConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
-	import zest3d.shaderfloats.ShaderFloat;
-	import zest3d.shaders.enum.SamplerCoordinateType;
-	import zest3d.shaders.enum.SamplerFilterType;
-	import zest3d.shaders.enum.SamplerType;
+	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaderfloats.matrix.WMatrixConstant;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
 	import zest3d.shaders.PixelShader;
@@ -26,13 +20,13 @@ package zest3d.effects.local
 	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class FlatColorEffect extends VisualEffect implements IDisposable 
+	public class NormalEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAGALPRegisters: Array = [ 0, 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAGALPRegisters: Array = [ 0 ];
 		
 		public static const msVRegisters: Array =
 		[
@@ -56,41 +50,45 @@ package zest3d.effects.local
 		[
 			"",
 			// AGAL_1_0
-			"m44 op, va0, vc0 \n",
+			"m44 vt0 va0 vc0 \n" +
+			"mov op vt0 \n" +
+			
+			"m33 vt1.xyz va1 vc0 \n" +
+			"mov vt1.w va1.w \n" +
+			"mov v0 vt1",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
-		
-		
-		// TODO rebuild to accept changes to sampler (this is just an example)
 		
 		public static const msPPrograms: Array =
 		[
 			"",
-			// AGAL_1_0
-			"mov oc, fc0 \n",
+			// AGAL_1_0 
+			"mov oc v0",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
 		
-		public function FlatColorEffect( ) 
+		private var _visualEffect:VisualEffect;
+		
+		public function NormalEffect() 
 		{
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 1, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.NormalEffect", 2, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
+			vShader.setInput( 1, "modelNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.MaterialTexture", 0, 1, 1, 0, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.NormalEffect", 0, 1, 0, 0, false );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setConstant( 0, "MaterialDiffuse", 1 );
-			pShader.setBaseRegisters( msVRegisters );
+			pShader.setBaseRegisters( msPRegisters );
 			pShader.setPrograms( msPPrograms );
 			
 			var pass: VisualPass = new VisualPass();
@@ -105,32 +103,19 @@ package zest3d.effects.local
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
 			
+			_visualEffect = new VisualEffect();
+			_visualEffect.insertTechnique( technique );
+			
+			super( _visualEffect, 0 );
+			
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
 		}
 		
-		override public function dispose():void 
+		public function get visualEffect():VisualEffect 
 		{
-			super.dispose();
+			return _visualEffect;
 		}
-		
-		public function createInstance( material: Material ): VisualEffectInstance
-		{
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setPixelConstantByHandle( 0, 0, new MaterialDiffuseConstant( material ) );
-			
-			return instance;
-		}
-		
-		public static function createUniqueInstance( material: Material ): VisualEffectInstance
-		{
-			var effect: FlatColorEffect = new FlatColorEffect();
-			
-			return effect.createInstance( material );
-			
-		}
-		
 	}
 
 }

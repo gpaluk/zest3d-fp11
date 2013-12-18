@@ -1,10 +1,11 @@
-package zest3d.effects 
+package zest3d.effects.local 
 {
 	import zest3d.resources.Texture2D;
 	import zest3d.scenegraph.Light;
+	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
 	import zest3d.shaderfloats.light.LightAmbientConstant;
 	import zest3d.shaderfloats.light.LightModelPositionConstant;
-	import zest3d.shaderfloats.light.LightWorldPositionConstant;
+	import zest3d.shaderfloats.light.LightSpecularConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaderfloats.ShaderFloat;
 	import zest3d.shaders.enum.SamplerCoordinateType;
@@ -29,7 +30,7 @@ package zest3d.effects
 	 * ...
 	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class LambertTexture2DEffect extends VisualEffectInstance 
+	public class PhongTexture2DEffect extends VisualEffectInstance 
 	{
 		
 		public static const msAGALPRegisters: Array = [ 0 ];
@@ -70,7 +71,8 @@ package zest3d.effects
 			"m44 op, va0, vc0 \n" +
 			"mov v0, va1 \n" +
 			"mov v1, va2 \n" + 
-			"sub v2, vc4, va0",
+			"sub v2, vc4, va0 \n" +
+			"sub v3, va0, vc5",
 			// AGAL_2_0
 			"",
 			"",
@@ -82,12 +84,29 @@ package zest3d.effects
 			"",
 			// AGAL_1_0
 			"tex ft0, v0, fs0 <2d, repeat, linear, miplinear, dxt1> \n" +
+			
 			"nrm ft1.xyz, v1 \n" +		 			// normal FT1 = normalize (lerp_normal)
 			"nrm ft2.xyz, v2 \n" +		 			// lightVec FT2 = normalize (lerp_lightVec)
+			"nrm ft3.xyz, v3 \n" +		 			// viewVec FT3 = normalize (lerp_viewVec)
+			
 			"dp3 ft5.x, ft1.xyz, ft2.xyz \n" +	 	// FT5 = dot (normal, lightVec)
 			"max ft5.x, ft5.x, fc0.x \n" +	 		// FT5 = max (FT5, 0.0)
 			"add ft5, fc1, ft5.x \n" +		 		// FT5 = ambient + FT5
 			"mul ft0, ft0, ft5 \n" +
+			
+			// calculation of the reflection vector Reflect (-viewVec, normal)
+			"dp3 ft4.x, ft1.xyz ft3.xyz \n" +		// FT4 = dot (normal, viewVec)
+			"mul ft4 , ft1.xyz, ft4.x \n" +	 		// * = normal FT4
+			"add ft4, ft4, ft4 \n" +		 		// * FT4 = 2
+			"sub ft4, ft3.xyz, ft4 \n" +	 		// Reflect FT4 = viewVec - FT4
+			
+			// phong
+			"dp3 ft6.x, ft2.xyz, ft4.xyz \n" +		// FT6 = dot (lightVec, Reflect)
+			"max ft6.x, ft6.x, fc0.x \n" +			// FT6 = max (FT6, 0.0)
+			"pow ft6.x, ft6.x, fc2.w \n" +			// FT6 = Pow (FT6, SpecularPower)
+			"mul ft6, ft6.x, fc2.xyz \n" +			// * = FT6 specularLevel
+			"add ft0, ft0, ft6 \n" +
+			
 			"mov oc, ft0",
 			// AGAL_2_0
 			"",
@@ -95,7 +114,7 @@ package zest3d.effects
 			""
 		];
 		
-		public function LambertTexture2DEffect( texture:Texture2D, light:Light, filter:SamplerFilterType = null,
+		public function PhongTexture2DEffect( texture:Texture2D, light:Light, filter:SamplerFilterType = null,
 										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			
@@ -103,21 +122,23 @@ package zest3d.effects
 			coord0 ||= SamplerCoordinateType.CLAMP;
 			coord1 ||= SamplerCoordinateType.CLAMP;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.LambertTexture2D", 3, 1, 2, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.PhongTexture2D", 3, 1, 3, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setInput( 1, "modelTexCoords", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setInput( 2, "modelNormals", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setConstant( 1, "LightPosition", 1 );
+			vShader.setConstant( 2, "ViewVec", 1 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.LambertTexture2D", 2, 1, 2, 1, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.PhongTexture2D", 2, 1, 3, 1, false );
 			pShader.setInput( 0, "modelTexCoords", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			pShader.setInput( 1, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setConstant( 0, "Common", 1 );
 			pShader.setConstant( 1, "LightAmbient", 1 );
+			pShader.setConstant( 2, "spec", 1 );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
 			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
 			pShader.setFilter( 0, filter );
@@ -147,12 +168,14 @@ package zest3d.effects
 			
 			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
 			setVertexConstantByHandle( 0, 1, new LightModelPositionConstant( light ) );
+			setVertexConstantByHandle( 0, 2, new CameraModelPositionConstant( ) );
 			
 			var common:ShaderFloat = new ShaderFloat(1);
 			common.setRegister( 0, [ 0, 0.5, 1, 2 ] );
 			
 			setPixelConstantByHandle( 0, 0, common );
 			setPixelConstantByHandle( 0, 1, new LightAmbientConstant( light ) );
+			setPixelConstantByHandle( 0, 2, new LightSpecularConstant( light ) );
 			
 			setPixelTextureByHandle( 0, 0, texture );
 			

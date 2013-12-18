@@ -1,7 +1,14 @@
-package zest3d.effects 
+package zest3d.effects.local 
 {
-	import zest3d.resources.Texture2D;
+	import flash.filters.ShaderFilter;
+	import io.plugin.core.graphics.Color;
+	import zest3d.resources.TextureCube;
+	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
+	import zest3d.shaderfloats.camera.CameraWorldPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
+	import zest3d.shaderfloats.matrix.VWMatrixConstant;
+	import zest3d.shaderfloats.matrix.WMatrixConstant;
+	import zest3d.shaderfloats.ShaderFloat;
 	import zest3d.shaders.enum.SamplerCoordinateType;
 	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
@@ -24,25 +31,25 @@ package zest3d.effects
 	 * ...
 	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class Texture2DEffect extends VisualEffectInstance 
+	public class WireframeEffect extends VisualEffectInstance 
 	{
 		
+		public static const msAGALPRegisters: Array = [ 0 ];
 		public static const msAGALVRegisters: Array = [ 0 ];
-		public static const msAllPTextureUnits: Array = [ 0 ];
-		
-		public static const msPTextureUnits: Array =
-		[
-			null,
-			msAllPTextureUnits,
-			null,
-			null,
-			null
-		];
 		
 		public static const msVRegisters: Array =
 		[
 			null,
 			msAGALVRegisters,
+			null,
+			null,
+			null
+		];
+		
+		public static const msPRegisters: Array =
+		[
+			null,
+			msAGALPRegisters,
 			null,
 			null,
 			null
@@ -59,48 +66,45 @@ package zest3d.effects
 			"",
 			""
 		];
-		
-		
-		// TODO rebuild to accept changes to sampler (this is just an example)
-		
+			
 		public static const msPPrograms: Array =
 		[
 			"",
 			// AGAL_1_0
-			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs0 <2d,clamp,linear,miplinear,dxt1> \n" +
-			"mov oc, ft1",
+			"add ft0.x, v0.x,     v0.y     \n" +
+			"add ft0.y, v0.y,     v0.z     \n" +
+			"add ft0.z, v0.z,     v0.w     \n" +
+			"add ft0.w, v0.w,     v0.x     \n" +
+			"sub ft0,   ft0,      fc1.xxxx \n" +
+			"slt ft0,   ft0,      fc1.yyyy \n" +
+			"mul ft0.x, ft0.x,    ft0.y    \n" +
+			"mul ft0.x, ft0.x,    ft0.z    \n" +
+			"mul ft0.x, ft0.x,    ft0.w    \n" +
+			"sub ft0.x, fc1.x,    ft0.x    \n" +
+			"kil ft0.x \n" +
+			"mov oc, fc0",
 			// AGAL_2_0
 			"",
 			"",
 			""
 		];
 		
-		private var _visualEffect:VisualEffect;
-		
-		public function Texture2DEffect( texture:Texture2D, filter:SamplerFilterType = null,
-										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
+		public function WireframeEffect( color: Color, thickness:Number ) 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
-			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
-			
-			var vShader: VertexShader = new VertexShader( "Zest3D.Texture2DEffect", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.Wireframe", 2, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
-			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			vShader.setInput( 1, "modelWireBlend", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
 			vShader.setConstant( 0, "PVWMatrix", 4 );
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.Texture2DEffect", 1, 1, 0, 1, false );
-			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Wireframe", 1, 1, 2, 0, false );
+			pShader.setInput( 0, "vertexWireBlend", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
-			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
-			pShader.setTextureUnits( msPTextureUnits );
+			pShader.setConstant( 0, "color", 1 );
+			pShader.setConstant( 1, "thickness", 1 );
+			pShader.setBaseRegisters( msPRegisters );
 			pShader.setPrograms( msPPrograms );
 			
 			var pass: VisualPass = new VisualPass();
@@ -116,28 +120,26 @@ package zest3d.effects
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
 			
-			_visualEffect = new VisualEffect();
-			_visualEffect.insertTechnique( technique );
+			var visualEffect:VisualEffect = new VisualEffect();
+			visualEffect.insertTechnique( technique );
 			
-			super( _visualEffect, 0 );
+			super( visualEffect, 0 );
 			
+			///// vertex
 			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			setPixelTextureByHandle( 0, 0, texture );
 			
-			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
 			
-			if ( filterType != SamplerFilterType.NEAREST &&
-				 filterType != SamplerFilterType.LINEAR &&
-				 !texture.hasMipmaps )
-			{
-				texture.generateMipmaps();
-			}
-		}
-		
-		public function get visualEffect():VisualEffect 
-		{
-			return _visualEffect;
+			
+			///// fragment
+			// color
+			var col:ShaderFloat = new ShaderFloat(1);
+			col.setRegister( 0, [ 1, 1, 1, 1 ] );
+			setPixelConstantByHandle( 0, 0, col );
+			
+			// thickness
+			var vals:ShaderFloat = new ShaderFloat(1);
+			vals.setRegister( 0, [1 - 0.01, 0, 0, 0] );
+			setPixelConstantByHandle( 0, 1, vals );
 		}
 	}
-
 }

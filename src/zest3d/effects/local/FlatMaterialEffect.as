@@ -1,4 +1,4 @@
-package zest3d.effects 
+package zest3d.effects.local 
 {
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.scenegraph.Material;

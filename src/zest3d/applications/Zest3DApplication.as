@@ -35,7 +35,6 @@ package zest3d.applications
 		
 		private function onMouseWheel(e:MouseEvent):void
 		{
-			trace( e.delta );
 			if ( e.delta > 0 )
 			{
 				moveForward();
@@ -57,7 +56,7 @@ package zest3d.applications
 			
 			stage.addEventListener( Event.RESIZE, onResizeHandler );
 			
-			_camera.setFrustumFOV( 85, stage.stageWidth/stage.stageHeight, 0.01, 1000 );
+			_camera.setFrustumFOV( 70, stage.stageWidth/stage.stageHeight, 0.01, 1000 );
 			var camPosition: APoint = new APoint( 0, 0, -5 );
 			var camDVector: AVector = AVector.UNIT_Z;
 			var camUVector: AVector = AVector.UNIT_Y_NEGATIVE;

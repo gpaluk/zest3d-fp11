@@ -16,6 +16,7 @@ package zest3d.effects.global
 	import zest3d.shaders.enum.OperationType;
 	import zest3d.shaders.enum.SrcBlendMode;
 	import zest3d.shaders.states.AlphaState;
+	import zest3d.shaders.states.CullState;
 	import zest3d.shaders.states.DepthState;
 	import zest3d.shaders.states.StencilState;
 	
@@ -117,7 +118,7 @@ package zest3d.effects.global
 				renderer.drawVisual( _planes[ i ] );
 				
 				_depthState.compare = CompareMode.GEQUAL; // TODO check edit LEQUAL
-				renderer.setDepthRange( minDepth, maxDepth );
+				//renderer.setDepthRange( minDepth, maxDepth );
 				
 				var array: Array = getReflectionMatrixAndModelPlaneAt( i );
 				var reflection: HMatrix = array[ 0 ];
@@ -125,29 +126,30 @@ package zest3d.effects.global
 				
 				camera.previewMatrix = reflection;
 				
-				renderer.reverseCullOrder = true;
+				var c1:CullState = new CullState();
+				c1.ccwOrder = false;
 				
+				// TODO - This is HACKED, it needs the render states sorting out properly
+				renderer.overrideCullState = c1;
+				renderer.reverseCullOrder = true;
 				for ( j = 0; j < numVisible; ++j )
 				{
 					renderer.drawVisual( visible.getVisibleAt( j ) as Visual );
 				}
-				
+				c1.ccwOrder = true;
 				renderer.reverseCullOrder = false;
 				
 				camera.previewMatrix = HMatrix.IDENTITY;
 				
 				var saveAState: AlphaState = renderer.overrideAlphaState;
-				
 				renderer.overrideAlphaState = _alphaState;
 				
 				//_alphaState.blendEnabled = true;
 				//_alphaState.compareEnabled = true;
-				
 				//_alphaState.srcBlend = SrcBlendMode.ONE_MINUS_CONSTANT_ALPHA;
 				//_alphaState.dstBlend = DstBlendMode.CONSTANT_ALPHA; 
 				
 				_alphaState.constantColor = [ 1, 0, 0, _reflectances[ i ] ]; //TODO a constant alpha must be part of the shader
-				
 				
 				_stencilState.compare = CompareMode.EQUAL;
 				

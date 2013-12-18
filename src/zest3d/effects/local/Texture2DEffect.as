@@ -1,6 +1,5 @@
 package zest3d.effects.local 
 {
-	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.resources.Texture2D;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaders.enum.SamplerCoordinateType;
@@ -23,13 +22,13 @@ package zest3d.effects.local
 	
 	/**
 	 * ...
-	 * @author Gary Paluk
+	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class Texture2DEffect extends VisualEffect implements IDisposable 
+	public class Texture2DEffect extends VisualEffectInstance 
 	{
 		
-		public static const msAGALVRegisters: Array = [ 0, 1 ];
-		public static const msAllPTextureUnits: Array = [ 1 ];
+		public static const msAGALVRegisters: Array = [ 0 ];
+		public static const msAllPTextureUnits: Array = [ 0 ];
 		
 		public static const msPTextureUnits: Array =
 		[
@@ -69,7 +68,7 @@ package zest3d.effects.local
 			"",
 			// AGAL_1_0
 			"mov ft0, v0 \n" +
-			"tex ft1, ft0, fs1 <2d,clamp,linear,miplinear,dxt1> \n" +
+			"tex ft1, ft0, fs0 <2d,clamp,linear,miplinear,dxt1> \n" +
 			"mov oc, ft1",
 			// AGAL_2_0
 			"",
@@ -77,16 +76,16 @@ package zest3d.effects.local
 			""
 		];
 		
-		public function Texture2DEffect( filter: SamplerFilterType = null,
-										 coord0: SamplerCoordinateType = null,
-										 coord1: SamplerCoordinateType = null ) 
+		private var _visualEffect:VisualEffect;
+		
+		public function Texture2DEffect( texture:Texture2D, filter:SamplerFilterType = null,
+										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
-			
 			filter ||= SamplerFilterType.LINEAR;
 			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
 			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.MaterialTexture", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.Texture2DEffect", 2, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
@@ -94,7 +93,7 @@ package zest3d.effects.local
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.MaterialTexture", 1, 1, 0, 1, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.Texture2DEffect", 1, 1, 0, 1, false );
 			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
 			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );
@@ -116,49 +115,29 @@ package zest3d.effects.local
 			
 			var technique: VisualTechnique = new VisualTechnique();
 			technique.insertPass( pass );
-			insertTechnique( technique );
 			
-		}
-		
-		override public function dispose():void 
-		{
-			super.dispose();
-		}
-		
-		public function createInstance( texture: Texture2D ): VisualEffectInstance
-		{
-			var instance: VisualEffectInstance = new VisualEffectInstance( this, 0 );
-			instance.setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			instance.setPixelTextureByHandle( 0, 0, texture );
+			_visualEffect = new VisualEffect();
+			_visualEffect.insertTechnique( technique );
 			
-			var filter: SamplerFilterType = getPixelShader( 0, 0 ).getFilter( 0 );
+			super( _visualEffect, 0 );
 			
-			if ( filter != SamplerFilterType.NEAREST &&
-				 filter != SamplerFilterType.LINEAR &&
+			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
+			setPixelTextureByHandle( 0, 0, texture );
+			
+			var filterType: SamplerFilterType = visualEffect.getPixelShader( 0, 0 ).getFilter( 0 );
+			
+			if ( filterType != SamplerFilterType.NEAREST &&
+				 filterType != SamplerFilterType.LINEAR &&
 				 !texture.hasMipmaps )
 			{
 				texture.generateMipmaps();
 			}
-			
-			return instance;
 		}
 		
-		public static function create( texture: Texture2D, filter:SamplerFilterType = null,
-													 coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ): VisualEffectInstance
+		public function get visualEffect():VisualEffect 
 		{
-			filter ||= SamplerFilterType.LINEAR;
-			coord0 ||= SamplerCoordinateType.CLAMP;
-			coord1 ||= SamplerCoordinateType.CLAMP;
-			
-			var effect: Texture2DEffect = new Texture2DEffect();
-			var pShader: PixelShader = effect.getPixelShader( 0, 0 );
-			pShader.setFilter( 0, filter );
-			pShader.setCoordinate( 0, 0, coord0 );
-			pShader.setCoordinate( 0, 1, coord1 );
-			
-			return effect.createInstance( texture );
+			return _visualEffect;
 		}
-		
 	}
 
 }

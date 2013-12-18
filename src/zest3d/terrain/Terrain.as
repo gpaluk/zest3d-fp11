@@ -42,7 +42,7 @@ package zest3d.terrain
 			_spacing = 1;
 			_minElevation = 1;
 			_maxElevation = 0xFFFFFF;
-			_size = 17;
+			_size = 33; // valid sizes; 5, 9, 17, 33, 65, 129
 			
 			// loads header data... TODO investigate the linkage of file from the heightName
 			

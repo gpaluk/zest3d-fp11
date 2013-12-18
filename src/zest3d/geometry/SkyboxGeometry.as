@@ -1,6 +1,6 @@
 package zest3d.geometry 
 {
-	import zest3d.effects.SkyboxEffect;
+	import zest3d.effects.local.SkyboxEffect;
 	import zest3d.primitives.CubePrimitive;
 	import zest3d.primitives.StandardMesh;
 	import zest3d.resources.enum.AttributeType;
