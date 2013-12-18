@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -11,7 +11,6 @@
 package zest3d.shaderfloats.camera 
 {
 	import io.plugin.core.interfaces.IDisposable;
-	import io.plugin.math.algebra.APoint;
 	import zest3d.scenegraph.Camera;
 	import zest3d.scenegraph.Visual;
 	import zest3d.shaderfloats.ShaderFloat;

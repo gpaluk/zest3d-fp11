@@ -1,3 +1,13 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.renderers 
 {
 	import flash.utils.Dictionary;
@@ -11,11 +21,9 @@ package zest3d.renderers
 	import zest3d.renderers.interfaces.IIndexBuffer;
 	import zest3d.renderers.interfaces.IPixelShader;
 	import zest3d.renderers.interfaces.IRenderTarget;
-	//import zest3d.renderers.interfaces.ITexture1D;
 	import zest3d.renderers.interfaces.ITexture2D;
 	import zest3d.renderers.interfaces.ITexture3D;
 	import zest3d.renderers.interfaces.ITextureCube;
-	import zest3d.renderers.interfaces.ITextureRectangle;
 	import zest3d.renderers.interfaces.IVertexBuffer;
 	import zest3d.renderers.interfaces.IVertexFormat;
 	import zest3d.renderers.interfaces.IVertexShader;
@@ -23,7 +31,6 @@ package zest3d.renderers
 	import zest3d.resources.enum.TextureFormat;
 	import zest3d.resources.IndexBuffer;
 	import zest3d.resources.RenderTarget;
-	//import zest3d.resources.Texture1D;
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
 	import zest3d.resources.TextureCube;
@@ -44,6 +51,8 @@ package zest3d.renderers
 	import zest3d.shaders.VertexShader;
 	import zest3d.shaders.VisualEffectInstance;
 	import zest3d.shaders.VisualPass;
+	//import zest3d.renderers.interfaces.ITexture1D;
+	//import zest3d.resources.Texture1D;
 	
 	/**
 	 * ...

@@ -1,12 +1,18 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.terrain 
 {
-	
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.core.system.Assert;
 	import zest3d.primitives.StandardMesh;
-	import zest3d.renderers.Renderer;
-	import zest3d.resources.IndexBuffer;
-	import zest3d.resources.VertexBuffer;
 	import zest3d.resources.VertexBufferAccessor;
 	import zest3d.resources.VertexFormat;
 	import zest3d.scenegraph.enum.UpdateType;

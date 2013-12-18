@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,26 +10,19 @@
  */
 package zest3d.renderers.agal.pdr 
 {
-	import flash.display.Stage;
 	import flash.display3D.Context3D;
-	import flash.display3D.Context3DMipFilter;
-	import flash.display3D.Context3DTextureFilter;
-	import flash.display3D.Context3DWrapMode;
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.renderers.agal.AGALMapping;
-	import zest3d.renderers.agal.AGALRenderer;
 	import zest3d.renderers.agal.AGALSamplerState;
 	import zest3d.renderers.Renderer;
-	import zest3d.resources.enum.TextureType;
-	import zest3d.resources.TextureBase;
 	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture3D;
+	import zest3d.resources.TextureBase;
 	import zest3d.resources.TextureCube;
 	import zest3d.resources.TextureRectangle;
-	import zest3d.shaders.enum.SamplerFilterType;
 	import zest3d.shaders.enum.SamplerType;
-	import zest3d.shaders.ShaderParameters;
 	import zest3d.shaders.Shader;
+	import zest3d.shaders.ShaderParameters;
 	/**
 	 * ...
 	 * @author Gary Paluk

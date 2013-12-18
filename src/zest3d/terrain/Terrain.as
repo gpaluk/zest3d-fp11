@@ -1,3 +1,13 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.terrain 
 {
 	import io.plugin.core.errors.IllegalArgumentError;
@@ -6,8 +16,6 @@ package zest3d.terrain
 	import io.plugin.math.algebra.AVector;
 	import zest3d.resources.VertexFormat;
 	import zest3d.scenegraph.Camera;
-	import zest3d.scenegraph.enum.CullingType;
-	import zest3d.scenegraph.enum.UpdateType;
 	import zest3d.scenegraph.Node;
 	
 	/**

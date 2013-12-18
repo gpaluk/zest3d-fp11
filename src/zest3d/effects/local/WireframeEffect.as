@@ -1,17 +1,18 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.effects.local 
 {
-	import flash.filters.ShaderFilter;
 	import io.plugin.core.graphics.Color;
-	import zest3d.resources.TextureCube;
-	import zest3d.shaderfloats.camera.CameraModelPositionConstant;
-	import zest3d.shaderfloats.camera.CameraWorldPositionConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
-	import zest3d.shaderfloats.matrix.VWMatrixConstant;
-	import zest3d.shaderfloats.matrix.WMatrixConstant;
 	import zest3d.shaderfloats.ShaderFloat;
-	import zest3d.shaders.enum.SamplerCoordinateType;
-	import zest3d.shaders.enum.SamplerFilterType;
-	import zest3d.shaders.enum.SamplerType;
 	import zest3d.shaders.enum.VariableSemanticType;
 	import zest3d.shaders.enum.VariableType;
 	import zest3d.shaders.PixelShader;

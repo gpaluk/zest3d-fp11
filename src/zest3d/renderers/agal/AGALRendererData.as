@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -14,12 +14,6 @@ package zest3d.renderers.agal
 	import flash.display3D.Context3D;
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.resources.enum.TextureFormat;
-	import zest3d.shaders.states.AlphaState;
-	import zest3d.shaders.states.CullState;
-	import zest3d.shaders.states.DepthState;
-	import zest3d.shaders.states.OffsetState;
-	import zest3d.shaders.states.StencilState;
-	import zest3d.shaders.states.WireState;
 	
 	/**
 	 * ...

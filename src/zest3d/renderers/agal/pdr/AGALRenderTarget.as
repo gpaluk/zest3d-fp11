@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,12 +10,10 @@
  */
 package zest3d.renderers.agal.pdr 
 {
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display3D.Context3DTextureFormat;
 	import flash.display3D.textures.RectangleTexture;
 	import flash.display3D.textures.Texture;
-	import flash.display3D.textures.TextureBase;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;

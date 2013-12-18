@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -12,11 +12,7 @@ package zest3d.resources
 {
 	//import br.com.stimuli.loading.BulkLoader;
 	//import br.com.stimuli.loading.BulkProgressEvent;
-	import flash.display.Bitmap;
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	import flash.utils.Endian;
 	import io.plugin.core.interfaces.IDisposable;

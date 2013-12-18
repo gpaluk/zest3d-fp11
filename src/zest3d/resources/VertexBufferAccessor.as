@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -12,7 +12,6 @@ package zest3d.resources
 {
 	import flash.utils.ByteArray;
 	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.renderers.Renderer;
 	import zest3d.resources.enum.AttributeType;
 	import zest3d.resources.enum.AttributeUsageType;
 	import zest3d.scenegraph.Visual;

@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,7 +10,6 @@
  */
 package zest3d.renderers.agal.pdr 
 {
-	import com.adobe.utils.AGALMacroAssembler;
 	import com.adobe.utils.extended.AGALMiniAssembler;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DProgramType;
@@ -18,7 +17,6 @@ package zest3d.renderers.agal.pdr
 	import flash.utils.ByteArray;
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.renderers.agal.AGALRenderer;
-	import zest3d.renderers.agal.AGALRendererData;
 	import zest3d.renderers.interfaces.IPixelShader;
 	import zest3d.renderers.Renderer;
 	import zest3d.shaders.enum.PixelShaderProfileType;

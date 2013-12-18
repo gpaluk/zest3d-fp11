@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,23 +10,16 @@
  */
 package zest3d.renderers.agal.pdr 
 {
-	import flash.display.BitmapData;
 	import flash.display3D.Context3D;
-	import flash.display3D.Context3DTextureFormat;
-	import flash.display3D.textures.CubeTexture;
 	import flash.display3D.textures.Texture;
-	import flash.display3D.textures.TextureBase;
-	import flash.geom.Rectangle;
 	import io.plugin.core.interfaces.IDisposable;
 	import zest3d.renderers.agal.AGALMapping;
 	import zest3d.renderers.agal.AGALRenderer;
-	import zest3d.renderers.agal.AGALSamplerState;
 	import zest3d.renderers.interfaces.ITexture2D;
 	import zest3d.renderers.Renderer;
 	import zest3d.resources.enum.BufferLockingType;
 	import zest3d.resources.enum.TextureFormat;
 	import zest3d.resources.Texture2D;
-	import zest3d.resources.TextureCube;
 	
 	/**
 	 * ...

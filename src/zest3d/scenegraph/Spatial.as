@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -12,8 +12,6 @@ package zest3d.scenegraph
 {
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.math.algebra.APoint;
-	import io.plugin.math.algebra.AVector;
-	import io.plugin.math.algebra.AxisAngle;
 	import io.plugin.math.algebra.HMatrix;
 	import zest3d.controllers.ControlledObject;
 	import zest3d.datatypes.Bound;

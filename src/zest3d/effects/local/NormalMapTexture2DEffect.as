@@ -1,6 +1,15 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.effects.local 
 {
-	import zest3d.resources.Texture2D;
 	import zest3d.resources.Texture2D;
 	import zest3d.scenegraph.Light;
 	import zest3d.shaderfloats.camera.CameraModelPositionConstant;

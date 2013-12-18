@@ -1,8 +1,17 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.effects.global 
 {
 	import io.plugin.core.interfaces.IDisposable;
 	import io.plugin.math.algebra.APoint;
-	import io.plugin.math.algebra.AVector;
 	import io.plugin.math.algebra.HMatrix;
 	import io.plugin.math.algebra.HPlane;
 	import zest3d.renderers.Renderer;
@@ -12,9 +21,7 @@ package zest3d.effects.global
 	import zest3d.scenegraph.VisibleSet;
 	import zest3d.scenegraph.Visual;
 	import zest3d.shaders.enum.CompareMode;
-	import zest3d.shaders.enum.DstBlendMode;
 	import zest3d.shaders.enum.OperationType;
-	import zest3d.shaders.enum.SrcBlendMode;
 	import zest3d.shaders.states.AlphaState;
 	import zest3d.shaders.states.CullState;
 	import zest3d.shaders.states.DepthState;

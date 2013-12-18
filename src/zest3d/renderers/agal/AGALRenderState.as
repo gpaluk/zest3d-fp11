@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,21 +10,18 @@
  */
 package zest3d.renderers.agal 
 {
-	import flash.display3D.Context3DStencilAction;
-	import io.plugin.core.interfaces.IDisposable;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DBlendFactor;
 	import flash.display3D.Context3DCompareMode;
 	import flash.display3D.Context3DTriangleFace;
 	import io.plugin.core.interfaces.IDisposable;
-	import zest3d.shaders.enum.CompareMode;
+	import zest3d.renderers.agal.AGALMapping;
 	import zest3d.shaders.states.AlphaState;
 	import zest3d.shaders.states.CullState;
 	import zest3d.shaders.states.DepthState;
 	import zest3d.shaders.states.OffsetState;
 	import zest3d.shaders.states.StencilState;
 	import zest3d.shaders.states.WireState;
-	import zest3d.renderers.agal.AGALMapping;
 	
 	/**
 	 * ...

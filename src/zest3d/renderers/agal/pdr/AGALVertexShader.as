@@ -1,6 +1,6 @@
 /**
  * Plugin.IO - http://www.plugin.io
- * Copyright (c) 2011-2012
+ * Copyright (c) 2013
  *
  * Geometric Tools, LLC
  * Copyright (c) 1998-2012
@@ -10,7 +10,6 @@
  */
 package zest3d.renderers.agal.pdr 
 {
-	import com.adobe.utils.AGALMacroAssembler;
 	import com.adobe.utils.extended.AGALMiniAssembler;
 	import flash.display3D.Context3D;
 	import flash.display3D.Context3DProgramType;

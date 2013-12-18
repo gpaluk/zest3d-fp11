@@ -1,10 +1,19 @@
+/**
+ * Plugin.IO - http://www.plugin.io
+ * Copyright (c) 2013
+ *
+ * Geometric Tools, LLC
+ * Copyright (c) 1998-2012
+ * 
+ * Distributed under the Boost Software License, Version 1.0.
+ * http://www.boost.org/LICENSE_1_0.txt
+ */
 package zest3d.scenegraph 
 {
 	import flash.utils.ByteArray;
 	import io.plugin.core.system.Assert;
 	import io.plugin.math.algebra.APoint;
 	import io.plugin.math.algebra.AVector;
-	import zest3d.datatypes.Bound;
 	import zest3d.renderers.Renderer;
 	import zest3d.resources.IndexBuffer;
 	import zest3d.resources.VertexBuffer;
