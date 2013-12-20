@@ -20,6 +20,7 @@ package zest3d.applications
 	import io.plugin.math.algebra.APoint;
 	import io.plugin.math.algebra.AVector;
 	import zest3d.geometry.SkyboxGeometry;
+	import zest3d.scenegraph.Camera;
 	import zest3d.scenegraph.Culler;
 	import zest3d.scenegraph.Node;
 	
@@ -159,7 +160,7 @@ package zest3d.applications
 			}
 		}
 		
-		public function initialize(): void
+		protected function initialize(): void
 		{
 			// hook
 		}
@@ -182,8 +183,16 @@ package zest3d.applications
 		public function set skybox( skybox:SkyboxGeometry ):void
 		{
 			_skybox = skybox;
-			_skybox.camera = _renderer.camera;
-			//_skybox.update();
+		}
+		
+		public function get camera():Camera
+		{
+			return _camera;
+		}
+		
+		public function set camera( camera:Camera ):void
+		{
+			_camera = camera;
 		}
 	}
 }

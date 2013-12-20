@@ -142,7 +142,6 @@ package zest3d.controllers
 		
 		override public function dispose():void 
 		{
-			
 			_rotations = null;
 			_translations = null;
 			_scales = null;
@@ -371,6 +370,7 @@ package zest3d.controllers
 		
 		protected function getScale( normTime: Number, i0: int, i1: int ): Number
 		{
+			trace( normTime );
 			return _scales[ i0 ] + normTime * ( _scales[ i1 ] - _scales[ i0 ] );
 		}
 		

@@ -11,7 +11,7 @@
 package zest3d.geometry 
 {
 	import flash.utils.ByteArray;
-	import zest3d.effects.local.Texture2DEffect;
+	import zest3d.effects.local.TextureEffect;
 	import zest3d.resources.enum.AttributeType;
 	import zest3d.resources.enum.AttributeUsageType;
 	import zest3d.resources.VertexBuffer;
@@ -30,7 +30,7 @@ package zest3d.geometry
 	{
 		
 		// TODO... create Particle geometry specific shaders and set states in there.
-		public function ParticleGeometry( effect:Texture2DEffect, numParticles:int, positionSizes:ByteArray, sizeAdjust:Number = 1 ) 
+		public function ParticleGeometry( effect:TextureEffect, numParticles:int, positionSizes:ByteArray, sizeAdjust:Number = 1 ) 
 		{
 			this.effect = effect;
 			

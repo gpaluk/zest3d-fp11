@@ -40,7 +40,7 @@ package zest3d.effects.local
 	 * ...
 	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class CartoonTexture2DEffect extends VisualEffectInstance 
+	public class CartoonEffect extends VisualEffectInstance 
 	{
 		
 		public static const msAGALPRegisters: Array = [ 0 ];
@@ -110,15 +110,15 @@ package zest3d.effects.local
 			""
 		];
 		
-		public function CartoonTexture2DEffect( texture:Texture2D, gradient:Texture2D, light:Light, filter:SamplerFilterType = null,
-										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
+		public function CartoonEffect( texture:Texture2D, gradient:Texture2D, light:Light, filter:SamplerFilterType = null,
+								coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			
 			filter ||= SamplerFilterType.LINEAR;
 			coord0 ||= SamplerCoordinateType.CLAMP;
 			coord1 ||= SamplerCoordinateType.CLAMP;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.CartoonTexture2D", 3, 1, 3, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.CartoonEffect", 3, 1, 3, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setInput( 1, "modelTexCoords", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setInput( 2, "modelNormals", VariableType.FLOAT3, VariableSemanticType.NORMAL );
@@ -129,7 +129,7 @@ package zest3d.effects.local
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.CartoonTexture2D", 2, 1, 3, 2, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.CartoonEffect", 2, 1, 3, 2, false );
 			pShader.setInput( 0, "modelTexCoords", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			pShader.setInput( 1, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setConstant( 0, "Common", 1 );

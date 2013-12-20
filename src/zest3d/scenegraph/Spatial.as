@@ -154,11 +154,20 @@ package zest3d.scenegraph
 			x = p.x;
 			y = p.y;
 			z = p.z;
+			_translateNeedsUpdate = true;
 		}
 		
 		public function get position( ):APoint
 		{
 			return localTransform.translate;
+		}
+		
+		public function translate( x:Number, y:Number, z:Number ):void
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			_translateNeedsUpdate = true;
 		}
 		
 		public function set x( value: Number ): void

@@ -34,7 +34,7 @@ package zest3d.effects.local
 	 * ...
 	 * @author Gary Paluk - http://www.plugin.io
 	 */
-	public class Texture2DEffect extends VisualEffectInstance 
+	public class TextureEffect extends VisualEffectInstance 
 	{
 		
 		public static const msAGALVRegisters: Array = [ 0 ];
@@ -88,14 +88,14 @@ package zest3d.effects.local
 		
 		private var _visualEffect:VisualEffect;
 		
-		public function Texture2DEffect( texture:Texture2D, filter:SamplerFilterType = null,
+		public function TextureEffect( texture:Texture2D, filter:SamplerFilterType = null,
 										  coord0: SamplerCoordinateType = null, coord1: SamplerCoordinateType = null ) 
 		{
 			filter ||= SamplerFilterType.LINEAR;
 			coord0 ||= SamplerCoordinateType.CLAMP_EDGE;
 			coord1 ||= SamplerCoordinateType.CLAMP_EDGE;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.Texture2DEffect", 2, 1, 1, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.TextureEffect", 2, 1, 1, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setInput( 1, "modelTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
@@ -103,7 +103,7 @@ package zest3d.effects.local
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.Texture2DEffect", 1, 1, 0, 1, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.TextureEffect", 1, 1, 0, 1, false );
 			pShader.setInput( 0, "vertexTCoord", VariableType.FLOAT2, VariableSemanticType.TEXCOORD0 );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
 			pShader.setSampler( 0, "BaseSampler", SamplerType.TYPE_2D );

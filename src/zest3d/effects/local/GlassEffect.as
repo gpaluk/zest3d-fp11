@@ -135,7 +135,7 @@ package zest3d.effects.local
 			coord0 ||= SamplerCoordinateType.CLAMP;
 			coord1 ||= SamplerCoordinateType.CLAMP;
 			
-			var vShader: VertexShader = new VertexShader( "Zest3D.Glass", 2, 1, 4, 0, false );
+			var vShader: VertexShader = new VertexShader( "Zest3D.GlassEffect", 2, 1, 4, 0, false );
 			vShader.setInput( 0, "modelPosition", VariableType.FLOAT3, VariableSemanticType.POSITION );
 			vShader.setInput( 1, "modelNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			vShader.setOutput( 0, "clipPosition", VariableType.FLOAT4, VariableSemanticType.POSITION );
@@ -146,7 +146,7 @@ package zest3d.effects.local
 			vShader.setBaseRegisters( msVRegisters );
 			vShader.setPrograms( msVPrograms );
 			
-			var pShader: PixelShader = new PixelShader( "Zest3D.Glass", 1, 1, 1, 1, false );
+			var pShader: PixelShader = new PixelShader( "Zest3D.GlassEffect", 1, 1, 1, 1, false );
 			pShader.setInput( 0, "vertexNormal", VariableType.FLOAT3, VariableSemanticType.NORMAL );
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
 			pShader.setConstant( 0, "rr2", 1 );
