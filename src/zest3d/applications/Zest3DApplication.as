@@ -149,11 +149,13 @@ package zest3d.applications
 			{
 				_renderer.clearBuffers();
 				
-				_renderer.drawVisibleSet( _culler.visibleSet );
 				if( _skybox )
 				{
 					_renderer.drawVisual( _skybox );
 				}
+				//TODO render prioritization so this can be done between solid and alpha blended geometry
+				_renderer.drawVisibleSet( _culler.visibleSet );
+				
 				_numVisibleObjects = _culler.visibleSet.numVisible;
 				_renderer.postDraw();
 				_renderer.displayColorBuffer();
