@@ -10,6 +10,7 @@
  */
 package zest3d.localeffects 
 {
+	import zest3d.shaderfloats.frustum.DepthRangeConstant;
 	import zest3d.shaderfloats.matrix.PVWMatrixConstant;
 	import zest3d.shaderfloats.ShaderFloat;
 	import zest3d.shaders.enum.VariableSemanticType;
@@ -75,7 +76,7 @@ package zest3d.localeffects
 		[
 			"",
 			// AGAL_1_0
-			"div ft0 v0.z fc0.x \n" +      //FT0 Ranges From 0 to 1 and its the depth of the pixel from the light                                     
+			"div ft0 v0.z fc0.y \n" +      //FT0 Ranges From 0 to 1 and its the depth of the pixel from the light                                     
             "mul ft0 ft0 fc1 \n" +         //FT0 = [FT0,255*FT0,(255^2)*FT0,(255^3)*FT0] for encoding 32 bit floating point into RGBA
             "frc ft0 ft0 \n" +             //FT0 = [f(FT0),f(255*FT0), f((255^2)*FT0), f((255^3)*FT0)] where f(number) = number - floor(number)
             "mul ft1 ft0.yzww fc2 \n" +    //FT1 = [(f(255*FT0))/255.0, (f((255^2)*FT0))/255.0, (f((255^3)*FT0))/255.0, 0.0]
@@ -102,7 +103,7 @@ package zest3d.localeffects
 			pShader.setOutput( 0, "pixelColor", VariableType.FLOAT4, VariableSemanticType.COLOR0 );
 			pShader.setBaseRegisters( msPRegisters );
 			pShader.setPrograms( msPPrograms );
-			pShader.setConstant( 0, "fc0", 1 );
+			pShader.setConstant( 0, "depthRange", 1 );
 			pShader.setConstant( 1, "fc1", 1 );
 			pShader.setConstant( 2, "fc2", 1 );
 			
@@ -124,10 +125,6 @@ package zest3d.localeffects
 			
 			super( _visualEffect, 0 );
 			
-			
-			var fc0:ShaderFloat = new ShaderFloat( 1 );
-			fc0.setRegister( 0, [ 100, 1, 1, 1] ); // [0] should be the dMax value
-			
 			var fc1:ShaderFloat = new ShaderFloat( 1 );
 			fc1.setRegister( 0, [ 1, 255, 6025, 1681375 ] );
 			
@@ -135,7 +132,7 @@ package zest3d.localeffects
 			fc2.setRegister( 0, [ 1 / 255, 1 / 255, 1 / 255, 0 ] );
 			
 			setVertexConstantByHandle( 0, 0, new PVWMatrixConstant() );
-			setPixelConstantByHandle( 0, 0, fc0 );
+			setPixelConstantByHandle( 0, 0, new DepthRangeConstant() );
 			setPixelConstantByHandle( 0, 1, fc1 );
 			setPixelConstantByHandle( 0, 2, fc2 );
 			
