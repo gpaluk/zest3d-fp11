@@ -26,7 +26,7 @@ package zest3d.shaderfloats.frustum
 		override public function update(visual:Visual, camera:Camera):void 
 		{
 			var range:Number = camera.dMax - camera.dMin;
-			var invRange:Number = 1 / (camera.dMax - camera.dMin);
+			var invRange:Number = 1 / range;
 			
 			_data.writeFloat( camera.dMin );
 			_data.writeFloat( camera.dMax );
